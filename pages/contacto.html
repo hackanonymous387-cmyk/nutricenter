@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto - Asesoría Nutricional | Nutricenter Hyo</title>
+  <link rel="icon" href="../assets/images/cropped-Recurso-3-32x32.png" sizes="32x32">
+
+  <!-- Google Fonts (Outfit & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <!-- Core Scripts -->
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/loader.js" defer></script>
+</head>
+
+<body>
+
+  <!-- Dynamic Header Placeholder -->
+  <div id="site-header-placeholder"></div>
+
+  <!-- CONTACTO MAIN SECTION -->
+  <main class="contacto-section">
+    <div class="contacto-container">
+
+      <div class="nosotros-section-tag">
+        <span class="nosotros-ring-icon"></span> Contáctanos
+      </div>
+      <p class="contacto-header-desc">
+        Por favor completa el formulario y un asesor especializado te responderá en unos minutos para brindarte toda la información que necesitas.
+      </p>
+
+      <div class="contacto-grid-container">
+
+        <!-- LEFT COLUMN: Image Card with Red Frame -->
+        <div class="contacto-img-card">
+          <img src="../assets/images/contacto_advisor.jpg" alt="Asesora Nutricional Nutricenter">
+        </div>
+
+        <!-- RIGHT COLUMN: Contact Form Card with Red Border -->
+        <div class="contacto-form-card">
+          <div class="contacto-form-header">
+            <h2 class="contacto-form-title">¡Bienvenido</h2>
+            <h3 class="contacto-form-subtitle">Nutricenter!</h3>
+          </div>
+
+          <form id="contactoForm" onsubmit="handleContactoSubmit(event)">
+            <input type="text" id="contactNombre" class="contacto-input-pill" placeholder="Nombre y apellido" required>
+            
+            <input type="email" id="contactEmail" class="contacto-input-pill" placeholder="Correo electrónico" required>
+            
+            <input type="tel" id="contactTelefono" class="contacto-input-pill" placeholder="Número celular" required>
+            
+            <textarea id="contactMensaje" class="contacto-textarea-box" placeholder="Escribe tu mensaje" rows="4" required></textarea>
+            
+            <button type="submit" class="btn-contacto-red">Enviar mensaje</button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Dynamic Footer Placeholder -->
+  <div id="site-footer-placeholder"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Highlight "Contacto" in subnav after header loads
+      const checkSubnav = setInterval(() => {
+        const links = document.querySelectorAll('.nav-links a');
+        let found = false;
+        links.forEach(link => {
+          if (link.textContent.trim().toLowerCase().includes('contacto')) {
+            link.classList.add('active');
+            link.style.color = '#e60000';
+            link.style.borderBottom = '2px solid #e60000';
+            link.style.paddingBottom = '4px';
+            found = true;
+          }
+        });
+        if (found) clearInterval(checkSubnav);
+      }, 100);
+      setTimeout(() => clearInterval(checkSubnav), 3000);
+    });
+
+    function handleContactoSubmit(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('contactNombre').value;
+      const email = document.getElementById('contactEmail').value;
+      const telefono = document.getElementById('contactTelefono').value;
+      const mensaje = document.getElementById('contactMensaje').value;
+
+      let text = `¡Hola! 👋 Me comunico desde su página web y me gustaría obtener más información. ¿Podrían ayudarme, por favor?\n\n` +
+                 `*Datos de contacto:*\n` +
+                 `• *Nombre:* ${nombre}\n` +
+                 `• *Correo:* ${email}\n` +
+                 `• *Teléfono:* ${telefono}\n` +
+                 `• *Mensaje:* ${mensaje}`;
+
+      const waUrl = `https://wa.me/51936396907?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+      document.getElementById('contactoForm').reset();
+    }
+  </script>
+</body>
+
+</html>

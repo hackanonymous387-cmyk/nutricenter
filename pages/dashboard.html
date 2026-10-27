@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Integral - Nutricenter Perú</title>
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <script src="../assets/js/nutri-db.js"></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+
+  <style>
+    /* Estilos del Tab Switcher en Dashboard */
+    .dashboard-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .dash-tab-btn {
+      padding: 0.75rem 1.25rem;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #64748b;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .dash-tab-btn:hover {
+      color: #0f172a;
+    }
+    .dash-tab-btn.active {
+      color: #e60000;
+      border-bottom-color: #e60000;
+    }
+    .dash-tab-btn .badge {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+    .tab-content-panel {
+      display: none;
+    }
+    .tab-content-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge-status.pendiente {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    .badge-status.en_preparacion {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+    .badge-status.en_camino {
+      background: #f3e8ff;
+      color: #7e22ce;
+      border: 1px solid #e9d5ff;
+    }
+    .badge-status.entregado {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .badge-status.cancelado {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* Modal Backdrop & Popup */
+    .dash-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      overflow-y: auto;
+    }
+    .dash-modal-backdrop.active {
+      display: flex;
+      animation: modalFadeIn 0.22s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .dash-modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 720px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+    }
+    .dash-modal-header {
+      padding: 1.15rem 1.5rem;
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--brand-red);
+    }
+    .dash-modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .dash-modal-footer {
+      padding: 1rem 1.5rem;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+    /* Slide Admin Card */
+    .slide-admin-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transition: all 0.2s ease;
+    }
+    .slide-admin-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .slide-preview-banner {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      height: 180px;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ffffff;
+      overflow: hidden;
+    }
+    .slide-preview-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.65) 55%, rgba(15,23,42,0.25) 100%);
+      z-index: 1;
+    }
+    .slide-preview-content {
+      position: relative;
+      z-index: 2;
+      max-width: 62%;
+    }
+    .slide-preview-image {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      max-height: 155px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.6));
+    }
+    .quick-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      padding: 4px 9px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #334155;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .quick-chip:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- Sidebar Administrativo Nutricenter -->
+    <aside class="app-sidebar">
+      <div class="sidebar-logo">
+        <a href="../index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+          <img src="../assets/images/Recurso-6.png" alt="Nutricenter Logo" style="max-height: 38px; object-fit: contain;">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-heading">Módulos Administrativos</div>
+        
+        <a href="dashboard.html" class="sidebar-link active">
+          <i class="bi bi-speedometer2 text-danger"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="switchDashboardTab('pedidos-web')" class="sidebar-link" id="side-nav-pedidos">
+          <i class="bi bi-box2-heart-fill text-danger"></i>
+          <span>Pedidos Online (Web)</span>
+          <span class="badge" id="side-pedidos-count" style="background: #e60000; color: #fff; font-size: 0.68rem; margin-left: auto; border-radius: 999px; padding: 2px 7px;">0</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="switchDashboardTab('carrusel-hero')" class="sidebar-link" id="side-nav-carrusel">
+          <i class="bi bi-images text-danger"></i>
+          <span>Banners / Carrusel Web</span>
+          <span class="badge" id="side-carrusel-count" style="background: #1e293b; color: #fff; font-size: 0.68rem; margin-left: auto; border-radius: 999px; padding: 2px 7px;">3</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="switchDashboardTab('gestion-marcas')" class="sidebar-link" id="side-nav-marcas">
+          <i class="bi bi-tags-fill text-danger"></i>
+          <span>Marcas Oficiales</span>
+          <span class="badge" id="side-marcas-count" style="background: #1e293b; color: #fff; font-size: 0.68rem; margin-left: auto; border-radius: 999px; padding: 2px 7px;">13</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="switchDashboardTab('productos-destacados')" class="sidebar-link" id="side-nav-destacados">
+          <i class="bi bi-star-fill text-warning"></i>
+          <span>Destacados en Home</span>
+          <span class="badge" id="side-destacados-count" style="background: #e60000; color: #fff; font-size: 0.68rem; margin-left: auto; border-radius: 999px; padding: 2px 7px;">8</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="switchDashboardTab('lineas-home')" class="sidebar-link" id="side-nav-lineas">
+          <i class="bi bi-collection-fill text-danger"></i>
+          <span>10 Líneas Carrusel</span>
+          <span class="badge" id="side-lineas-count" style="background: #1e293b; color: #fff; font-size: 0.68rem; margin-left: auto; border-radius: 999px; padding: 2px 7px;">10</span>
+        </a>
+
+        <a href="gestion-productos.html" class="sidebar-link">
+          <i class="bi bi-box-seam-fill text-danger"></i>
+          <span>Gestión Productos</span>
+        </a>
+
+        <a href="ventas.html" class="sidebar-link">
+          <i class="bi bi-cart-check-fill text-danger"></i>
+          <span>Ventas / POS</span>
+        </a>
+
+        <a href="usuarios.html" class="sidebar-link">
+          <i class="bi bi-people-fill text-danger"></i>
+          <span>Usuarios & Clientes CRM</span>
+        </a>
+
+        <a href="reportes.html" class="sidebar-link">
+          <i class="bi bi-graph-up-arrow text-danger"></i>
+          <span>Reportes & Kárdex</span>
+        </a>
+
+        <div class="sidebar-heading" style="margin-top: 1rem;">Tienda Pública Web</div>
+        
+        <a href="../index.html" class="sidebar-link" target="_blank">
+          <i class="bi bi-shop text-warning"></i>
+          <span>Página Principal <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+        </a>
+
+        <a href="../index.html#lineas" class="sidebar-link" target="_blank">
+          <i class="bi bi-collection-fill text-warning"></i>
+          <span>Líneas de Suplementos <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+        </a>
+
+        <a href="../pages/productos.html" class="sidebar-link" target="_blank">
+          <i class="bi bi-grid-3x3-gap-fill text-warning"></i>
+          <span>Catálogo de Productos <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+        </a>
+
+        <a href="../pages/pedidos.html" class="sidebar-link" target="_blank">
+          <i class="bi bi-person-lines-fill text-warning"></i>
+          <span>Portal Clientes (Web) <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; padding-bottom: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #1c2233; border: 1.5px solid var(--brand-red); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.85rem;">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <div style="min-width: 0; flex: 1;">
+            <div id="side-user-name" style="font-size: 0.85rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Administrador</div>
+            <div style="font-size: 0.72rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
+              <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> En línea
+            </div>
+          </div>
+        </div>
+        <button onclick="if(typeof Auth !== 'undefined' && Auth.logout){Auth.logout();}else{window.location.href='login.html';}" class="btn btn-outline btn-sm" style="width: 100%; border-color: rgba(239, 68, 68, 0.4); color: #ef4444; justify-content: center;">
+          <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <!-- Header Superior -->
+      <header class="app-header">
+        <div>
+          <h2><i class="bi bi-speedometer2 text-danger me-2"></i> Panel de Control Principal</h2>
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
+            Métricas de Ventas POS, Pedidos Web E-Commerce & Control de Inventario
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="../index.html" target="_blank" class="btn btn-secondary btn-sm" title="Ir a la tienda virtual">
+            <i class="bi bi-shop me-1 text-warning"></i> Tienda Web
+          </a>
+          <a href="ventas.html" class="btn btn-primary btn-sm">
+            <i class="bi bi-cart-plus-fill me-1"></i> Abrir Punto de Venta (POS)
+          </a>
+        </div>
+      </header>
+
+      <main class="app-content">
+        <!-- KPI METRICS GRID -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+          
+          <!-- KPI 1: Total Ventas -->
+          <div class="card" style="padding: 1.25rem; border-top: 4px solid var(--brand-red); background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-size: 0.72rem; color: #475569; font-weight: 800; text-transform: uppercase;">
+                Ventas del Mes (Total)
+              </div>
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(230,32,53,0.1); border: 1px solid rgba(230,32,53,0.25); display: flex; align-items: center; justify-content: center; color: var(--brand-red); font-size: 1.1rem;">
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+            </div>
+            <div id="kpi-ventas" style="font-size: 1.75rem; font-weight: 900; margin-bottom: 0.35rem; color: #000000; letter-spacing: -0.02em;">S/ 0.00</div>
+            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;" id="kpi-ventas-desglose">
+              POS: S/ 0.00 | Web: S/ 0.00
+            </div>
+          </div>
+
+          <!-- KPI 2: Pedidos Tienda Web -->
+          <div class="card" style="padding: 1.25rem; border-top: 4px solid #3b82f6; background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-size: 0.72rem; color: #475569; font-weight: 800; text-transform: uppercase;">
+                Pedidos Tienda Web
+              </div>
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; border: 1px solid #bfdbfe; display: flex; align-items: center; justify-content: center; color: #2563eb; font-size: 1.1rem;">
+                <i class="bi bi-box2-heart"></i>
+              </div>
+            </div>
+            <div id="kpi-pedidos-web" style="font-size: 1.75rem; font-weight: 900; margin-bottom: 0.35rem; color: #000000; letter-spacing: -0.02em;">0 Pedidos</div>
+            <span class="badge" id="badge-pedidos-pendientes" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a;">
+              <i class="bi bi-clock-history me-1"></i> 0 Pendientes
+            </span>
+          </div>
+
+          <!-- KPI 3: Alertas de Stock Bajo -->
+          <div class="card" style="padding: 1.25rem; border-top: 4px solid #ef4444; background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-size: 0.72rem; color: #475569; font-weight: 800; text-transform: uppercase;">
+                Stock Crítico (Kárdex)
+              </div>
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: #fef2f2; border: 1px solid #fecaca; display: flex; align-items: center; justify-content: center; color: #dc2626; font-size: 1.1rem;">
+                <i class="bi bi-exclamation-triangle"></i>
+              </div>
+            </div>
+            <div id="kpi-stock-bajo" style="font-size: 1.75rem; font-weight: 900; margin-bottom: 0.35rem; color: #dc2626; letter-spacing: -0.02em;">0 Productos</div>
+            <span class="badge" id="badge-stock-alerta" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca;">
+              <i class="bi bi-arrow-repeat me-1"></i> Reposición Requerida
+            </span>
+          </div>
+
+          <!-- KPI 4: Catálogo Activo -->
+          <div class="card" style="padding: 1.25rem; border-top: 4px solid #000000; background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-size: 0.72rem; color: #475569; font-weight: 800; text-transform: uppercase;">
+                Catálogo & Valor Inv.
+              </div>
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; color: #0f172a; font-size: 1.1rem;">
+                <i class="bi bi-box-seam"></i>
+              </div>
+            </div>
+            <div id="kpi-productos" style="font-size: 1.75rem; font-weight: 900; margin-bottom: 0.35rem; color: #000000; letter-spacing: -0.02em;">0 Productos</div>
+            <span class="badge badge-info" id="badge-valor-inv"><i class="bi bi-layers me-1"></i> Inv: S/ 0.00</span>
+          </div>
+
+          <!-- KPI 5: Clientes & Caja -->
+          <div class="card" style="padding: 1.25rem; border-top: 4px solid #16a34a; background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-size: 0.72rem; color: #475569; font-weight: 800; text-transform: uppercase;">
+                Caja & Clientes CRM
+              </div>
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: #dcfce7; border: 1px solid #86efac; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 1.1rem;">
+                <i class="bi bi-safe2"></i>
+              </div>
+            </div>
+            <div id="kpi-caja" style="font-size: 1.45rem; font-weight: 900; margin-bottom: 0.35rem; color: #15803d; letter-spacing: -0.02em;">Abierta (#1)</div>
+            <span class="badge badge-success" id="kpi-clientes"><i class="bi bi-person-check me-1"></i> 3 Clientes CRM</span>
+          </div>
+
+        </div>
+
+        <!-- DASHBOARD TABS NAVIGATION -->
+        <div class="dashboard-tabs">
+          <button class="dash-tab-btn active" id="tabBtnPedidos" onclick="switchDashboardTab('pedidos-web')">
+            <i class="bi bi-box2-heart-fill"></i> Pedidos Tienda Web
+            <span class="badge" id="tabBadgePedidos" style="background: #e60000; color: #fff;">0</span>
+          </button>
+
+          <button class="dash-tab-btn" id="tabBtnVentas" onclick="switchDashboardTab('ventas-pos')">
+            <i class="bi bi-cart-check-fill"></i> Ventas Mostrador (POS)
+            <span class="badge" id="tabBadgeVentas" style="background: #64748b; color: #fff;">0</span>
+          </button>
+
+          <button class="dash-tab-btn" id="tabBtnStock" onclick="switchDashboardTab('stock-alerts')">
+            <i class="bi bi-exclamation-triangle-fill"></i> Alertas de Stock Bajo
+            <span class="badge" id="tabBadgeStock" style="background: #dc2626; color: #fff;">0</span>
+          </button>
+
+          <button class="dash-tab-btn" id="tabBtnCarrusel" onclick="switchDashboardTab('carrusel-hero')">
+            <i class="bi bi-images text-danger"></i> Banners / Carrusel Web
+            <span class="badge" id="tabBadgeCarrusel" style="background: #1e293b; color: #fff;">3</span>
+          </button>
+
+          <button class="dash-tab-btn" id="tabBtnMarcas" onclick="switchDashboardTab('gestion-marcas')">
+            <i class="bi bi-tags-fill text-danger"></i> Gestión de Marcas
+            <span class="badge" id="tabBadgeMarcas" style="background: #1e293b; color: #fff;">13</span>
+          </button>
+
+          <button class="dash-tab-btn" id="tabBtnDestacados" onclick="switchDashboardTab('productos-destacados')">
+            <i class="bi bi-star-fill text-warning"></i> Destacados Home
+            <span class="badge" id="tabBadgeDestacados" style="background: #e60000; color: #fff;">8</span>
+          </button>
+
+          <button class="dash-tab-btn" id="tabBtnLineas" onclick="switchDashboardTab('lineas-home')">
+            <i class="bi bi-collection-fill text-danger"></i> 10 Líneas Carrusel
+            <span class="badge" id="tabBadgeLineas" style="background: #1e293b; color: #fff;">10</span>
+          </button>
+        </div>
+
+        <!-- MAIN GRID: TAB CONTENT + QUICK ACTIONS -->
+        <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 1.5rem;" class="grid-2">
+          
+          <!-- TAB PANELS CONTAINER -->
+          <div class="card" style="padding: 1.25rem;">
+
+            <!-- PANEL 1: PEDIDOS TIENDA WEB -->
+            <div id="panel-pedidos-web" class="tab-content-panel active">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    <i class="bi bi-globe me-2 text-primary"></i> Pedidos Recibidos desde la Web (Checkout)
+                  </h3>
+                  <small style="color: #64748b;">Órdenes de clientes con Yape, Plin, BCP y Tarjeta para despacho</small>
+                </div>
+                <a href="../pages/pedidos.html" target="_blank" class="btn btn-secondary btn-sm" title="Ver portal de clientes">
+                  <i class="bi bi-box-arrow-up-right me-1"></i> Portal Web
+                </a>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th># Pedido</th>
+                      <th>Cliente & Contacto</th>
+                      <th>Destino / Ciudad</th>
+                      <th>Pago</th>
+                      <th>Estado Envío</th>
+                      <th>Total</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="web-orders-body">
+                    <tr>
+                      <td colspan="7" style="text-align: center; color: #64748b; padding: 2rem;">
+                        <i class="bi bi-arrow-repeat me-2"></i> Cargando pedidos web...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 2: VENTAS POS EN MOSTRADOR -->
+            <div id="panel-ventas-pos" class="tab-content-panel">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    <i class="bi bi-shop me-2 text-danger"></i> Últimas Ventas en Tienda Física (POS)
+                  </h3>
+                  <small style="color: #64748b;">Transacciones realizadas en mostrador con caja registradora</small>
+                </div>
+                <a href="ventas.html" class="btn btn-secondary btn-sm">
+                  <i class="bi bi-cart-plus me-1"></i> Nueva Venta
+                </a>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th># Comprobante</th>
+                      <th>Cliente</th>
+                      <th>Doc</th>
+                      <th>Método</th>
+                      <th>Total</th>
+                      <th>Fecha</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-sales-body">
+                    <tr>
+                      <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                        <i class="bi bi-arrow-repeat me-2"></i> Cargando ventas POS...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 3: ALERTAS DE REPOSICIÓN (STOCK BAJO) -->
+            <div id="panel-stock-alerts" class="tab-content-panel">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #b91c1c; margin: 0;">
+                    <i class="bi bi-shield-exclamation me-2 text-danger"></i> Productos con Stock Crítico (Alerta Kárdex)
+                  </h3>
+                  <small style="color: #64748b;">Suplementos cuyo stock actual está por debajo del stock mínimo</small>
+                </div>
+                <a href="gestion-productos.html" class="btn btn-secondary btn-sm">
+                  <i class="bi bi-box-seam me-1"></i> Inventario Completo
+                </a>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>SKU</th>
+                      <th>Stock Actual</th>
+                      <th>Stock Mínimo</th>
+                      <th>Faltante Sugerido</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stock-alerts-body">
+                    <tr>
+                      <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                        <i class="bi bi-check-circle text-success me-2"></i> No hay alertas de stock bajo en este momento.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 4: CARRUSEL HERO / BANNERS WEB -->
+            <div id="panel-carrusel-hero" class="tab-content-panel">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    <i class="bi bi-images me-2 text-danger"></i> Editor de Banners / Carrusel de Portada (Home)
+                  </h3>
+                  <small style="color: #64748b;">Cambia las imágenes de fondo, atleta/producto, títulos de 3 líneas, subtítulos y botones que ven tus clientes</small>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <a href="../index.html" target="_blank" class="btn btn-secondary btn-sm" title="Ver el carrusel en la web">
+                    <i class="bi bi-box-arrow-up-right me-1 text-warning"></i> Ver en Tienda
+                  </a>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalSlide()">
+                    <i class="bi bi-plus-circle me-1"></i> + Nuevo Slide
+                  </button>
+                </div>
+              </div>
+
+              <!-- SLIDES LIST CONTAINER -->
+              <div id="slides-grid-container" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div style="text-align: center; color: #64748b; padding: 2rem;">
+                  <i class="bi bi-arrow-repeat me-2"></i> Cargando banners del carrusel...
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 5: GESTIÓN DE MARCAS -->
+            <div id="panel-gestion-marcas" class="tab-content-panel">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    <i class="bi bi-tags-fill me-2 text-danger"></i> Gestión de Marcas Comerciales
+                  </h3>
+                  <small style="color: #64748b;">Administra las marcas oficiales de suplementos (logos, país, estado) visibles en la barra dinámica del Home y catálogo</small>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <a href="../index.html#marcasSection" target="_blank" class="btn btn-secondary btn-sm" title="Ver cinta de marcas en Home">
+                    <i class="bi bi-box-arrow-up-right me-1 text-warning"></i> Ver en Tienda
+                  </a>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalMarca()">
+                    <i class="bi bi-plus-circle me-1"></i> + Nueva Marca
+                  </button>
+                </div>
+              </div>
+
+              <!-- MARCAS TABLE CONTAINER -->
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 75px;">Logo</th>
+                      <th>Marca Comercial</th>
+                      <th>País de Origen</th>
+                      <th>Estado</th>
+                      <th>Acceso Directo Catálogo</th>
+                      <th style="text-align: right;">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="marcas-table-body">
+                    <tr>
+                      <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                        <i class="bi bi-arrow-repeat me-2"></i> Cargando marcas oficiales...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 6: PRODUCTOS DESTACADOS (MÁS VENDIDOS EN HOME) -->
+            <div id="panel-productos-destacados" class="tab-content-panel">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    <i class="bi bi-star-fill me-2 text-warning"></i> Productos Destacados ("Más Vendidos" en Home)
+                  </h3>
+                  <small style="color: #64748b;">Selecciona qué suplementos de tu inventario se exhiben en la portada principal. Los cambios se actualizan en vivo.</small>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <span class="badge" id="destacados-summary-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-size: 0.8rem; padding: 6px 12px;">
+                    <i class="bi bi-star-fill text-warning me-1"></i> <span id="destacados-active-count">8</span> Activos en Home
+                  </span>
+                  <a href="../index.html#featuredProductsGrid" target="_blank" class="btn btn-secondary btn-sm" title="Ver sección en la web">
+                    <i class="bi bi-box-arrow-up-right me-1 text-warning"></i> Ver en Tienda
+                  </a>
+                </div>
+              </div>
+
+              <!-- TABLE OF PRODUCTS WITH TOGGLE -->
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 65px;">Foto</th>
+                      <th>Producto & Marca</th>
+                      <th>Categoría</th>
+                      <th>Precio Venta</th>
+                      <th>Stock Actual</th>
+                      <th style="text-align: right;">Fotos Galería & Portada</th>
+                    </tr>
+                  </thead>
+                  <tbody id="destacados-table-body">
+                    <tr>
+                      <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                        <i class="bi bi-arrow-repeat me-2"></i> Cargando productos...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 7: 10 LÍNEAS DE SUPLEMENTOS (CARRUSEL HOME) -->
+            <div id="panel-lineas-home" class="tab-content-panel">
+              <div class="card-header" style="padding: 0 0 1rem 0; margin-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    <i class="bi bi-collection-fill me-2 text-danger"></i> 10 Líneas de Suplementos (Carrusel Infinito del Home)
+                  </h3>
+                  <small style="color: #64748b;">Administra los nombres, imágenes y categorías que se desplazan de forma continua en la sección "Nuestras líneas"</small>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <a href="../index.html#linesTrack" target="_blank" class="btn btn-secondary btn-sm" title="Ver carrusel en vivo">
+                    <i class="bi bi-box-arrow-up-right me-1 text-warning"></i> Ver en Tienda
+                  </a>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalLinea()">
+                    <i class="bi bi-plus-circle me-1"></i> + Nueva Línea
+                  </button>
+                </div>
+              </div>
+
+              <!-- GRID OF 10 LINES -->
+              <div id="lineas-grid-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.15rem;">
+                <div style="text-align: center; color: #64748b; padding: 2rem; grid-column: 1 / -1;">
+                  <i class="bi bi-arrow-repeat me-2"></i> Cargando líneas de suplementos...
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SIDEBAR DE ACCIONES DIRECTAS & ACCESO A LA WEB -->
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            
+            <div class="card" style="padding: 1.25rem;">
+              <div class="card-header" style="padding: 0 0 0.85rem 0; margin-bottom: 0.85rem; border-bottom: 1px solid #f1f5f9;">
+                <h3 style="font-size: 1.05rem; font-weight: 800;"><i class="bi bi-lightning-charge-fill text-danger me-2"></i> Acciones Directas</h3>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                <a href="ventas.html" class="btn btn-secondary" style="justify-content: flex-start; gap: 0.75rem;">
+                  <i class="bi bi-upc-scan text-danger" style="font-size: 1.1rem;"></i>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Punto de Venta (POS)</div>
+                    <small style="color: #64748b;">Cobro rápido con lector de código</small>
+                  </div>
+                </a>
+
+                <a href="gestion-productos.html" class="btn btn-secondary" style="justify-content: flex-start; gap: 0.75rem;">
+                  <i class="bi bi-box-seam-fill text-danger" style="font-size: 1.1rem;"></i>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Gestión de Productos</div>
+                    <small style="color: #64748b;">Precios, stock y catálogo</small>
+                  </div>
+                </a>
+
+                <a href="reportes.html" class="btn btn-secondary" style="justify-content: flex-start; gap: 0.75rem;">
+                  <i class="bi bi-graph-up-arrow text-danger" style="font-size: 1.1rem;"></i>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Reportes & Kárdex</div>
+                    <small style="color: #64748b;">Analítica financiera y compras</small>
+                  </div>
+                </a>
+
+                <a href="usuarios.html" class="btn btn-secondary" style="justify-content: flex-start; gap: 0.75rem;">
+                  <i class="bi bi-people-fill text-danger" style="font-size: 1.1rem;"></i>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Usuarios & Clientes CRM</div>
+                    <small style="color: #64748b;">Padrón con DNI / RUC</small>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- ENLACES CON LA PÁGINA WEB -->
+            <div class="card" style="padding: 1.25rem; background: linear-gradient(145deg, #0f172a, #1e293b); color: #ffffff;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+                <h4 style="font-size: 0.95rem; font-weight: 800; color: #ffffff; margin: 0;">
+                  <i class="bi bi-globe me-2 text-danger"></i> Tienda Virtual Nutricenter
+                </h4>
+                <span class="badge badge-success" style="font-size: 0.65rem;">En Vivo</span>
+              </div>
+              <p style="font-size: 0.78rem; color: #94a3b8; line-height: 1.4; margin-bottom: 1rem;">
+                Accede rápidamente a las secciones públicas de tu tienda web para verificar la experiencia de compra de tus clientes.
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <a href="../index.html" target="_blank" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.55rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;">
+                  <span><i class="bi bi-house-door me-2 text-danger"></i> Landing Page Principal</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+
+                <a href="../index.html#lineas" target="_blank" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.55rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;">
+                  <span><i class="bi bi-collection me-2 text-danger"></i> Carrusel 10 Líneas</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+
+                <a href="../pages/productos.html" target="_blank" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.55rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;">
+                  <span><i class="bi bi-bag-check me-2 text-danger"></i> Catálogo Completo</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+
+                <a href="../pages/checkout.html" target="_blank" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.55rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;">
+                  <span><i class="bi bi-credit-card me-2 text-danger"></i> Pasarela de Checkout</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: CREAR / EDITAR SLIDE DEL CARRUSEL -->
+  <div class="dash-modal-backdrop" id="modalSlideBackdrop">
+    <div class="dash-modal-box">
+      <div class="dash-modal-header">
+        <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #ffffff;" id="modalSlideTitle">
+          <i class="bi bi-images text-danger me-2"></i> Editar Slide del Carrusel
+        </h4>
+        <button type="button" onclick="cerrarModalSlide()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="formSlide" onsubmit="guardarSlide(event)">
+        <div class="dash-modal-body">
+          <input type="hidden" id="slide-id" value="">
+
+          <!-- TÍTULOS (3 LÍNEAS DEL CARRUSEL) -->
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+              Título del Banner (3 Líneas de Impacto)
+            </label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <div>
+                <small style="color: #64748b; font-size: 0.72rem;">Línea 1 (Blanca)</small>
+                <input type="text" id="slide-titulo1" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700;" placeholder="Nutrición" required oninput="actualizarPreviewEnVivoModal()">
+              </div>
+              <div>
+                <small style="color: #e60000; font-size: 0.72rem;">Línea 2 (Roja / Subrayada)</small>
+                <input type="text" id="slide-titulo2" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700; color: #e60000;" placeholder="que te cambia" required oninput="actualizarPreviewEnVivoModal()">
+              </div>
+              <div>
+                <small style="color: #64748b; font-size: 0.72rem;">Línea 3 (Blanca)</small>
+                <input type="text" id="slide-titulo3" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700;" placeholder="la vida" required oninput="actualizarPreviewEnVivoModal()">
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBTÍTULO / DESCRIPCIÓN -->
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+              Subtítulo / Mensaje Promocional
+            </label>
+            <textarea id="slide-subtitulo" rows="2" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;" placeholder="Productos naturales certificados y con asesoría personalizada..." required oninput="actualizarPreviewEnVivoModal()"></textarea>
+          </div>
+
+          <!-- BOTONES 1 Y 2 -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <div style="font-weight: 800; font-size: 0.78rem; color: #e60000; margin-bottom: 0.4rem;">
+                <i class="bi bi-cursor-fill me-1"></i> Botón 1 (Rojo Principal)
+              </div>
+              <div style="margin-bottom: 0.4rem;">
+                <small style="color: #64748b; font-size: 0.7rem;">Texto del Botón</small>
+                <input type="text" id="slide-btn1-txt" style="width: 100%; padding: 0.4rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem;" placeholder="Ver productos" required oninput="actualizarPreviewEnVivoModal()">
+              </div>
+              <div>
+                <small style="color: #64748b; font-size: 0.7rem;">Enlace / URL Destino</small>
+                <input type="text" id="slide-btn1-url" style="width: 100%; padding: 0.4rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem;" placeholder="pages/productos.html" required>
+              </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <div style="font-weight: 800; font-size: 0.78rem; color: #475569; margin-bottom: 0.4rem;">
+                <i class="bi bi-cursor me-1"></i> Botón 2 (Borde Blanco / WhatsApp)
+              </div>
+              <div style="margin-bottom: 0.4rem;">
+                <small style="color: #64748b; font-size: 0.7rem;">Texto del Botón</small>
+                <input type="text" id="slide-btn2-txt" style="width: 100%; padding: 0.4rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem;" placeholder="Contacto" required oninput="actualizarPreviewEnVivoModal()">
+              </div>
+              <div>
+                <small style="color: #64748b; font-size: 0.7rem;">Enlace / URL Destino</small>
+                <input type="text" id="slide-btn2-url" style="width: 100%; padding: 0.4rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem;" placeholder="https://wa.me/51936396907" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- IMÁGENES: FONDO Y ATLETA/PRODUCTO -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <!-- IMAGEN DE FONDO -->
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+                <i class="bi bi-image me-1 text-danger"></i> Imagen de Fondo (Background)
+              </label>
+              <input type="text" id="slide-bg-img" style="width: 100%; padding: 0.45rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem;" placeholder="assets/images/fondos_hd.png" required oninput="actualizarPreviewEnVivoModal()">
+              <div style="display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap;">
+                <span class="quick-chip" onclick="setSlideBg('assets/images/fondos_hd.png')"><i class="bi bi-check2"></i> Fondo HD Oficial</span>
+                <span class="quick-chip" onclick="setSlideBg('assets/images/nosotros_mision.jpg')"><i class="bi bi-check2"></i> Fondo Gimnasio</span>
+              </div>
+            </div>
+
+            <!-- IMAGEN FRONTAL (ATLETA / PRODUCTO) -->
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+                <i class="bi bi-person-bounding-box me-1 text-danger"></i> Imagen Frontal (Atleta / Producto)
+              </label>
+              <input type="text" id="slide-front-img" style="width: 100%; padding: 0.45rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem;" placeholder="assets/images/carril.png" required oninput="actualizarPreviewEnVivoModal()">
+              <div style="display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap;">
+                <span class="quick-chip" onclick="setSlideFront('assets/images/carril.png')"><i class="bi bi-person"></i> Atleta Carril</span>
+                <span class="quick-chip" onclick="setSlideFront('assets/images/proteinas.webp')"><i class="bi bi-box"></i> Proteínas</span>
+                <span class="quick-chip" onclick="setSlideFront('assets/images/creatina.png')"><i class="bi bi-box"></i> Creatina ON</span>
+                <span class="quick-chip" onclick="setSlideFront('assets/images/GLUKOZ-300x300.png')"><i class="bi bi-box"></i> Glukoz</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- VISTA PREVIA EN VIVO DENTRO DEL MODAL -->
+          <div>
+            <label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem;">
+              <i class="bi bi-eye-fill text-danger me-1"></i> Vista Previa en Tiempo Real
+            </label>
+            <div id="modal-slide-live-preview" class="slide-preview-banner" style="background-image: url('../assets/images/fondos_hd.png'); border-radius: 10px; height: 160px;">
+              <div class="slide-preview-content">
+                <div style="font-size: 1.15rem; font-weight: 900; line-height: 1.15;">
+                  <span id="prev-t1">Nutrición</span><br>
+                  <span id="prev-t2" style="color: #ff3344; text-decoration: underline;">que te cambia</span><br>
+                  <span id="prev-t3">la vida</span>
+                </div>
+                <div id="prev-sub" style="font-size: 0.72rem; color: #cbd5e1; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  Productos naturales certificados y con asesoría personalizada...
+                </div>
+                <div style="display: flex; gap: 6px; margin-top: 8px;">
+                  <span id="prev-btn1" style="background: #e60000; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 999px;">Ver productos</span>
+                  <span id="prev-btn2" style="border: 1px solid rgba(255,255,255,0.7); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 999px;">Contacto</span>
+                </div>
+              </div>
+              <img id="prev-front" src="../assets/images/carril.png" class="slide-preview-image" alt="Atleta">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="dash-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalSlide()">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Guardar Slide en Carrusel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CREAR / EDITAR MARCA OFICIAL -->
+  <div class="dash-modal-backdrop" id="modalMarcaBackdrop">
+    <div class="dash-modal-box" style="max-width: 540px;">
+      <div class="dash-modal-header">
+        <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #ffffff;" id="modalMarcaTitle">
+          <i class="bi bi-tags-fill text-danger me-2"></i> Editar Marca Comercial
+        </h4>
+        <button type="button" onclick="cerrarModalMarca()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="formMarca" onsubmit="guardarMarca(event)">
+        <div class="dash-modal-body">
+          <input type="hidden" id="marca-id" value="">
+
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+              Nombre de la Marca
+            </label>
+            <input type="text" id="marca-nombre" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700; text-transform: uppercase;" placeholder="EJ: OPTIMUM NUTRITION" required oninput="actualizarLogoPreviewMarca()">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+                País de Origen
+              </label>
+              <input type="text" id="marca-pais" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;" placeholder="Perú, EE.UU., etc." required oninput="actualizarLogoPreviewMarca()">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+                Estado
+              </label>
+              <select id="marca-estado" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                <option value="1">Activa (Visible en web)</option>
+                <option value="0">Inactiva (Oculta)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+              Logo / Imagen de la Marca
+            </label>
+            <input type="text" id="marca-logo" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;" placeholder="assets/images/marca 1.webp" required oninput="actualizarLogoPreviewMarca()">
+            <div style="display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap;">
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 1.webp')">BSN</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 2.webp')">Nutricost</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 3.webp')">Isopure</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 4.webp')">Quest</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 5.webp')">Honey Stinger</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 6.webp')">Ultimate Nut.</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 7.webp')">Optimum Nut.</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 8.webp')">Scitec</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 9.webp')">Dymatize</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 10.webp')">Nutrex</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 11.webp')">MuscleMeds</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 12.webp')">Syntrax</span>
+              <span class="quick-chip" onclick="setMarcaLogo('assets/images/marca 13.webp')">Windmill</span>
+            </div>
+          </div>
+
+          <!-- MINI PREVIEW LOGO -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 60px; height: 60px; border-radius: 8px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 4px;">
+              <img id="marca-preview-img" src="../assets/images/marca 1.webp" alt="Logo Preview" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+            <div>
+              <div id="marca-preview-name" style="font-weight: 800; font-size: 0.95rem; color: #0f172a;">BSN</div>
+              <small style="color: #64748b;" id="marca-preview-country"><i class="bi bi-geo-alt"></i> EE.UU.</small>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="dash-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalMarca()">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Guardar Marca</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CREAR / EDITAR LÍNEA DE SUPLEMENTOS -->
+  <div class="dash-modal-backdrop" id="modalLineaBackdrop">
+    <div class="dash-modal-box" style="max-width: 540px;">
+      <div class="dash-modal-header">
+        <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #ffffff;" id="modalLineaTitle">
+          <i class="bi bi-collection-fill text-danger me-2"></i> Editar Línea de Suplementos
+        </h4>
+        <button type="button" onclick="cerrarModalLinea()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="formLinea" onsubmit="guardarLinea(event)">
+        <div class="dash-modal-body">
+          <input type="hidden" id="linea-id" value="">
+
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+              Nombre de la Línea
+            </label>
+            <input type="text" id="linea-nombre" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700;" placeholder="EJ: Proteínas" required oninput="actualizarPreviewLinea()">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+                Slug / Categoría Catálogo
+              </label>
+              <input type="text" id="linea-slug" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;" placeholder="Proteinas" required>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+                Orden en Carrusel
+              </label>
+              <input type="number" id="linea-orden" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;" value="1" min="1" max="50">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 0.35rem;">
+              Imagen de la Línea
+            </label>
+            <input type="text" id="linea-imagen" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;" placeholder="assets/images/proteinas.webp" required oninput="actualizarPreviewLinea()">
+            <div style="display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap;">
+              <span class="quick-chip" onclick="setLineaImg('assets/images/proteinas.webp')">Proteínas</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/creatina.png')">Creatinas</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/ganador de peso.png')">Ganador Peso</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/control de peso.webp')">Control Peso</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/aminoacidos4.png')">Aminoácidos</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/energia y redimiento.webp')">Energía</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/vitaminas & bienestar.png')">Vitaminas</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/snack saludables.png')">Snacks</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/accesorios.png')">Accesorios</span>
+              <span class="quick-chip" onclick="setLineaImg('assets/images/bedidas proteicas.webp')">Bebidas</span>
+            </div>
+          </div>
+
+          <!-- MINI PREVIEW DE LA TARJETA CARRUSEL -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: center;">
+            <div style="width: 150px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+              <img id="linea-preview-img" src="../assets/images/proteinas.webp" alt="Preview Línea" style="height: 70px; object-fit: contain; margin-bottom: 0.5rem;" onerror="this.src='../assets/images/proteinas.webp'">
+              <div id="linea-preview-name" style="font-weight: 800; font-size: 0.9rem; color: #0f172a;">Proteínas</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="dash-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalLinea()">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Guardar Línea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: GESTIÓN DE GALERÍA DE FOTOS MULTI-IMAGEN DEL PRODUCTO -->
+  <div class="dash-modal-backdrop" id="modalGaleriaBackdrop">
+    <div class="dash-modal-box" style="max-width: 680px;">
+      <div class="dash-modal-header">
+        <div>
+          <h4 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;" id="modalGaleriaTitle">
+            <i class="bi bi-images text-danger me-2"></i> Galería de Fotos del Producto
+          </h4>
+          <small style="color: #94a3b8; font-size: 0.82rem;" id="modalGaleriaSubtitle">Administra todas las imágenes visibles en la ficha de producto</small>
+        </div>
+        <button type="button" onclick="cerrarModalGaleria()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div style="padding: 1.25rem;">
+        <input type="hidden" id="galeria-producto-id" value="">
+
+        <!-- OPCIONES PARA AGREGAR FOTOS -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <strong style="color: #0f172a; font-size: 0.88rem;">
+              <i class="bi bi-cloud-arrow-up-fill text-danger me-1"></i> Agregar Imágenes a la Galería
+            </strong>
+            <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('input-subir-fotos-galeria').click()" style="background: #e60000; border-color: #e60000; font-weight: 700; font-size: 0.8rem;">
+              <i class="bi bi-folder-plus me-1"></i> Subir desde tu PC / Celular
+            </button>
+            <input type="file" id="input-subir-fotos-galeria" multiple accept="image/*" style="display: none;" onchange="procesarSubidaArchivosGaleria(event)">
+          </div>
+
+          <!-- O pegar nombre o URL directa -->
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <input type="text" id="galeria-nueva-url" class="form-control" style="flex: 1; padding: 0.45rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;" placeholder="Ej: creatina.png o enlace web https://...">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="agregarFotoManualGaleria()" style="font-weight: 700; padding: 0.45rem 0.85rem;">
+              <i class="bi bi-plus-circle me-1"></i> Añadir
+            </button>
+          </div>
+
+          <!-- Quick chips de imágenes disponibles -->
+          <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; margin-bottom: 0.35rem;">Fotos frecuentes en catálogo:</div>
+          <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+            <span class="quick-chip" onclick="agregarFotoChip('creatina.png')">+ Creatina ON</span>
+            <span class="quick-chip" onclick="agregarFotoChip('GLUKOZ-300x300.png')">+ Glukoz Whey</span>
+            <span class="quick-chip" onclick="agregarFotoChip('BIO-300x300.png')">+ Bio Pross</span>
+            <span class="quick-chip" onclick="agregarFotoChip('BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp')">+ Hot Plus</span>
+            <span class="quick-chip" onclick="agregarFotoChip('BOTELLA-BIOPROSS-1-300x300.webp')">+ Dry Xtreme</span>
+            <span class="quick-chip" onclick="agregarFotoChip('proteinas.webp')">+ Proteínas</span>
+            <span class="quick-chip" onclick="agregarFotoChip('ganador de peso.png')">+ Mass Gainer</span>
+            <span class="quick-chip" onclick="agregarFotoChip('aminoacidos4.png')">+ BCAA / Amino</span>
+            <span class="quick-chip" onclick="agregarFotoChip('CURCUMIX-268x300.png')">+ Curcumix</span>
+            <span class="quick-chip" onclick="agregarFotoChip('nosotros_mision.jpg')">+ Certificación</span>
+            <span class="quick-chip" onclick="agregarFotoChip('carril.png')">+ Pack Suplementos</span>
+          </div>
+        </div>
+
+        <!-- LISTA VISUAL DE FOTOS ACTUALES -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <strong style="color: #0f172a; font-size: 0.9rem;">
+              <i class="bi bi-grid-3x3-gap-fill text-danger me-1"></i> Fotos en la Ficha (<span id="galeria-contador-fotos">0</span>)
+            </strong>
+            <small style="color: #64748b; font-size: 0.78rem;">La 1ª foto es la portada principal del producto</small>
+          </div>
+
+          <div id="galeria-grid-preview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.75rem; max-height: 280px; overflow-y: auto; padding: 4px;">
+            <!-- Rendered by renderModalGaleriaGrid() -->
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <a id="btn-ver-en-ficha" href="producto-detalle.html" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.8rem;">
+          <i class="bi bi-box-arrow-up-right me-1 text-warning"></i> Ver Ficha en Tienda
+        </a>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalGaleria()">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarGaleriaProducto()" style="background: #e60000; border-color: #e60000; font-weight: 700;">
+            <i class="bi bi-check2-circle me-1"></i> Guardar Galería
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function switchDashboardTab(tabId) {
+      document.querySelectorAll('.dash-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content-panel').forEach(panel => panel.classList.remove('active'));
+
+      if (tabId === 'pedidos-web') {
+        document.getElementById('tabBtnPedidos').classList.add('active');
+        document.getElementById('panel-pedidos-web').classList.add('active');
+      } else if (tabId === 'ventas-pos') {
+        document.getElementById('tabBtnVentas').classList.add('active');
+        document.getElementById('panel-ventas-pos').classList.add('active');
+      } else if (tabId === 'stock-alerts') {
+        document.getElementById('tabBtnStock').classList.add('active');
+        document.getElementById('panel-stock-alerts').classList.add('active');
+      } else if (tabId === 'carrusel-hero') {
+        document.getElementById('tabBtnCarrusel').classList.add('active');
+        document.getElementById('panel-carrusel-hero').classList.add('active');
+        renderCarruselAdmin();
+      } else if (tabId === 'gestion-marcas') {
+        document.getElementById('tabBtnMarcas').classList.add('active');
+        document.getElementById('panel-gestion-marcas').classList.add('active');
+        renderMarcasAdmin();
+      } else if (tabId === 'productos-destacados') {
+        document.getElementById('tabBtnDestacados').classList.add('active');
+        document.getElementById('panel-productos-destacados').classList.add('active');
+        renderDestacadosAdmin();
+      } else if (tabId === 'lineas-home') {
+        document.getElementById('tabBtnLineas').classList.add('active');
+        document.getElementById('panel-lineas-home').classList.add('active');
+        renderLineasAdmin();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (typeof Auth !== 'undefined' && Auth.requireAuth) {
+        Auth.requireAuth();
+      }
+
+      // Update sidebar username if logged in
+      if (typeof Auth !== 'undefined') {
+        const u = Auth.getUser();
+        const sideUser = document.getElementById('side-user-name');
+        if (sideUser && u && u.nombre) {
+          sideUser.textContent = u.nombre;
+        }
+      }
+
+      // Check URL hash to activate specific tab
+      if (window.location.hash === '#pedidos-online' || window.location.hash === '#pedidos') {
+        switchDashboardTab('pedidos-web');
+      } else if (window.location.hash === '#carrusel' || window.location.hash === '#banners') {
+        switchDashboardTab('carrusel-hero');
+      } else if (window.location.hash === '#marcas') {
+        switchDashboardTab('gestion-marcas');
+      } else if (window.location.hash === '#destacados') {
+        switchDashboardTab('productos-destacados');
+      } else if (window.location.hash === '#lineas') {
+        switchDashboardTab('lineas-home');
+      }
+
+      await cargarDashboardLive();
+
+      // Listen for database updates across tabs or same window
+      window.addEventListener('nutricenter:db_updated', () => {
+        cargarDashboardLive();
+      });
+    });
+
+    async function cargarDashboardLive() {
+      try {
+        let stats = null;
+        if (typeof NutriDB !== 'undefined') {
+          stats = await NutriDB.getDashboardStats();
+        } else {
+          const res = await fetch('../backend/routes/api.php?action=dashboard_stats');
+          const json = await res.json();
+          stats = json.data;
+        }
+
+        if (stats) {
+          // 1. Total Ventas (Mes)
+          const kpiVentas = document.getElementById('kpi-ventas');
+          kpiVentas.textContent = `S/ ${parseFloat(stats.total_ingresos || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          
+          const desgloseEl = document.getElementById('kpi-ventas-desglose');
+          if (desgloseEl) {
+            desgloseEl.textContent = `POS: S/ ${parseFloat(stats.ventas_pos || 0).toFixed(2)} | Web: S/ ${parseFloat(stats.ventas_web || 0).toFixed(2)}`;
+          }
+
+          // 2. Pedidos Tienda Web
+          const kpiPedidos = document.getElementById('kpi-pedidos-web');
+          kpiPedidos.textContent = `${stats.pedidos_web_total || 0} Pedidos`;
+          
+          const badgePend = document.getElementById('badge-pedidos-pendientes');
+          const sideCount = document.getElementById('side-pedidos-count');
+          const tabBadge = document.getElementById('tabBadgePedidos');
+          const pendCount = stats.pedidos_pendientes_count || 0;
+
+          if (badgePend) {
+            badgePend.innerHTML = `<i class="bi bi-clock-history me-1"></i> ${pendCount} Pendientes`;
+          }
+          if (sideCount) sideCount.textContent = pendCount;
+          if (tabBadge) tabBadge.textContent = pendCount;
+
+          // 3. Stock Crítico
+          const kpiStock = document.getElementById('kpi-stock-bajo');
+          kpiStock.textContent = `${stats.bajo_stock_count || 0} Productos`;
+          const tabBadgeStock = document.getElementById('tabBadgeStock');
+          if (tabBadgeStock) tabBadgeStock.textContent = stats.bajo_stock_count || 0;
+
+          // 4. Catálogo Activo
+          const kpiProd = document.getElementById('kpi-productos');
+          kpiProd.textContent = `${stats.total_productos || 0} Productos`;
+          const badgeValor = document.getElementById('badge-valor-inv');
+          if (badgeValor) {
+            badgeValor.innerHTML = `<i class="bi bi-layers me-1"></i> Inv: S/ ${parseFloat(stats.valor_inventario || 0).toLocaleString('es-PE', { minimumFractionDigits: 2 })}`;
+          }
+
+          // 5. Caja & Clientes
+          const kpiCaja = document.getElementById('kpi-caja');
+          if (stats.caja_abierta) {
+            kpiCaja.textContent = `Abierta (#${stats.caja_info?.id || 1})`;
+            kpiCaja.style.color = '#10b981';
+          } else {
+            kpiCaja.textContent = 'Cerrada';
+            kpiCaja.style.color = '#ef4444';
+          }
+
+          const kpiCli = document.getElementById('kpi-clientes');
+          if (kpiCli) {
+            kpiCli.innerHTML = `<i class="bi bi-person-check me-1"></i> ${stats.total_clientes || 0} Clientes CRM`;
+          }
+
+          const tabBadgeVentas = document.getElementById('tabBadgeVentas');
+          if (tabBadgeVentas) tabBadgeVentas.textContent = stats.total_ventas_count || 0;
+
+          // Renderizar Tablas y Paneles
+          renderTablaPedidosWeb(stats.pedidos_online || []);
+          renderTablaUltimasVentas(stats.ultimas_ventas || []);
+          renderTablaStockBajo(stats.productos_bajo_stock || []);
+          renderCarruselAdmin();
+          renderMarcasAdmin();
+          renderDestacadosAdmin();
+          renderLineasAdmin();
+        }
+      } catch (e) {
+        console.warn('Dashboard live stats error:', e);
+      }
+    }
+
+    function renderTablaPedidosWeb(pedidos) {
+      const tbody = document.getElementById('web-orders-body');
+      tbody.innerHTML = '';
+
+      if (!pedidos || pedidos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 2rem;">No hay pedidos web registrados</td></tr>`;
+        return;
+      }
+
+      pedidos.forEach(p => {
+        const tr = document.createElement('tr');
+        const estadoEnvio = (p.estado_pedido || 'pendiente').toLowerCase();
+        const estadoPago = (p.estado_pago || 'pendiente').toLowerCase();
+        
+        let envioBadgeClass = 'pendiente';
+        let envioText = 'Pendiente';
+        if (estadoEnvio === 'en_preparacion') { envioBadgeClass = 'en_preparacion'; envioText = 'En Preparación'; }
+        else if (estadoEnvio === 'en_camino') { envioBadgeClass = 'en_camino'; envioText = 'En Camino'; }
+        else if (estadoEnvio === 'entregado') { envioBadgeClass = 'entregado'; envioText = 'Entregado'; }
+        else if (estadoEnvio === 'cancelado') { envioBadgeClass = 'cancelado'; envioText = 'Cancelado'; }
+
+        let pagoBadge = `<span class="badge" style="background: #fef3c7; color: #b45309; font-size: 0.7rem;"><i class="bi bi-clock me-1"></i> Por Verificar</span>`;
+        if (estadoPago === 'verificado') {
+          pagoBadge = `<span class="badge" style="background: #dcfce7; color: #15803d; font-size: 0.7rem;"><i class="bi bi-check2-circle me-1"></i> Verificado</span>`;
+        }
+
+        const phoneClean = (p.telefono_receptor || '').replace(/[^0-9]/g, '');
+        const whatsappBtn = phoneClean.length >= 9 
+          ? `<a href="https://wa.me/51${phoneClean}?text=Hola%20${encodeURIComponent(p.nombres_receptor || 'Cliente')}%2C%20te%20escribimos%20de%20Nutricenter%20sobre%20tu%20pedido%20${encodeURIComponent(p.codigo_pedido)}" target="_blank" class="btn btn-sm" style="background: #25d366; color: white; padding: 3px 8px; font-size: 0.75rem; border-radius: 6px; text-decoration: none;" title="Escribir por WhatsApp"><i class="bi bi-whatsapp"></i></a>`
+          : '';
+
+        tr.innerHTML = `
+          <td><strong style="color: #2563eb; font-family: monospace;">${escapeHTML(p.codigo_pedido)}</strong></td>
+          <td>
+            <div style="font-weight: 700; color: #0f172a;">${escapeHTML(p.nombres_receptor)}</div>
+            <div style="font-size: 0.75rem; color: #64748b; display: flex; align-items: center; gap: 0.4rem;">
+              <i class="bi bi-telephone"></i> ${escapeHTML(p.telefono_receptor)} ${whatsappBtn}
+            </div>
+          </td>
+          <td style="font-size: 0.8rem; color: #475569;">
+            <div>${escapeHTML(p.distrito || p.provincia || 'Huancayo')}, ${escapeHTML(p.departamento || 'Junín')}</div>
+            <small style="color: #94a3b8; font-size: 0.72rem;">${escapeHTML(p.direccion_envio || '')}</small>
+          </td>
+          <td>
+            <div style="font-weight: 700; font-size: 0.8rem; color: #0f172a;">${escapeHTML(p.metodo_pago)}</div>
+            ${pagoBadge}
+          </td>
+          <td>
+            <span class="badge-status ${envioBadgeClass}">
+              <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i> ${envioText}
+            </span>
+          </td>
+          <td style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">S/ ${parseFloat(p.total || 0).toFixed(2)}</td>
+          <td>
+            <div style="display: flex; gap: 0.35rem;">
+              ${estadoEnvio !== 'entregado' ? `
+                <button onclick="cambiarEstadoPedido(${p.id}, '${estadoEnvio === 'pendiente' ? 'en_preparacion' : (estadoEnvio === 'en_preparacion' ? 'en_camino' : 'entregado')}')" class="btn btn-sm btn-primary" style="padding: 4px 8px; font-size: 0.75rem;" title="Avanzar estado del pedido">
+                  <i class="bi bi-arrow-right-circle"></i> ${estadoEnvio === 'pendiente' ? 'Preparar' : (estadoEnvio === 'en_preparacion' ? 'Despachar' : 'Entregar')}
+                </button>
+              ` : `
+                <span style="color: #15803d; font-size: 0.8rem; font-weight: 700;"><i class="bi bi-check-all"></i> Listo</span>
+              `}
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function cambiarEstadoPedido(pedidoId, nuevoEstado) {
+      if (typeof NutriDB !== 'undefined' && NutriDB.updateEstadoPedidoOnline) {
+        await NutriDB.updateEstadoPedidoOnline(pedidoId, nuevoEstado, nuevoEstado === 'en_camino' || nuevoEstado === 'entregado' ? 'verificado' : null);
+        await cargarDashboardLive();
+      }
+    }
+
+    function renderTablaUltimasVentas(ventas) {
+      const tbody = document.getElementById('recent-sales-body');
+      tbody.innerHTML = '';
+
+      if (!ventas || ventas.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">No hay ventas registradas aún</td></tr>`;
+        return;
+      }
+
+      ventas.forEach(v => {
+        const tr = document.createElement('tr');
+        const metodo = (v.metodo_pago || 'Efectivo').toLowerCase();
+        
+        let badgeStyle = 'background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);';
+        let badgeIcon = 'bi-cash-stack';
+
+        if (metodo.includes('tarjeta')) {
+          badgeStyle = 'background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);';
+          badgeIcon = 'bi-credit-card-2-front-fill';
+        } else if (metodo.includes('yape') || metodo.includes('plin')) {
+          badgeStyle = 'background: rgba(147, 51, 234, 0.15); color: #c084fc; border: 1px solid rgba(147, 51, 234, 0.3);';
+          badgeIcon = 'bi-qr-code';
+        } else if (metodo.includes('transferencia')) {
+          badgeStyle = 'background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3);';
+          badgeIcon = 'bi-bank';
+        }
+
+        const fechaStr = v.fecha ? v.fecha.substring(0, 16) : 'Reciente';
+
+        tr.innerHTML = `
+          <td><strong style="color: #ff0000; font-family: monospace;">${escapeHTML(v.codigo_venta || 'B001-0000')}</strong></td>
+          <td style="font-weight: 600; color: #0f172a;">${escapeHTML(v.cliente_nombre || v.cliente || 'Público General')}</td>
+          <td style="color: #64748b; font-family: monospace;">${escapeHTML(v.cliente_documento || '00000000')}</td>
+          <td>
+            <span class="badge" style="${badgeStyle}">
+              <i class="bi ${badgeIcon} me-1"></i> ${escapeHTML(v.metodo_pago || 'Efectivo')}
+            </span>
+          </td>
+          <td style="font-weight: 800; color: #10b981; font-size: 0.95rem;">S/ ${parseFloat(v.total || 0).toFixed(2)}</td>
+          <td style="color: #64748b; font-size: 0.8rem;">${escapeHTML(fechaStr)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTablaStockBajo(productos) {
+      const tbody = document.getElementById('stock-alerts-body');
+      tbody.innerHTML = '';
+
+      if (!productos || productos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #15803d; padding: 2rem;"><i class="bi bi-shield-check me-2"></i> Todos los productos cuentan con stock suficiente por encima del mínimo.</td></tr>`;
+        return;
+      }
+
+      productos.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div style="font-weight: 700; color: #0f172a;">${escapeHTML(p.nombre)}</div>
+            <small style="color: #64748b;">${escapeHTML(p.marca)}</small>
+          </td>
+          <td><code style="color: #e60000;">${escapeHTML(p.sku)}</code></td>
+          <td>
+            <span class="badge" style="background: #fee2e2; color: #b91c1c; font-size: 0.85rem; font-weight: 800; padding: 4px 10px;">
+              ${p.stock} unidades
+            </span>
+          </td>
+          <td style="font-weight: 600; color: #475569;">${p.stock_minimo} und.</td>
+          <td style="font-weight: 800; color: #b45309;">+${p.faltante} und. sugeridas</td>
+          <td>
+            <a href="gestion-productos.html" class="btn btn-sm btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">
+              <i class="bi bi-plus-circle me-1"></i> Reabastecer
+            </a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ==========================================
+    // GESTIÓN DE CARRUSEL / BANNERS WEB
+    // ==========================================
+    function renderCarruselAdmin() {
+      const container = document.getElementById('slides-grid-container');
+      if (!container || typeof NutriDB === 'undefined' || !NutriDB.getHeroSlides) return;
+
+      const slides = NutriDB.getHeroSlides();
+      const badgeCarrusel = document.getElementById('tabBadgeCarrusel');
+      const sideCarrusel = document.getElementById('side-carrusel-count');
+      if (badgeCarrusel) badgeCarrusel.textContent = slides.length;
+      if (sideCarrusel) sideCarrusel.textContent = slides.length;
+
+      if (!slides || slides.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
+            <i class="bi bi-images text-danger" style="font-size: 2.5rem;"></i>
+            <p style="margin-top: 0.5rem; font-weight: 700; color: #0f172a;">No hay slides registrados en el carrusel de portada.</p>
+            <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalSlide()">
+              <i class="bi bi-plus-lg me-1"></i> Crear Primer Slide
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+      slides.forEach((s, idx) => {
+        const card = document.createElement('div');
+        card.className = 'slide-admin-card';
+
+        const bgPath = s.bg_image.startsWith('http') || s.bg_image.startsWith('/') ? s.bg_image : `../${s.bg_image}`;
+        const frontPath = s.frontal_image.startsWith('http') || s.frontal_image.startsWith('/') ? s.frontal_image : `../${s.frontal_image}`;
+
+        card.innerHTML = `
+          <!-- BANNER PREVIEW -->
+          <div class="slide-preview-banner" style="background-image: url('${bgPath}');">
+            <div class="slide-preview-content">
+              <span class="badge" style="background: rgba(0,0,0,0.65); color: #fff; border: 1px solid rgba(255,255,255,0.3); font-size: 0.7rem; margin-bottom: 6px; display: inline-block;">
+                <i class="bi bi-layers-fill me-1 text-danger"></i> Banner Slide #${idx + 1}
+              </span>
+              <div style="font-size: 1.25rem; font-weight: 900; line-height: 1.15; color: #ffffff;">
+                ${escapeHTML(s.titulo_linea1)}<br>
+                <span style="color: #ff3344; text-decoration: underline;">${escapeHTML(s.titulo_linea2)}</span><br>
+                <span>${escapeHTML(s.titulo_linea3)}</span>
+              </div>
+              <div style="font-size: 0.74rem; color: #e2e8f0; margin-top: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.35;">
+                ${escapeHTML(s.subtitulo)}
+              </div>
+              <div style="display: flex; gap: 6px; margin-top: 8px;">
+                <span style="background: #e60000; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;">
+                  <i class="bi bi-cursor-fill me-1"></i> ${escapeHTML(s.btn1_texto)}
+                </span>
+                <span style="border: 1px solid rgba(255,255,255,0.7); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;">
+                  <i class="bi bi-chat-dots me-1"></i> ${escapeHTML(s.btn2_texto)}
+                </span>
+              </div>
+            </div>
+            <img src="${frontPath}" class="slide-preview-image" alt="Atleta Slide" onerror="this.src='../assets/images/carril.png'">
+          </div>
+
+          <!-- CARD FOOTER / DETAILS & ACTIONS -->
+          <div style="padding: 0.85rem 1.25rem; background: #ffffff; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; border-top: 1px solid #f1f5f9;">
+            <div style="display: flex; gap: 1rem; font-size: 0.74rem; color: #64748b; flex-wrap: wrap;">
+              <span><i class="bi bi-image text-danger me-1"></i> Fondo: <code style="color: #0f172a;">${escapeHTML(s.bg_image)}</code></span>
+              <span><i class="bi bi-person-bounding-box text-danger me-1"></i> Frontal: <code style="color: #0f172a;">${escapeHTML(s.frontal_image)}</code></span>
+              <span><i class="bi bi-link-45deg me-1"></i> Botón 1 Link: <code style="color: #2563eb;">${escapeHTML(s.btn1_url)}</code></span>
+            </div>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" onclick="abrirModalSlide(${s.id})" class="btn btn-sm btn-primary" style="padding: 4px 10px; font-size: 0.78rem;">
+                <i class="bi bi-pencil-square me-1"></i> Editar Textos & Fotos
+              </button>
+              <button type="button" onclick="eliminarSlide(${s.id})" class="btn btn-sm btn-outline" style="padding: 4px 10px; font-size: 0.78rem; border-color: #fecaca; color: #dc2626;" title="Eliminar este slide">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function abrirModalSlide(slideId = null) {
+      const modal = document.getElementById('modalSlideBackdrop');
+      const title = document.getElementById('modalSlideTitle');
+      const idInput = document.getElementById('slide-id');
+      const t1 = document.getElementById('slide-titulo1');
+      const t2 = document.getElementById('slide-titulo2');
+      const t3 = document.getElementById('slide-titulo3');
+      const sub = document.getElementById('slide-subtitulo');
+      const btn1Txt = document.getElementById('slide-btn1-txt');
+      const btn1Url = document.getElementById('slide-btn1-url');
+      const btn2Txt = document.getElementById('slide-btn2-txt');
+      const btn2Url = document.getElementById('slide-btn2-url');
+      const bgImg = document.getElementById('slide-bg-img');
+      const frontImg = document.getElementById('slide-front-img');
+
+      if (slideId) {
+        title.innerHTML = '<i class="bi bi-pencil-square text-danger me-2"></i> Editar Slide del Carrusel';
+        const slides = NutriDB.getHeroSlides();
+        const s = slides.find(item => item.id === parseInt(slideId));
+        if (s) {
+          idInput.value = s.id;
+          t1.value = s.titulo_linea1 || '';
+          t2.value = s.titulo_linea2 || '';
+          t3.value = s.titulo_linea3 || '';
+          sub.value = s.subtitulo || '';
+          btn1Txt.value = s.btn1_texto || '';
+          btn1Url.value = s.btn1_url || 'pages/productos.html';
+          btn2Txt.value = s.btn2_texto || '';
+          btn2Url.value = s.btn2_url || 'https://wa.me/51936396907';
+          bgImg.value = s.bg_image || 'assets/images/fondos_hd.png';
+          frontImg.value = s.frontal_image || 'assets/images/carril.png';
+        }
+      } else {
+        title.innerHTML = '<i class="bi bi-plus-circle text-danger me-2"></i> Crear Nuevo Slide del Carrusel';
+        idInput.value = '';
+        t1.value = 'Nueva Colección';
+        t2.value = 'para tu rutina';
+        t3.value = 'deportiva';
+        sub.value = 'Descubre nuestra línea completa de suplementos premium con stock inmediato y envíos garantizados.';
+        btn1Txt.value = 'Ver productos';
+        btn1Url.value = 'pages/productos.html';
+        btn2Txt.value = 'Asesoría Gratis';
+        btn2Url.value = 'https://wa.me/51936396907';
+        bgImg.value = 'assets/images/fondos_hd.png';
+        frontImg.value = 'assets/images/carril.png';
+      }
+
+      actualizarPreviewEnVivoModal();
+      modal.classList.add('active');
+    }
+
+    function cerrarModalSlide() {
+      const modal = document.getElementById('modalSlideBackdrop');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function setSlideBg(path) {
+      document.getElementById('slide-bg-img').value = path;
+      actualizarPreviewEnVivoModal();
+    }
+
+    function setSlideFront(path) {
+      document.getElementById('slide-front-img').value = path;
+      actualizarPreviewEnVivoModal();
+    }
+
+    function actualizarPreviewEnVivoModal() {
+      const t1 = document.getElementById('slide-titulo1').value || 'Nutrición';
+      const t2 = document.getElementById('slide-titulo2').value || 'que te cambia';
+      const t3 = document.getElementById('slide-titulo3').value || 'la vida';
+      const sub = document.getElementById('slide-subtitulo').value || 'Productos certificados...';
+      const btn1 = document.getElementById('slide-btn1-txt').value || 'Ver productos';
+      const btn2 = document.getElementById('slide-btn2-txt').value || 'Contacto';
+      const bg = document.getElementById('slide-bg-img').value || 'assets/images/fondos_hd.png';
+      const front = document.getElementById('slide-front-img').value || 'assets/images/carril.png';
+
+      document.getElementById('prev-t1').textContent = t1;
+      document.getElementById('prev-t2').textContent = t2;
+      document.getElementById('prev-t3').textContent = t3;
+      document.getElementById('prev-sub').textContent = sub;
+      document.getElementById('prev-btn1').textContent = btn1;
+      document.getElementById('prev-btn2').textContent = btn2;
+
+      const bgUrl = bg.startsWith('http') || bg.startsWith('/') ? bg : `../${bg}`;
+      const frontUrl = front.startsWith('http') || front.startsWith('/') ? front : `../${front}`;
+      document.getElementById('modal-slide-live-preview').style.backgroundImage = `url('${bgUrl}')`;
+      document.getElementById('prev-front').src = frontUrl;
+    }
+
+    function guardarSlide(e) {
+      e.preventDefault();
+      const slideData = {
+        id: document.getElementById('slide-id').value,
+        titulo_linea1: document.getElementById('slide-titulo1').value,
+        titulo_linea2: document.getElementById('slide-titulo2').value,
+        titulo_linea3: document.getElementById('slide-titulo3').value,
+        subtitulo: document.getElementById('slide-subtitulo').value,
+        btn1_texto: document.getElementById('slide-btn1-txt').value,
+        btn1_url: document.getElementById('slide-btn1-url').value,
+        btn2_texto: document.getElementById('slide-btn2-txt').value,
+        btn2_url: document.getElementById('slide-btn2-url').value,
+        bg_image: document.getElementById('slide-bg-img').value,
+        frontal_image: document.getElementById('slide-front-img').value
+      };
+
+      if (typeof NutriDB !== 'undefined' && NutriDB.saveHeroSlide) {
+        NutriDB.saveHeroSlide(slideData);
+        cerrarModalSlide();
+        renderCarruselAdmin();
+      }
+    }
+
+    function eliminarSlide(id) {
+      if (confirm('¿Estás seguro de que deseas eliminar este slide del carrusel de portada?')) {
+        if (typeof NutriDB !== 'undefined' && NutriDB.deleteHeroSlide) {
+          const res = NutriDB.deleteHeroSlide(id);
+          if (res.status === 'error') {
+            alert(res.message);
+          } else {
+            renderCarruselAdmin();
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // GESTIÓN DE MARCAS COMERCIALES
+    // ==========================================
+    function renderMarcasAdmin() {
+      const tbody = document.getElementById('marcas-table-body');
+      if (!tbody || typeof NutriDB === 'undefined' || !NutriDB.getMarcas) return;
+
+      const marcas = NutriDB.getMarcas();
+      const badgeMarcas = document.getElementById('tabBadgeMarcas');
+      const sideMarcas = document.getElementById('side-marcas-count');
+      if (badgeMarcas) badgeMarcas.textContent = marcas.length;
+      if (sideMarcas) sideMarcas.textContent = marcas.length;
+
+      if (!marcas || marcas.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2.5rem;">No hay marcas registradas.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      marcas.forEach(m => {
+        const tr = document.createElement('tr');
+        const logoPath = m.logo.startsWith('http') || m.logo.startsWith('/') ? m.logo : `../${m.logo}`;
+        const isActiva = m.estado !== 0;
+
+        tr.innerHTML = `
+          <td>
+            <div style="width: 48px; height: 48px; border-radius: 8px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 3px;">
+              <img src="${logoPath}" alt="${escapeHTML(m.nombre)}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.src='../assets/images/marca 1.webp'">
+            </div>
+          </td>
+          <td>
+            <strong style="color: #0f172a; font-size: 0.95rem;">${escapeHTML(m.nombre)}</strong>
+          </td>
+          <td>
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; color: #475569;">
+              <i class="bi bi-geo-alt text-danger"></i> ${escapeHTML(m.pais || 'Oficial')}
+            </span>
+          </td>
+          <td>
+            <span class="badge" style="${isActiva ? 'background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0;' : 'background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1;'}">
+              <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i> ${isActiva ? 'Activa' : 'Inactiva'}
+            </span>
+          </td>
+          <td>
+            <a href="productos.html?marca=${encodeURIComponent(m.nombre)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 3px 8px;" title="Ver suplementos de esta marca">
+              <i class="bi bi-box-arrow-up-right me-1 text-warning"></i> Catálogo
+            </a>
+          </td>
+          <td style="text-align: right;">
+            <div style="display: inline-flex; gap: 0.35rem;">
+              <button type="button" onclick="abrirModalMarca(${m.id})" class="btn btn-sm btn-primary" style="padding: 4px 8px; font-size: 0.75rem;" title="Editar marca">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button type="button" onclick="eliminarMarca(${m.id})" class="btn btn-sm btn-outline" style="padding: 4px 8px; font-size: 0.75rem; border-color: #fecaca; color: #dc2626;" title="Eliminar marca">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function abrirModalMarca(marcaId = null) {
+      const modal = document.getElementById('modalMarcaBackdrop');
+      const title = document.getElementById('modalMarcaTitle');
+      const idInput = document.getElementById('marca-id');
+      const nom = document.getElementById('marca-nombre');
+      const pais = document.getElementById('marca-pais');
+      const estado = document.getElementById('marca-estado');
+      const logo = document.getElementById('marca-logo');
+
+      if (marcaId) {
+        title.innerHTML = '<i class="bi bi-pencil-square text-danger me-2"></i> Editar Marca Comercial';
+        const marcas = NutriDB.getMarcas();
+        const m = marcas.find(item => item.id === parseInt(marcaId));
+        if (m) {
+          idInput.value = m.id;
+          nom.value = m.nombre || '';
+          pais.value = m.pais || 'EE.UU.';
+          estado.value = m.estado !== undefined ? m.estado : 1;
+          logo.value = m.logo || 'assets/images/marca 1.webp';
+        }
+      } else {
+        title.innerHTML = '<i class="bi bi-plus-circle text-danger me-2"></i> Crear Nueva Marca';
+        idInput.value = '';
+        nom.value = '';
+        pais.value = 'EE.UU.';
+        estado.value = '1';
+        logo.value = 'assets/images/marca 1.webp';
+      }
+
+      actualizarLogoPreviewMarca();
+      modal.classList.add('active');
+    }
+
+    function cerrarModalMarca() {
+      const modal = document.getElementById('modalMarcaBackdrop');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function setMarcaLogo(path) {
+      document.getElementById('marca-logo').value = path;
+      actualizarLogoPreviewMarca();
+    }
+
+    function actualizarLogoPreviewMarca() {
+      const nom = document.getElementById('marca-nombre').value || 'NOMBRE MARCA';
+      const pais = document.getElementById('marca-pais').value || 'EE.UU.';
+      const logo = document.getElementById('marca-logo').value || 'assets/images/marca 1.webp';
+
+      document.getElementById('marca-preview-name').textContent = nom.toUpperCase();
+      document.getElementById('marca-preview-country').innerHTML = `<i class="bi bi-geo-alt"></i> ${pais}`;
+      const fullLogo = logo.startsWith('http') || logo.startsWith('/') ? logo : `../${logo}`;
+      document.getElementById('marca-preview-img').src = fullLogo;
+    }
+
+    function guardarMarca(e) {
+      e.preventDefault();
+      const marcaData = {
+        id: document.getElementById('marca-id').value,
+        nombre: document.getElementById('marca-nombre').value,
+        pais: document.getElementById('marca-pais').value,
+        estado: document.getElementById('marca-estado').value,
+        logo: document.getElementById('marca-logo').value
+      };
+
+      if (typeof NutriDB !== 'undefined' && NutriDB.saveMarca) {
+        NutriDB.saveMarca(marcaData);
+        cerrarModalMarca();
+        renderMarcasAdmin();
+      }
+    }
+
+    function eliminarMarca(id) {
+      if (confirm('¿Estás seguro de que deseas eliminar esta marca comercial?')) {
+        if (typeof NutriDB !== 'undefined' && NutriDB.deleteMarca) {
+          NutriDB.deleteMarca(id);
+          renderMarcasAdmin();
+        }
+      }
+    }
+
+    // ==========================================
+    // GESTIÓN DE PRODUCTOS DESTACADOS (HOME)
+    // ==========================================
+    function renderDestacadosAdmin() {
+      const tbody = document.getElementById('destacados-table-body');
+      if (!tbody || typeof NutriDB === 'undefined' || !NutriDB.getProductos) return;
+
+      const prods = NutriDB.getDB().productos || [];
+      const badgeDestacados = document.getElementById('tabBadgeDestacados');
+      const sideDestacados = document.getElementById('side-destacados-count');
+      const activeCountEl = document.getElementById('destacados-active-count');
+
+      const destacadosCount = prods.filter(p => p.destacado === 1 || p.destacado === true).length;
+      if (badgeDestacados) badgeDestacados.textContent = destacadosCount;
+      if (sideDestacados) sideDestacados.textContent = destacadosCount;
+      if (activeCountEl) activeCountEl.textContent = destacadosCount;
+
+      if (!prods.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2.5rem;">No hay productos en inventario.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      prods.forEach(p => {
+        const tr = document.createElement('tr');
+        const isDestacado = Boolean(p.destacado === 1 || p.destacado === true);
+        const imgPath = p.imagen.startsWith('http') || p.imagen.startsWith('/') ? p.imagen : (p.imagen.includes('assets/') ? `../${p.imagen}` : `../assets/images/${p.imagen}`);
+        const precio = parseFloat(p.precio || 0).toFixed(2);
+        const st = parseInt(p.stock || 0);
+
+        tr.innerHTML = `
+          <td>
+            <div style="width: 48px; height: 48px; border-radius: 8px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 3px;">
+              <img src="${imgPath}" alt="${escapeHTML(p.nombre)}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.src='../assets/images/creatina.png'">
+            </div>
+          </td>
+          <td>
+            <div style="font-weight: 700; color: #0f172a; font-size: 0.92rem;">${escapeHTML(p.nombre)}</div>
+            <small style="color: #64748b;">${escapeHTML(p.marca || 'Nutricenter')} | SKU: <code>${escapeHTML(p.sku || '')}</code></small>
+          </td>
+          <td>
+            <span class="badge" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; font-size: 0.75rem;">
+              ${escapeHTML(p.categoria || 'Suplementos')}
+            </span>
+          </td>
+          <td style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">
+            S/ ${precio}
+          </td>
+          <td>
+            <span class="badge" style="${st <= 5 ? 'background: #fee2e2; color: #b91c1c;' : 'background: #dcfce7; color: #15803d;'}">
+              ${st} und.
+            </span>
+          </td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button type="button" onclick="abrirModalGaleriaProducto(${p.id})" class="btn btn-sm" style="background: #0f172a; color: #ffffff; border: 1px solid #334155; padding: 5px 11px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; margin-right: 6px; cursor: pointer;" title="Editar y agregar fotos a la galería de este producto">
+              <i class="bi bi-images text-danger me-1"></i> Fotos (${(p.galeria && p.galeria.length) ? p.galeria.length : 1})
+            </button>
+            <button type="button" onclick="toggleDestacadoAdmin(${p.id}, ${isDestacado})" class="btn btn-sm ${isDestacado ? 'btn-primary' : 'btn-secondary'}" style="padding: 5px 12px; font-size: 0.78rem; font-weight: 700; ${isDestacado ? 'background: #e60000; border-color: #e60000; color: #fff;' : 'background: #f8fafc; color: #64748b;'}">
+              <i class="bi ${isDestacado ? 'bi-star-fill text-warning' : 'bi-star'} me-1"></i>
+              ${isDestacado ? 'En Home ⭐' : 'Activar en Home'}
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleDestacadoAdmin(productId, isCurrentDestacado) {
+      if (typeof NutriDB !== 'undefined' && NutriDB.toggleProductoDestacado) {
+        NutriDB.toggleProductoDestacado(productId, !isCurrentDestacado);
+        renderDestacadosAdmin();
+      }
+    }
+
+    // ==========================================
+    // GESTIÓN DE 10 LÍNEAS DE SUPLEMENTOS (HOME)
+    // ==========================================
+    function renderLineasAdmin() {
+      const container = document.getElementById('lineas-grid-container');
+      if (!container || typeof NutriDB === 'undefined' || !NutriDB.getLineasSuplementos) return;
+
+      const lineas = NutriDB.getLineasSuplementos();
+      const badgeLineas = document.getElementById('tabBadgeLineas');
+      const sideLineas = document.getElementById('side-lineas-count');
+      if (badgeLineas) badgeLineas.textContent = lineas.length;
+      if (sideLineas) sideLineas.textContent = lineas.length;
+
+      if (!lineas.length) {
+        container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; grid-column: 1 / -1;">No hay líneas registradas.</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      lineas.forEach(l => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.15rem; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s;';
+        card.onmouseover = () => { card.style.transform = 'translateY(-2px)'; card.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)'; };
+        card.onmouseout = () => { card.style.transform = 'translateY(0)'; card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)'; };
+
+        const imgPath = l.imagen.startsWith('http') || l.imagen.startsWith('/') ? l.imagen : (l.imagen.includes('assets/') ? `../${l.imagen}` : `../assets/images/${l.imagen}`);
+
+        card.innerHTML = `
+          <div style="width: 75px; height: 75px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 6px; margin-bottom: 0.75rem;">
+            <img src="${imgPath}" alt="${escapeHTML(l.nombre)}" style="max-height: 100%; max-width: 100%; object-fit: contain;" onerror="this.src='../assets/images/proteinas.webp'">
+          </div>
+          <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a; margin-bottom: 0.25rem;">${escapeHTML(l.nombre)}</div>
+          <small style="color: #64748b; font-size: 0.75rem; margin-bottom: 0.75rem;">Slug: <code>${escapeHTML(l.slug)}</code> | Orden: #${l.orden || 1}</small>
+          <div style="display: flex; gap: 0.35rem; width: 100%; justify-content: center; margin-top: auto;">
+            <button type="button" onclick="abrirModalLinea(${l.id})" class="btn btn-sm btn-primary" style="padding: 4px 10px; font-size: 0.78rem; width: 100%;">
+              <i class="bi bi-pencil-square me-1"></i> Editar Línea
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function abrirModalLinea(lineaId = null) {
+      const modal = document.getElementById('modalLineaBackdrop');
+      const title = document.getElementById('modalLineaTitle');
+      const idInput = document.getElementById('linea-id');
+      const nom = document.getElementById('linea-nombre');
+      const slug = document.getElementById('linea-slug');
+      const orden = document.getElementById('linea-orden');
+      const img = document.getElementById('linea-imagen');
+
+      if (lineaId) {
+        title.innerHTML = '<i class="bi bi-pencil-square text-danger me-2"></i> Editar Línea de Suplementos';
+        const lineas = NutriDB.getLineasSuplementos();
+        const l = lineas.find(item => item.id === parseInt(lineaId));
+        if (l) {
+          idInput.value = l.id;
+          nom.value = l.nombre || '';
+          slug.value = l.slug || '';
+          orden.value = l.orden || 1;
+          img.value = l.imagen || 'assets/images/proteinas.webp';
+        }
+      } else {
+        title.innerHTML = '<i class="bi bi-plus-circle text-danger me-2"></i> Crear Nueva Línea';
+        idInput.value = '';
+        nom.value = '';
+        slug.value = '';
+        orden.value = '11';
+        img.value = 'assets/images/proteinas.webp';
+      }
+
+      actualizarPreviewLinea();
+      modal.classList.add('active');
+    }
+
+    function cerrarModalLinea() {
+      const modal = document.getElementById('modalLineaBackdrop');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function setLineaImg(path) {
+      document.getElementById('linea-imagen').value = path;
+      actualizarPreviewLinea();
+    }
+
+    function actualizarPreviewLinea() {
+      const nom = document.getElementById('linea-nombre').value || 'Nombre Línea';
+      const img = document.getElementById('linea-imagen').value || 'assets/images/proteinas.webp';
+
+      document.getElementById('linea-preview-name').textContent = nom;
+      const fullImg = img.startsWith('http') || img.startsWith('/') ? img : `../${img}`;
+      document.getElementById('linea-preview-img').src = fullImg;
+    }
+
+    function guardarLinea(e) {
+      e.preventDefault();
+      const lineaData = {
+        id: document.getElementById('linea-id').value,
+        nombre: document.getElementById('linea-nombre').value,
+        slug: document.getElementById('linea-slug').value,
+        orden: document.getElementById('linea-orden').value,
+        imagen: document.getElementById('linea-imagen').value
+      };
+
+      if (typeof NutriDB !== 'undefined' && NutriDB.saveLineaSuplemento) {
+        NutriDB.saveLineaSuplemento(lineaData);
+        cerrarModalLinea();
+        renderLineasAdmin();
+      }
+    }
+
+    // ==========================================
+    // GESTIÓN DE GALERÍA DE FOTOS MULTI-IMAGEN
+    // ==========================================
+    let currentGaleriaProdId = null;
+    let currentGaleriaList = [];
+
+    function resolveImgPathAdmin(path) {
+      if (!path) return '../assets/images/creatina.png';
+      if (path.startsWith('data:') || path.startsWith('http://') || path.startsWith('https://') || path.startsWith('blob:')) {
+        return path;
+      }
+      if (path.startsWith('../')) return path;
+      if (path.startsWith('assets/')) return `../${path}`;
+      return `../assets/images/${path}`;
+    }
+
+    function abrirModalGaleriaProducto(prodId) {
+      currentGaleriaProdId = parseInt(prodId);
+      const prods = NutriDB.getDB().productos || [];
+      const p = prods.find(item => item.id === currentGaleriaProdId);
+      if (!p) {
+        alert('Producto no encontrado');
+        return;
+      }
+
+      document.getElementById('modalGaleriaTitle').innerHTML = `<i class="bi bi-images text-danger me-2"></i> Galería: ${escapeHTML(p.nombre)}`;
+      document.getElementById('modalGaleriaSubtitle').textContent = `Marca: ${p.marca || 'Nutricenter'} | SKU: ${p.sku || ''}`;
+      document.getElementById('galeria-producto-id').value = p.id;
+      document.getElementById('btn-ver-en-ficha').href = `producto-detalle.html?id=${p.id}`;
+
+      if (Array.isArray(p.galeria) && p.galeria.length) {
+        currentGaleriaList = [...p.galeria];
+      } else if (typeof p.galeria === 'string' && p.galeria.trim()) {
+        currentGaleriaList = p.galeria.split(',').map(s => s.trim()).filter(Boolean);
+      } else {
+        currentGaleriaList = [p.imagen || 'creatina.png'];
+      }
+
+      renderModalGaleriaGrid();
+      document.getElementById('modalGaleriaBackdrop').classList.add('active');
+    }
+
+    function cerrarModalGaleria() {
+      document.getElementById('modalGaleriaBackdrop').classList.remove('active');
+    }
+
+    function renderModalGaleriaGrid() {
+      const grid = document.getElementById('galeria-grid-preview');
+      const counter = document.getElementById('galeria-contador-fotos');
+      if (!grid) return;
+
+      counter.textContent = currentGaleriaList.length;
+
+      if (!currentGaleriaList.length) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 2rem; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px;">
+            <i class="bi bi-image" style="font-size: 2rem; color: #cbd5e1;"></i>
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem;">No hay fotos en esta galería. Sube imágenes desde tu dispositivo o selecciona abajo.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = '';
+      currentGaleriaList.forEach((imgFile, idx) => {
+        const isMain = idx === 0;
+        const card = document.createElement('div');
+        card.style.cssText = `
+          background: #ffffff;
+          border: 2px solid ${isMain ? '#e60000' : '#e2e8f0'};
+          border-radius: 8px;
+          padding: 6px;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+          transition: all 0.2s ease;
+        `;
+
+        card.innerHTML = `
+          <div style="position: absolute; top: 4px; left: 4px; z-index: 2;">
+            ${isMain ? '<span style="background: #e60000; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 5px; border-radius: 4px;">PORTADA</span>' : `<span style="background: #64748b; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 2px 5px; border-radius: 4px;">#${idx + 1}</span>`}
+          </div>
+          <button type="button" onclick="eliminarFotoGaleria(${idx})" title="Eliminar foto" style="position: absolute; top: 4px; right: 4px; background: rgba(220, 38, 38, 0.9); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem; z-index: 2;">
+            <i class="bi bi-x"></i>
+          </button>
+          <div style="width: 100%; height: 95px; display: flex; align-items: center; justify-content: center; background: #fafafa; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
+            <img src="${resolveImgPathAdmin(imgFile)}" alt="Foto ${idx + 1}" style="max-height: 100%; max-width: 100%; object-fit: contain;" onerror="this.src='../assets/images/creatina.png'">
+          </div>
+          <div style="display: flex; gap: 4px; width: 100%; justify-content: center;">
+            ${!isMain ? `<button type="button" onclick="hacerPortadaFoto(${idx})" class="btn btn-secondary btn-sm" style="font-size: 0.7rem; padding: 2px 6px; flex: 1;" title="Hacer foto principal">Hacer Portada</button>` : ''}
+            ${idx > 0 ? `<button type="button" onclick="moverFotoGaleria(${idx}, -1)" class="btn btn-secondary btn-sm" style="font-size: 0.7rem; padding: 2px 5px;" title="Mover a la izquierda"><i class="bi bi-arrow-left"></i></button>` : ''}
+            ${idx < currentGaleriaList.length - 1 ? `<button type="button" onclick="moverFotoGaleria(${idx}, 1)" class="btn btn-secondary btn-sm" style="font-size: 0.7rem; padding: 2px 5px;" title="Mover a la derecha"><i class="bi bi-arrow-right"></i></button>` : ''}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function hacerPortadaFoto(idx) {
+      if (idx <= 0 || idx >= currentGaleriaList.length) return;
+      const [item] = currentGaleriaList.splice(idx, 1);
+      currentGaleriaList.unshift(item);
+      renderModalGaleriaGrid();
+    }
+
+    function moverFotoGaleria(idx, dir) {
+      const targetIdx = idx + dir;
+      if (targetIdx < 0 || targetIdx >= currentGaleriaList.length) return;
+      const temp = currentGaleriaList[idx];
+      currentGaleriaList[idx] = currentGaleriaList[targetIdx];
+      currentGaleriaList[targetIdx] = temp;
+      renderModalGaleriaGrid();
+    }
+
+    function eliminarFotoGaleria(idx) {
+      currentGaleriaList.splice(idx, 1);
+      renderModalGaleriaGrid();
+    }
+
+    function agregarFotoChip(imgFile) {
+      if (!currentGaleriaList.includes(imgFile)) {
+        currentGaleriaList.push(imgFile);
+        renderModalGaleriaGrid();
+      }
+    }
+
+    function agregarFotoManualGaleria() {
+      const input = document.getElementById('galeria-nueva-url');
+      const val = input.value.trim();
+      if (!val) return;
+      currentGaleriaList.push(val);
+      input.value = '';
+      renderModalGaleriaGrid();
+    }
+
+    function procesarSubidaArchivosGaleria(e) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (loadEvent) => {
+          const base64 = loadEvent.target.result;
+          currentGaleriaList.push(base64);
+          renderModalGaleriaGrid();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      e.target.value = '';
+    }
+
+    function guardarGaleriaProducto() {
+      if (!currentGaleriaProdId) return;
+      if (!currentGaleriaList.length) {
+        alert('Debe haber al menos 1 imagen en la galería del producto');
+        return;
+      }
+
+      const updates = {
+        galeria: currentGaleriaList,
+        imagen: currentGaleriaList[0]
+      };
+
+      if (typeof NutriDB !== 'undefined' && NutriDB.updateProducto) {
+        NutriDB.updateProducto(currentGaleriaProdId, updates);
+        cerrarModalGaleria();
+        renderDestacadosAdmin();
+        alert('¡Galería de fotos actualizada con éxito! Ya puedes ver los cambios en la tienda.');
+      }
+    }
+  </script>
+</body>
+</html>

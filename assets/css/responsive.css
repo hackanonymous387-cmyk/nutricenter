@@ -1,0 +1,115 @@
+/* ==========================================================================
+   NUTRICENTER - Responsive Styles & Breakpoints
+   ========================================================================== */
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tablet & Mobile Devices (< 1024px) */
+@media (max-width: 1024px) {
+  .app-sidebar {
+    width: 220px;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .deco-left, .deco-right {
+    max-width: 95px;
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 640px) {
+  .deco-left, .deco-right {
+    display: none;
+  }
+}
+
+/* Mobile Devices (< 768px) */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .app-sidebar .sidebar-menu {
+    display: flex;
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+
+  .app-header {
+    padding: 0 1rem;
+  }
+
+  .app-content {
+    padding: 1rem;
+  }
+
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .table-responsive {
+    border: 0;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .modal-dialog {
+    width: 95% !important;
+    margin: 1rem auto;
+  }
+
+  .subnav-container .btn-pill-red {
+    position: static;
+  }
+  .nav-links {
+    gap: 0.75rem;
+  }
+
+  .social-float-container {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    gap: 0.5rem;
+  }
+  .social-float {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+  .social-float-label {
+    display: none;
+  }
+}
+
+/* Small Mobile Devices (< 480px) */
+@media (max-width: 480px) {
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  
+  .btn {
+    width: 100%;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+}

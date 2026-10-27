@@ -1,0 +1,92 @@
+<!-- NUTRICENTER Official Admin Sidebar Component -->
+<aside class="app-sidebar">
+  <div class="sidebar-logo">
+    <a href="../index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <img src="../assets/images/Recurso-6.png" alt="Nutricenter Logo" style="max-height: 38px; object-fit: contain;">
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-heading">Módulos Administrativos</div>
+    
+    <a href="dashboard.html" class="sidebar-link">
+      <i class="bi bi-speedometer2 text-danger"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a href="dashboard.html#pedidos-online" class="sidebar-link" id="sidebar-nav-pedidos">
+      <i class="bi bi-box2-heart-fill text-danger"></i>
+      <span>Pedidos Online (Web)</span>
+      <span class="badge" id="sidebar-badge-pedidos" style="background: #e60000; color: #fff; font-size: 0.68rem; margin-left: auto; border-radius: 999px; padding: 2px 7px;">2</span>
+    </a>
+
+    <a href="dashboard.html#carrusel" class="sidebar-link" id="sidebar-nav-carrusel">
+      <i class="bi bi-images text-danger"></i>
+      <span>Banners / Carrusel</span>
+    </a>
+
+    <a href="dashboard.html#marcas" class="sidebar-link" id="sidebar-nav-marcas">
+      <i class="bi bi-tags-fill text-danger"></i>
+      <span>Marcas Oficiales</span>
+    </a>
+
+    <a href="dashboard.html#destacados" class="sidebar-link" id="sidebar-nav-destacados">
+      <i class="bi bi-star-fill text-warning"></i>
+      <span>Destacados en Home</span>
+    </a>
+
+    <a href="dashboard.html#lineas" class="sidebar-link" id="sidebar-nav-lineas">
+      <i class="bi bi-collection-fill text-danger"></i>
+      <span>10 Líneas Carrusel</span>
+    </a>
+
+    <a href="gestion-productos.html" class="sidebar-link">
+      <i class="bi bi-box-seam-fill text-danger"></i>
+      <span>Gestión Productos</span>
+    </a>
+
+    <a href="ventas.html" class="sidebar-link">
+      <i class="bi bi-cart-check-fill text-danger"></i>
+      <span>Ventas / POS</span>
+    </a>
+
+    <a href="usuarios.html" class="sidebar-link">
+      <i class="bi bi-people-fill text-danger"></i>
+      <span>Usuarios & Clientes CRM</span>
+    </a>
+
+    <a href="reportes.html" class="sidebar-link">
+      <i class="bi bi-graph-up-arrow text-danger"></i>
+      <span>Reportes & Kárdex</span>
+    </a>
+
+    <div class="sidebar-heading" style="margin-top: 1rem;">Tienda Pública</div>
+    
+    <a href="../index.html" class="sidebar-link" target="_blank">
+      <i class="bi bi-shop text-warning"></i>
+      <span>Ver Tienda Online <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+    </a>
+
+    <a href="../pages/productos.html" class="sidebar-link" target="_blank">
+      <i class="bi bi-grid-3x3-gap-fill text-warning"></i>
+      <span>Catálogo Completo <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; padding-bottom: 0.85rem; border-bottom: 1px solid #1c2233;">
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: #1c2233; border: 1.5px solid #ff0000; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.85rem;">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div style="min-width: 0; flex: 1;">
+        <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Administrador</div>
+        <div style="font-size: 0.72rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
+          <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> En línea
+        </div>
+      </div>
+    </div>
+    <button onclick="if(typeof Auth !== 'undefined' && Auth.logout){Auth.logout();}else{window.location.href='login.html';}" class="btn btn-outline btn-sm" style="width: 100%; border-color: rgba(239, 68, 68, 0.4); color: #ef4444; justify-content: center;">
+      <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+    </button>
+  </div>
+</aside>

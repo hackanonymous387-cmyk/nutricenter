@@ -1,0 +1,142 @@
+<!-- Animated Top Marquee Ticker Bar -->
+<div class="top-ticker">
+  <div class="ticker-track">
+    <div class="ticker-content">
+      <span>SUPLEMENTOS DEPORTIVOS</span><span class="dot">•</span>
+      <span>ENVÍOS A TODO EL PERÚ</span><span class="dot">•</span>
+      <span>COMPRA 100% SEGURA</span><span class="dot">•</span>
+      <span>TE ASESORAMOS: +51 936 396 907 </span><span class="dot">•</span>
+      <span>SUPLEMENTOS DEPORTIVOS</span><span class="dot">•</span>
+      <span>ENVÍOS A TODO EL PERÚ</span><span class="dot">•</span>
+      <span>COMPRA 100% SEGURA</span><span class="dot">•</span>
+      <span>TE ASESORAMOS: +51 936 396 907</span><span class="dot">•</span>
+    </div>
+    <div class="ticker-content" aria-hidden="true">
+      <span>SUPLEMENTOS DEPORTIVOS</span><span class="dot">•</span>
+      <span>ENVÍOS A TODO EL PERÚ</span><span class="dot">•</span>
+      <span>COMPRA 100% SEGURA</span><span class="dot">•</span>
+      <span>TE ASESORAMOS: +51 936 396 907</span><span class="dot">•</span>
+      <span>SUPLEMENTOS DEPORTIVOS</span><span class="dot">•</span>
+      <span>ENVÍOS A TODO EL PERÚ</span><span class="dot">•</span>
+      <span>COMPRA 100% SEGURA</span><span class="dot">•</span>
+      <span>TE ASESORAMOS: +51 936 396 907</span><span class="dot">•</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Header -->
+<header class="main-header">
+  <div class="header-container">
+    <!-- Official Logo -->
+    <a href="{{BASE}}index.html" class="brand-logo-link">
+      <img src="{{ASSETS}}assets/images/Recurso-6.png" alt="Nutricenter Logo" class="brand-logo-img">
+    </a>
+
+    <!-- Search Bar & Categories Group -->
+    <div class="header-search-group">
+      <!-- Hamburger Categories Dropdown Button next to Search Bar -->
+      <div class="categories-dropdown-wrapper">
+        <button type="button" class="btn-categories-hamburger" onclick="toggleCategoriesMenu(event)"
+          aria-label="Menú de Categorías">
+          <i class="bi bi-list burger-icon"></i>
+          <span>CATEGORÍAS</span>
+          <i class="bi bi-chevron-down arrow-icon"></i>
+        </button>
+
+        <div class="categories-dropdown-menu" id="categoriesMenu">
+          <a href="{{BASE}}pages/productos.html?cat=Proteinas" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/proteinas.webp" alt="Proteínas" class="cat-thumb-img">
+            <span>Proteínas</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=Creatinas" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/creatina.png" alt="Creatinas" class="cat-thumb-img">
+            <span>Creatinas</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=GanadorDePeso" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/ganador de peso.png" alt="Ganador de peso" class="cat-thumb-img">
+            <span>Ganador de peso</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=ControlDePeso" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/control de peso.webp" alt="Control de Peso" class="cat-thumb-img">
+            <span>Control de Peso</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=Aminoacidos" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/aminoacidos4.png" alt="Aminoácidos" class="cat-thumb-img">
+            <span>Aminoácidos</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=EnergiaYRendimiento" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/energia y redimiento.webp" alt="Energía y Rendimiento"
+              class="cat-thumb-img">
+            <span>Energía y Rendimiento</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=VitaminasYBienestar" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/vitaminas & bienestar.png" alt="Vitaminas & Bienestar"
+              class="cat-thumb-img">
+            <span>Vitaminas & Bienestar</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=SnacksSaludables" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/snack saludables.png" alt="Snacks Saludables" class="cat-thumb-img">
+            <span>Snacks Saludables</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=AccesoriosYMerch" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/accesorios.png" alt="Accesorios y Merch" class="cat-thumb-img">
+            <span>Accesorios y Merch</span>
+          </a>
+          <a href="{{BASE}}pages/productos.html?cat=BebidasProteicas" class="cat-menu-item">
+            <img src="{{ASSETS}}assets/images/bedidas proteicas.webp" alt="Bebidas Proteicas" class="cat-thumb-img">
+            <span>Bebidas Proteicas</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <form class="header-search-form" action="{{BASE}}pages/productos.html" method="get">
+        <input type="text" name="s" placeholder="¿Qué estas buscando hoy?" autocomplete="off" required>
+        <button type="submit" aria-label="Buscar">
+          <i class="bi bi-search"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Header Actions with Bootstrap Icons -->
+    <div class="header-actions">
+      <div id="header-user-container" class="header-user-container">
+        <a href="{{BASE}}pages/login.html" class="action-item" id="header-user-link">
+          <span id="header-user-text">Acceder</span>
+          <i class="bi bi-person-circle" style="font-size: 1.25rem;"></i>
+        </a>
+      </div>
+
+      <a href="{{BASE}}pages/deseos.html" class="action-item" title="Lista de deseos">
+        <i class="bi bi-heart" style="font-size: 1.25rem;"></i>
+      </a>
+
+      <button type="button" class="action-item cart-action" onclick="if(window.CartDrawer) window.CartDrawer.open();" title="Ver carrito de compras" aria-label="Ver carrito" style="background: none; border: none; color: #ffffff !important; padding: 0; cursor: pointer; display: inline-flex; align-items: center;">
+        <div style="position: relative; display: flex; align-items: center; color: #ffffff;">
+          <i class="bi bi-bag-fill" style="font-size: 1.25rem; color: #ffffff !important;"></i>
+          <span class="cart-badge" id="header-cart-badge" style="display: none;">0</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Subnav Navigation (Clean White Bar with Dividers) -->
+  <div class="subnav">
+    <div class="subnav-container">
+      <ul class="nav-links">
+        <li><a href="{{BASE}}pages/productos.html">Productos</a></li>
+        <li class="nav-divider">|</li>
+        <li><a href="{{BASE}}pages/pedidos.html">Mis pedidos</a></li>
+        <li class="nav-divider">|</li>
+        <li><a href="{{BASE}}pages/contacto.html">Contacto</a></li>
+        <li class="nav-divider">|</li>
+        <li><a href="{{BASE}}pages/nosotros.html">Nosotros</a></li>
+      </ul>
+
+      <a href="https://wa.me/51936396907?text=%C2%A1Hola!%20%F0%9F%91%8B%20Me%20comunico%20desde%20su%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20obtener%20m%C3%A1s%20informaci%C3%B3n.%20%C2%BFPodr%C3%ADan%20ayudarme%2C%20por%20favor%3F"
+        target="_blank" class="btn-pill-red">
+        Te asesoramos
+      </a>
+    </div>
+  </div>
+</header>

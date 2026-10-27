@@ -1,0 +1,447 @@
+/* ==========================================================================
+   NUTRICENTER - Official Cart Page Styles (pages/carrito.html)
+   Exact match to official design specifications
+   ========================================================================== */
+
+.cart-page-main {
+  background-color: #ffffff;
+  min-height: 80vh;
+  padding: 2.5rem 1.5rem 5rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1e293b;
+}
+
+.cart-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Steps Breadcrumbs Flow */
+.cart-steps-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 3.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cart-step-item {
+  color: #64748b;
+  text-decoration: none;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.cart-step-item.active {
+  color: #000000;
+  border-bottom: 2px solid #000000;
+}
+
+.cart-step-sep {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Empty Cart State */
+.cart-empty-view {
+  text-align: center;
+  margin: 1.5rem auto 3.5rem;
+  max-width: 720px;
+  animation: fadeInCart 0.3s ease-out;
+}
+
+@keyframes fadeInCart {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cart-empty-icon-circle {
+  width: 68px;
+  height: 68px;
+  border: 2.5px solid #ff0000;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0000;
+  font-size: 1.95rem;
+  box-shadow: 0 4px 18px rgba(255, 0, 0, 0.15);
+}
+
+.cart-empty-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #ff0000;
+  margin: 0 0 0.85rem;
+  letter-spacing: -0.01em;
+}
+
+.cart-empty-text {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Suggested Products Section */
+.cart-suggested-section {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+}
+
+.cart-suggested-heading {
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 2.25rem;
+  letter-spacing: -0.01em;
+}
+
+.cart-suggested-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* Individual Suggested Card (Red Border Exactly as Reference) */
+.cart-suggested-card {
+  background: #ffffff;
+  border: 1.5px solid #ff0000;
+  border-radius: 18px;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.cart-suggested-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(255, 0, 0, 0.12);
+}
+
+.cart-suggested-img-wrap {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.cart-suggested-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.08));
+  transition: transform 0.25s ease;
+}
+
+.cart-suggested-card:hover .cart-suggested-img {
+  transform: scale(1.05);
+}
+
+.cart-suggested-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-suggested-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.cart-suggested-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 0;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.cart-suggested-star {
+  color: #cbd5e1;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.cart-suggested-subtitle {
+  font-size: 0.825rem;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+}
+
+.cart-suggested-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: auto;
+  margin-bottom: 1.25rem;
+}
+
+.cart-price-old {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.cart-price-current {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ff0000;
+}
+
+.cart-btn-add {
+  width: 100%;
+  background: #ffffff;
+  color: #ff0000;
+  border: 1.5px solid #ff0000;
+  border-radius: 50px;
+  padding: 0.6rem 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.cart-btn-add:hover {
+  background: #ff0000;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+}
+
+/* Active Cart View (When items exist in cart) */
+.cart-filled-view {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.cart-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th {
+  background: #f8fafc;
+  padding: 1rem 1.25rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.cart-table td {
+  padding: 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.cart-prod-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-prod-thumb {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 5px;
+  border: 1px solid #e2e8f0;
+}
+
+.cart-prod-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #000000;
+  margin: 0 0 3px;
+}
+
+.cart-prod-sub {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.cart-table-qty-row {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cart-table-qty-btn {
+  background: #f8fafc;
+  border: none;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-weight: 800;
+  color: #000000;
+  transition: background 0.15s ease;
+}
+
+.cart-table-qty-btn:hover {
+  background: #e2e8f0;
+}
+
+.cart-table-qty-val {
+  width: 36px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.cart-table-remove-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cart-table-remove-btn:hover {
+  color: #ff0000;
+}
+
+/* Cart Summary Card */
+.cart-summary-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.75rem;
+  height: fit-content;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.cart-summary-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  font-size: 0.925rem;
+  color: #64748b;
+}
+
+.cart-summary-row.total-row {
+  border-top: 1.5px dashed #cbd5e1;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  color: #000000;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.cart-summary-total-price {
+  color: #ff0000;
+}
+
+.cart-checkout-btn {
+  width: 100%;
+  background: #ff0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.cart-checkout-btn:hover {
+  background: #d60000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.35);
+}
+
+.cart-clear-all-btn {
+  width: 100%;
+  background: none;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  border-radius: 10px;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.cart-clear-all-btn:hover {
+  border-color: #ff0000;
+  color: #ff0000;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .cart-suggested-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cart-filled-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+  .cart-suggested-grid {
+    grid-template-columns: 1fr;
+  }
+  .cart-steps-nav {
+    font-size: 0.8rem;
+    gap: 0.45rem;
+  }
+}

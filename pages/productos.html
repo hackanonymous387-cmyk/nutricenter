@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Suplementos Deportivos - Nutricenter Perú</title>
+
+  <!-- Bootstrap Icons & FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <script src="../assets/js/nutri-db.js"></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/cart.js" defer></script>
+  <script src="../assets/js/loader.js" defer></script>
+</head>
+<body>
+
+  <!-- Header Placeholder -->
+  <div id="site-header-placeholder"></div>
+
+  <main>
+    <!-- HERO CATALOG BANNER -->
+    <section style="background: url('../assets/images/fondos_hd.png') center center / cover no-repeat #b30000; padding: 3.5rem 1.5rem 2.5rem; color: #ffffff; text-align: center; position: relative;">
+      <div style="max-width: 900px; margin: 0 auto;">
+        <span class="section-tag" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); display: inline-flex; border: 1px solid rgba(255,255,255,0.3); color: #ffffff; padding: 0.4rem 1.2rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
+          <i class="bi bi-lightning-charge-fill me-1"></i> Catálogo Oficial
+        </span>
+        <h1 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 0.75rem; text-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+          SUPLEMENTOS DEPORTIVOS
+        </h1>
+        <p style="font-size: 1rem; opacity: 0.95; line-height: 1.5; max-width: 700px; margin: 0 auto;">
+          Encuentra las mejores proteínas, creatinas, pre-entrenos, quemadores y aminoácidos certificados con garantía oficial Nutricenter Hyo S.A.C.
+        </p>
+      </div>
+    </section>
+
+    <!-- MAIN CATALOG CONTAINER WITH ACCORDION SIDEBAR FILTERS -->
+    <section style="padding: 2.5rem 0;">
+      <div class="catalog-wrapper">
+        
+        <!-- SIDEBAR ACCORDION FILTERS (MATCHING SPECIFICATION IMAGE) -->
+        <aside class="catalog-sidebar-card">
+          <div class="filter-card-header">
+            <h2>Filtros</h2>
+            <button onclick="resetAllFilters()" class="btn-clear-all" title="Limpiar todos los filtros">Limpiar todo</button>
+          </div>
+
+          <!-- 1. Categoría -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Categoría</span>
+              <i class="bi bi-chevron-up accordion-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="filter-list-scroll">
+                <!-- 1. Proteínas -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Proteinas" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/proteinas.webp" alt="Proteínas" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Proteínas</span>
+                  <span class="filter-cat-count" data-count-for="Proteinas">(2)</span>
+                </label>
+
+                <!-- 2. Creatinas -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Creatinas" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/creatina.png" alt="Creatinas" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Creatinas</span>
+                  <span class="filter-cat-count" data-count-for="Creatinas">(2)</span>
+                </label>
+
+                <!-- 3. Ganador de peso -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="GanadorDePeso" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/ganador de peso.png" alt="Ganador de peso" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Ganador de peso</span>
+                  <span class="filter-cat-count" data-count-for="GanadorDePeso">(2)</span>
+                </label>
+
+                <!-- 4. Control de Peso -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="ControlDePeso" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/control de peso.webp" alt="Control de Peso" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Control de Peso</span>
+                  <span class="filter-cat-count" data-count-for="ControlDePeso">(2)</span>
+                </label>
+
+                <!-- 5. Aminoácidos -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Aminoacidos" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/aminoacidos4.png" alt="Aminoácidos" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Aminoácidos</span>
+                  <span class="filter-cat-count" data-count-for="Aminoacidos">(2)</span>
+                </label>
+
+                <!-- 6. Energía y Rendimiento -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="EnergiaYRendimiento" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/energia y redimiento.webp" alt="Energía y Rendimiento" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Energía y Rendimiento</span>
+                  <span class="filter-cat-count" data-count-for="EnergiaYRendimiento">(3)</span>
+                </label>
+
+                <!-- 7. Vitaminas & Bienestar -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="VitaminasYBienestar" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/vitaminas & bienestar.png" alt="Vitaminas & Bienestar" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Vitaminas & Bienestar</span>
+                  <span class="filter-cat-count" data-count-for="VitaminasYBienestar">(2)</span>
+                </label>
+
+                <!-- 8. Snacks Saludables -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="SnacksSaludables" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/snack saludables.png" alt="Snacks Saludables" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Snacks Saludables</span>
+                  <span class="filter-cat-count" data-count-for="SnacksSaludables">(2)</span>
+                </label>
+
+                <!-- 9. Accesorios y Merch -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="AccesoriosYMerch" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/accesorios.png" alt="Accesorios y Merch" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Accesorios y Merch</span>
+                  <span class="filter-cat-count" data-count-for="AccesoriosYMerch">(2)</span>
+                </label>
+
+                <!-- 10. Bebidas Proteicas -->
+                <label class="filter-check-item">
+                  <input type="checkbox" value="BebidasProteicas" class="cat-checkbox" onchange="applyFilters()">
+                  <img src="../assets/images/bedidas proteicas.webp" alt="Bebidas Proteicas" class="filter-cat-thumb">
+                  <span class="filter-cat-name">Bebidas Proteicas</span>
+                  <span class="filter-cat-count" data-count-for="BebidasProteicas">(2)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Marca -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Marca</span>
+              <i class="bi bi-chevron-up accordion-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="filter-list-scroll" id="filter-brands-list">
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Nutripoint" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Nutripoint</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Optimum Nutrition" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Optimum Nutrition</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Owyn" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Owyn</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Quest" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Quest</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Scitec Nutrition" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Scitec Nutrition</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Nutricenter" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Nutricenter Hyo</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Labrada" class="brand-checkbox" onchange="applyFilters()">
+                  <span>Labrada Nutrition</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Objetivo -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Objetivo</span>
+              <i class="bi bi-chevron-up accordion-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="filter-list-scroll">
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Fuerza y Potencia" class="goal-checkbox" onchange="applyFilters()">
+                  <span>Fuerza y Potencia</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Masa Muscular" class="goal-checkbox" onchange="applyFilters()">
+                  <span>Masa Muscular</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Perder grasa y Definir" class="goal-checkbox" onchange="applyFilters()">
+                  <span>Perder grasa y Definir</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Recuperación Muscular" class="goal-checkbox" onchange="applyFilters()">
+                  <span>Recuperación Muscular</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Salud Digestiva" class="goal-checkbox" onchange="applyFilters()">
+                  <span>Salud Digestiva</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Principiante" class="goal-checkbox" onchange="applyFilters()">
+                  <span>Principiante</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Presentación -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Presentación</span>
+              <i class="bi bi-chevron-up accordion-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="filter-list-scroll">
+                <label class="filter-check-item">
+                  <input type="checkbox" value="1.34 lb" class="pres-checkbox" onchange="applyFilters()">
+                  <span>1.34 lb</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="1.5 lb" class="pres-checkbox" onchange="applyFilters()">
+                  <span>1.5 lb</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="10 lb" class="pres-checkbox" onchange="applyFilters()">
+                  <span>10 lb</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="2 lb" class="pres-checkbox" onchange="applyFilters()">
+                  <span>2 lb</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="25 g" class="pres-checkbox" onchange="applyFilters()">
+                  <span>25 g</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="28 g" class="pres-checkbox" onchange="applyFilters()">
+                  <span>28 g</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="500 g" class="pres-checkbox" onchange="applyFilters()">
+                  <span>Pote 500 g</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Sabor -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Sabor</span>
+              <i class="bi bi-chevron-up accordion-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="filter-list-scroll">
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Cappuccino" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Cappuccino</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Chocolate" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Chocolate</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Chocolate Bliss" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Chocolate Bliss</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Chocolate Fudge" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Chocolate Fudge</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Chocolate Milkshake" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Chocolate Milkshake</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Chocolate Truffle" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Chocolate Truffle</span>
+                </label>
+                <label class="filter-check-item">
+                  <input type="checkbox" value="Cookies & Cream" class="flavor-checkbox" onchange="applyFilters()">
+                  <span>Cookies & Cream</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Rangos de precio -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Rangos de precio</span>
+              <i class="bi bi-chevron-up accordion-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="price-range-container">
+                <input type="range" id="price-slider-bar" min="9" max="635" value="635" step="1" class="price-range-slider" oninput="syncPriceSlider()">
+                <div class="price-range-labels">
+                  <span>S/ 9.00</span>
+                  <span>S/ 635.00</span>
+                </div>
+
+                <div class="price-inputs-row">
+                  <div class="price-input-box">
+                    <label>S/ Min</label>
+                    <input type="number" id="input-min-price" value="9.00" min="9" max="635" step="0.01" onchange="applyFilters()">
+                  </div>
+                  <div class="price-input-box">
+                    <label>S/ Max</label>
+                    <input type="number" id="input-max-price" value="635.00" min="9" max="635" step="0.01" onchange="applyFilters()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- MAIN CATALOG CONTENT -->
+        <div class="catalog-main">
+          
+          <!-- Top Bar Controls -->
+          <div class="catalog-topbar">
+            <div class="catalog-count-info">
+              Mostrando <strong id="visible-count" style="color: #dc2626;">8</strong> de 8 suplementos
+            </div>
+
+            <div class="catalog-sort-box">
+              <label for="catalog-sort" style="font-size: 0.85rem; font-weight: 700; color: #475569;">Ordenar por:</label>
+              <select id="catalog-sort" class="sort-select" onchange="applyFilters()">
+                <option value="default">Destacados</option>
+                <option value="price-asc">Precio: Menor a Mayor</option>
+                <option value="price-desc">Precio: Mayor a Menor</option>
+                <option value="name-asc">Nombre: A - Z</option>
+                <option value="name-desc">Nombre: Z - A</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Active Filter Badges -->
+          <div class="active-filter-tags" id="active-tags-container"></div>
+
+          <!-- Product Grid -->
+          <div class="products-grid" id="catalog-grid">
+            
+            <!-- 1. PROTEÍNAS -->
+            <div class="product-card" data-category="Proteinas" data-brand="Nutricenter" data-goal="MasaMuscular" data-presentation="500g" data-flavor="Chocolate" data-price="85" data-name="GLUKOZ WHEY PROTEIN">
+              <div class="product-img-box">
+                <img src="../assets/images/GLUKOZ-300x300.png" alt="GLUKOZ WHEY PROTEIN">
+              </div>
+              <div class="product-title">GLUKOZ WHEY PROTEIN</div>
+              <div class="product-desc">Pote 500g - 100% Proteína Concentrada</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 110.00</span>
+                <span class="price-current">S/ 85.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="Proteinas" data-brand="Optimum Nutrition" data-goal="MasaMuscular" data-presentation="2lbs" data-flavor="Vainilla" data-price="155" data-name="100% WHEY GOLD STANDARD">
+              <div class="product-img-box">
+                <img src="../assets/images/proteinas.webp" alt="100% WHEY GOLD STANDARD">
+              </div>
+              <div class="product-title">100% WHEY GOLD STANDARD</div>
+              <div class="product-desc">Frasco 2 Lbs - Aislada & Concentrada</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 180.00</span>
+                <span class="price-current">S/ 155.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. CREATINAS -->
+            <div class="product-card" data-category="Creatinas" data-brand="Nutricenter" data-goal="Fuerza" data-presentation="100caps" data-flavor="Natural" data-price="65" data-name="BIO PROSS CREATINA">
+              <div class="product-img-box">
+                <img src="../assets/images/BIO-300x300.png" alt="BIO PROSS CREATINA">
+              </div>
+              <div class="product-title">BIO PROSS CREATINA</div>
+              <div class="product-desc">100 Cápsulas - Creatina Monohidratada Pura</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 85.00</span>
+                <span class="price-current">S/ 65.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="Creatinas" data-brand="Labrada" data-goal="Fuerza" data-presentation="300g" data-flavor="Natural" data-price="75" data-name="CREATINE MONOHYDRATE LABRADA">
+              <div class="product-img-box">
+                <img src="../assets/images/creatina.png" alt="CREATINE MONOHYDRATE">
+              </div>
+              <div class="product-title">CREATINE MONOHYDRATE</div>
+              <div class="product-desc">Pote 300g - Micronizada 100% Pura Fuerza</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 95.00</span>
+                <span class="price-current">S/ 75.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. GANADOR DE PESO -->
+            <div class="product-card" data-category="GanadorDePeso" data-brand="Nutripoint" data-goal="MasaMuscular" data-presentation="6lbs" data-flavor="Chocolate" data-price="140" data-name="SUPER MASS GAINER">
+              <div class="product-img-box">
+                <img src="../assets/images/ganador de peso.png" alt="SUPER MASS GAINER">
+              </div>
+              <div class="product-title">SUPER MASS GAINER</div>
+              <div class="product-desc">Bolsa 6 Lbs - Alta Densidad Calórica</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 175.00</span>
+                <span class="price-current">S/ 140.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="GanadorDePeso" data-brand="Nutricenter" data-goal="MasaMuscular" data-presentation="3kg" data-flavor="Vainilla" data-price="120" data-name="GLUKOZ MASS GAINER ULTRA">
+              <div class="product-img-box">
+                <img src="../assets/images/GLUKOZ-300x300.png" alt="GLUKOZ MASS GAINER ULTRA">
+              </div>
+              <div class="product-title">GLUKOZ MASS GAINER ULTRA</div>
+              <div class="product-desc">Pote 3 Kg - Ganador de Masa Muscular</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 150.00</span>
+                <span class="price-current">S/ 120.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4. CONTROL DE PESO -->
+            <div class="product-card" data-category="ControlDePeso" data-brand="Nutricenter" data-goal="PerderGrasa" data-presentation="500ml" data-flavor="Limon" data-price="55" data-name="L-CARNITINA LIQUID 3000">
+              <div class="product-img-box">
+                <img src="../assets/images/control de peso.webp" alt="L-CARNITINA LIQUID 3000">
+              </div>
+              <div class="product-title">L-CARNITINA LIQUID 3000</div>
+              <div class="product-desc">Frasco 500ml - Quemador & Termogénico</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 75.00</span>
+                <span class="price-current">S/ 55.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="ControlDePeso" data-brand="Nutricenter" data-goal="PerderGrasa" data-presentation="60caps" data-flavor="Natural" data-price="75" data-name="DRY XTREME FAT BURNER">
+              <div class="product-img-box">
+                <img src="../assets/images/BOTELLA-BIOPROSS-1-300x300.webp" alt="DRY XTREME FAT BURNER">
+              </div>
+              <div class="product-title">DRY XTREME FAT BURNER</div>
+              <div class="product-desc">60 Cápsulas - Quemador Térmico Potente</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 95.00</span>
+                <span class="price-current">S/ 75.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 5. AMINOÁCIDOS -->
+            <div class="product-card" data-category="Aminoacidos" data-brand="Nutricenter" data-goal="Recuperacion" data-presentation="100caps" data-flavor="Natural" data-price="60" data-name="XTREME BCAA 2:1:1">
+              <div class="product-img-box">
+                <img src="../assets/images/BOTELLA-XTREMO-HOT-AZUL-1-300x300.webp" alt="XTREME BCAA 2:1:1">
+              </div>
+              <div class="product-title">XTREME BCAA 2:1:1</div>
+              <div class="product-desc">100 Cápsulas - Aminoácidos de Recuperación</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 80.00</span>
+                <span class="price-current">S/ 60.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="Aminoacidos" data-brand="Nutripoint" data-goal="Recuperacion" data-presentation="300g" data-flavor="Frutas" data-price="80" data-name="AMINO EAA + BCAA ENERGY">
+              <div class="product-img-box">
+                <img src="../assets/images/aminoacidos4.png" alt="AMINO EAA + BCAA ENERGY">
+              </div>
+              <div class="product-title">AMINO EAA + BCAA ENERGY</div>
+              <div class="product-desc">Pote 300g - Recuperación Muscular Completa</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 105.00</span>
+                <span class="price-current">S/ 80.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 6. ENERGÍA Y RENDIMIENTO -->
+            <div class="product-card" data-category="EnergiaYRendimiento" data-brand="Nutricenter" data-goal="Fuerza" data-presentation="60caps" data-flavor="Natural" data-price="70" data-name="HOT PLUS PRE-WORKOUT">
+              <div class="product-img-box">
+                <img src="../assets/images/BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp" alt="HOT PLUS PRE-WORKOUT">
+              </div>
+              <div class="product-title">HOT PLUS PRE-WORKOUT</div>
+              <div class="product-desc">60 Cápsulas - Óxido Nítrico & Energía</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 90.00</span>
+                <span class="price-current">S/ 70.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="EnergiaYRendimiento" data-brand="Nutricenter" data-goal="Fuerza" data-presentation="30caps" data-flavor="Natural" data-price="50" data-name="XTREMO HOT ROJO 1000 MG">
+              <div class="product-img-box">
+                <img src="../assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp" alt="XTREMO HOT ROJO 1000 MG">
+              </div>
+              <div class="product-title">XTREMO HOT ROJO 1000 MG</div>
+              <div class="product-desc">30 Cápsulas - Máximo Rendimiento & Vigor</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 65.00</span>
+                <span class="price-current">S/ 50.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="EnergiaYRendimiento" data-brand="Scitec Nutrition" data-goal="Fuerza" data-presentation="300g" data-flavor="Pasion" data-price="85" data-name="HOT BLOOD 3.0 PRE-WORKOUT">
+              <div class="product-img-box">
+                <img src="../assets/images/energia y redimiento.webp" alt="HOT BLOOD 3.0">
+              </div>
+              <div class="product-title">HOT BLOOD 3.0</div>
+              <div class="product-desc">Pote 300g - Pre-Entreno Alta Potencia</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 110.00</span>
+                <span class="price-current">S/ 85.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 7. VITAMINAS & BIENESTAR -->
+            <div class="product-card" data-category="VitaminasYBienestar" data-brand="Nutricenter" data-goal="Salud" data-presentation="500g" data-flavor="Natural" data-price="90" data-name="COLÁGENO SPORT CURCUMIX">
+              <div class="product-img-box">
+                <img src="../assets/images/CURCUMIX-268x300.png" alt="COLÁGENO SPORT CURCUMIX">
+              </div>
+              <div class="product-title">COLÁGENO SPORT CURCUMIX</div>
+              <div class="product-desc">Pote 500g - Salud Articular & Muscular</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 115.00</span>
+                <span class="price-current">S/ 90.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="VitaminasYBienestar" data-brand="Nutricenter" data-goal="Salud" data-presentation="100caps" data-flavor="Natural" data-price="65" data-name="MULTIVITAMÍNICO SPORT 12 EN 1">
+              <div class="product-img-box">
+                <img src="../assets/images/vitaminas & bienestar.png" alt="MULTIVITAMÍNICO SPORT">
+              </div>
+              <div class="product-title">MULTIVITAMÍNICO SPORT 12 EN 1</div>
+              <div class="product-desc">Frasco 100 Cápsulas - Vitaminas & Minerales</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 85.00</span>
+                <span class="price-current">S/ 65.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 8. SNACKS SALUDABLES -->
+            <div class="product-card" data-category="SnacksSaludables" data-brand="Quest" data-goal="Recuperacion" data-presentation="Caja12" data-flavor="Chocolate" data-price="55" data-name="QUEST PROTEIN COOKIE">
+              <div class="product-img-box">
+                <img src="../assets/images/snack saludables.png" alt="QUEST PROTEIN COOKIE">
+              </div>
+              <div class="product-title">QUEST PROTEIN COOKIE</div>
+              <div class="product-desc">Caja 12 Galletas con 15g de Proteína</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 70.00</span>
+                <span class="price-current">S/ 55.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="SnacksSaludables" data-brand="Quest" data-goal="Recuperacion" data-presentation="Unidad" data-flavor="Vainilla" data-price="10" data-name="PROTEIN CRISP BAR">
+              <div class="product-img-box">
+                <img src="../assets/images/snack saludables.png" alt="PROTEIN CRISP BAR">
+              </div>
+              <div class="product-title">PROTEIN CRISP BAR</div>
+              <div class="product-desc">Barra Energética 50g - Sin Azúcar Añadido</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 14.00</span>
+                <span class="price-current">S/ 10.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 9. ACCESORIOS Y MERCH -->
+            <div class="product-card" data-category="AccesoriosYMerch" data-brand="Nutricenter" data-goal="Principiante" data-presentation="700ml" data-flavor="Natural" data-price="25" data-name="SHAKER PRO NUTRICENTER 700ML">
+              <div class="product-img-box">
+                <img src="../assets/images/accesorios.png" alt="SHAKER PRO NUTRICENTER">
+              </div>
+              <div class="product-title">SHAKER PRO NUTRICENTER 700ML</div>
+              <div class="product-desc">Vaso Mezclador con Compartimento Antigrumos</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 35.00</span>
+                <span class="price-current">S/ 25.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="AccesoriosYMerch" data-brand="Nutricenter" data-goal="Fuerza" data-presentation="Unidad" data-flavor="Natural" data-price="35" data-name="GUANTES FITNESS PRO CON MUÑEQUERA">
+              <div class="product-img-box">
+                <img src="../assets/images/accesorios.png" alt="GUANTES FITNESS PRO">
+              </div>
+              <div class="product-title">GUANTES FITNESS PRO</div>
+              <div class="product-desc">Agarre Reforzado y Protección para Entrenamiento</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 50.00</span>
+                <span class="price-current">S/ 35.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 10. BEBIDAS PROTEICAS -->
+            <div class="product-card" data-category="BebidasProteicas" data-brand="Owyn" data-goal="Recuperacion" data-presentation="355ml" data-flavor="Chocolate" data-price="16" data-name="OWYN VEGAN PROTEIN SHAKE">
+              <div class="product-img-box">
+                <img src="../assets/images/bedidas proteicas.webp" alt="OWYN VEGAN PROTEIN SHAKE">
+              </div>
+              <div class="product-title">OWYN VEGAN PROTEIN SHAKE</div>
+              <div class="product-desc">Botella 355ml - 20g Proteína Lista Para Tomar</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 22.00</span>
+                <span class="price-current">S/ 16.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="BebidasProteicas" data-brand="Owyn" data-goal="Recuperacion" data-presentation="Pack4" data-flavor="Vainilla" data-price="58" data-name="PACK RTD 4 BEBIDAS PROTEICAS">
+              <div class="product-img-box">
+                <img src="../assets/images/bedidas proteicas.webp" alt="PACK RTD 4 BEBIDAS PROTEICAS">
+              </div>
+              <div class="product-title">PACK RTD 4 BEBIDAS PROTEICAS</div>
+              <div class="product-desc">Pack 4 Botellas 355ml - Vainilla & Chocolate</div>
+              <div class="product-prices">
+                <span class="price-old">S/ 75.00</span>
+                <span class="price-current">S/ 58.00</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn-add-cart">Añadir al carrito</button>
+                <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Empty State -->
+          <div id="empty-state" style="display: none; text-align: center; padding: 4rem 1.5rem; background: #ffffff; border-radius: 16px; border: 1px dashed #cbd5e1; margin-top: 1rem;">
+            <i class="bi bi-search" style="font-size: 3rem; color: #94a3b8;"></i>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: #1e293b; margin-top: 1rem;">No encontramos suplementos que coincidan</h3>
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">Prueba ajustar los rangos de precio o desmarcar algunos filtros.</p>
+            <button onclick="resetAllFilters()" class="btn-pill-red" style="border: none; cursor: pointer;">Limpiar todos los filtros</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Placeholder -->
+  <div id="site-footer-placeholder"></div>
+
+  <script>
+    const CATEGORY_NAMES = {
+      'Proteinas': 'Proteínas',
+      'Creatinas': 'Creatinas',
+      'GanadorDePeso': 'Ganador de peso',
+      'ControlDePeso': 'Control de Peso',
+      'Aminoacidos': 'Aminoácidos',
+      'EnergiaYRendimiento': 'Energía y Rendimiento',
+      'VitaminasYBienestar': 'Vitaminas & Bienestar',
+      'SnacksSaludables': 'Snacks Saludables',
+      'AccesoriosYMerch': 'Accesorios y Merch',
+      'BebidasProteicas': 'Bebidas Proteicas'
+    };
+
+    function updateCategoryCounts() {
+      const cards = document.querySelectorAll('.product-card');
+      const counts = {};
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (cat) counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      document.querySelectorAll('[data-count-for]').forEach(el => {
+        const catKey = el.getAttribute('data-count-for');
+        el.textContent = `(${counts[catKey] || 0})`;
+      });
+    }
+
+    function populateBrandsFilter() {
+      const container = document.getElementById('filter-brands-list');
+      if (!container || typeof NutriDB === 'undefined' || !NutriDB.getMarcas) return;
+
+      const marcas = NutriDB.getMarcas().filter(m => m.estado !== 0);
+      if (!marcas || marcas.length === 0) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const marcaParam = (urlParams.get('marca') || '').trim().toLowerCase();
+
+      container.innerHTML = '';
+      marcas.forEach(m => {
+        const isSelected = Boolean(marcaParam && (m.nombre.toLowerCase().includes(marcaParam) || marcaParam.includes(m.nombre.toLowerCase())));
+        const label = document.createElement('label');
+        label.className = 'filter-check-item';
+        label.innerHTML = `
+          <input type="checkbox" value="${m.nombre}" class="brand-checkbox" onchange="applyFilters()" ${isSelected ? 'checked' : ''}>
+          <span>${m.nombre}</span>
+        `;
+        container.appendChild(label);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat');
+      const searchParam = urlParams.get('s');
+
+      if (catParam) {
+        const catCb = document.querySelector(`.cat-checkbox[value="${catParam}"]`);
+        if (catCb) catCb.checked = true;
+      }
+
+      populateBrandsFilter();
+      updateCategoryCounts();
+      applyFilters();
+
+      // Re-populate if DB is updated from dashboard
+      window.addEventListener('nutricenter:db_updated', () => {
+        populateBrandsFilter();
+        applyFilters();
+      });
+    });
+
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      item.classList.toggle('closed');
+    }
+
+    function toggleMoreBrands(btn) {
+      const moreBox = document.getElementById('more-brands');
+      if (moreBox.style.display === 'none' || !moreBox.style.display) {
+        moreBox.style.display = 'flex';
+        btn.textContent = 'Mostrar menos';
+      } else {
+        moreBox.style.display = 'none';
+        btn.textContent = 'Mostrar 2 más';
+      }
+    }
+
+    function syncPriceSlider() {
+      const sliderVal = document.getElementById('price-slider-bar').value;
+      document.getElementById('input-max-price').value = parseFloat(sliderVal).toFixed(2);
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const selectedCats = Array.from(document.querySelectorAll('.cat-checkbox:checked')).map(cb => cb.value);
+      const selectedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+      const selectedGoals = Array.from(document.querySelectorAll('.goal-checkbox:checked')).map(cb => cb.value);
+      const selectedPres = Array.from(document.querySelectorAll('.pres-checkbox:checked')).map(cb => cb.value);
+      const selectedFlavors = Array.from(document.querySelectorAll('.flavor-checkbox:checked')).map(cb => cb.value);
+
+      const minPrice = parseFloat(document.getElementById('input-min-price').value) || 0;
+      const maxPrice = parseFloat(document.getElementById('input-max-price').value) || 9999;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = (urlParams.get('s') || '').trim().toLowerCase();
+
+      const sortValue = document.getElementById('catalog-sort').value;
+      const grid = document.getElementById('catalog-grid');
+      let cards = Array.from(grid.querySelectorAll('.product-card'));
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const brand = card.getAttribute('data-brand');
+        const goal = card.getAttribute('data-goal');
+        const pres = card.getAttribute('data-presentation');
+        const flavor = card.getAttribute('data-flavor');
+        const price = parseFloat(card.getAttribute('data-price'));
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
+
+        const matchCat = (selectedCats.length === 0 || selectedCats.includes(cat));
+        const matchBrand = (selectedBrands.length === 0 || selectedBrands.some(sb => {
+          const bLower = (brand || '').toLowerCase();
+          const sbLower = (sb || '').toLowerCase();
+          return bLower.includes(sbLower) || sbLower.includes(bLower);
+        }));
+        const matchGoal = (selectedGoals.length === 0 || selectedGoals.includes(goal));
+        const matchPres = (selectedPres.length === 0 || selectedPres.includes(pres));
+        const matchFlavor = (selectedFlavors.length === 0 || selectedFlavors.includes(flavor));
+        const matchPrice = (price >= minPrice && price <= maxPrice);
+        const matchSearch = (!searchQuery || name.includes(searchQuery) || (cat && cat.toLowerCase().includes(searchQuery)));
+
+        if (matchCat && matchBrand && matchGoal && matchPres && matchFlavor && matchPrice && matchSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Sorting
+      if (sortValue !== 'default') {
+        cards.sort((a, b) => {
+          const priceA = parseFloat(a.getAttribute('data-price'));
+          const priceB = parseFloat(b.getAttribute('data-price'));
+          const nameA = a.getAttribute('data-name');
+          const nameB = b.getAttribute('data-name');
+
+          if (sortValue === 'price-asc') return priceA - priceB;
+          if (sortValue === 'price-desc') return priceB - priceA;
+          if (sortValue === 'name-asc') return nameA.localeCompare(nameB);
+          if (sortValue === 'name-desc') return nameB.localeCompare(nameA);
+          return 0;
+        });
+
+        cards.forEach(card => grid.appendChild(card));
+      }
+
+      document.getElementById('visible-count').textContent = visibleCount;
+      const emptyState = document.getElementById('empty-state');
+      if (visibleCount === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+      }
+
+      renderActiveTags(selectedCats, selectedBrands, selectedGoals, minPrice, maxPrice);
+    }
+
+    function renderActiveTags(cats, brands, goals, minPrice, maxPrice) {
+      const container = document.getElementById('active-tags-container');
+      container.innerHTML = '';
+
+      cats.forEach(c => {
+        const label = CATEGORY_NAMES[c] || c;
+        container.innerHTML += `<span class="filter-tag">Categoría: ${label} <button onclick="uncheckCb('.cat-checkbox[value=\\'${c}\\']')">&times;</button></span>`;
+      });
+
+      brands.forEach(b => {
+        container.innerHTML += `<span class="filter-tag">Marca: ${b} <button onclick="uncheckCb('.brand-checkbox[value=\\'${b}\\']')">&times;</button></span>`;
+      });
+
+      goals.forEach(g => {
+        container.innerHTML += `<span class="filter-tag">Objetivo: ${g} <button onclick="uncheckCb('.goal-checkbox[value=\\'${g}\\']')">&times;</button></span>`;
+      });
+
+      if (minPrice > 9 || maxPrice < 635) {
+        container.innerHTML += `<span class="filter-tag">Precio: S/${minPrice.toFixed(2)} - S/${maxPrice.toFixed(2)} <button onclick="resetPrices()">&times;</button></span>`;
+      }
+    }
+
+    function uncheckCb(selector) {
+      const cb = document.querySelector(selector);
+      if (cb) cb.checked = false;
+      applyFilters();
+    }
+
+    function resetPrices() {
+      document.getElementById('input-min-price').value = "9.00";
+      document.getElementById('input-max-price').value = "635.00";
+      document.getElementById('price-slider-bar').value = 635;
+      applyFilters();
+    }
+
+    function resetAllFilters() {
+      document.querySelectorAll('.cat-checkbox, .brand-checkbox, .goal-checkbox, .pres-checkbox, .flavor-checkbox').forEach(cb => cb.checked = false);
+      document.getElementById('input-min-price').value = "9.00";
+      document.getElementById('input-max-price').value = "635.00";
+      document.getElementById('price-slider-bar').value = 635;
+      document.getElementById('catalog-sort').value = 'default';
+      applyFilters();
+    }
+
+    // Wire product cards to product-detalle.html
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.product-card').forEach(card => {
+        const cat = (card.getAttribute('data-category') || '').toLowerCase();
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
+        let targetId = 2; // Default to Creatina matching reference screenshot
+        if (cat.includes('proteina') || name.includes('whey') || name.includes('protein')) targetId = 1;
+        else if (cat.includes('creatina') || name.includes('creatin')) targetId = 2;
+        else if (cat.includes('energia') || name.includes('hot') || name.includes('workout')) targetId = 3;
+        else if (name.includes('curcumix') || name.includes('colageno')) targetId = 4;
+        else if (cat.includes('peso') || name.includes('xtreme')) targetId = 5;
+        else if (cat.includes('vitamina') || name.includes('palmetto')) targetId = 6;
+        else if (cat.includes('aceite') || name.includes('coco')) targetId = 7;
+
+        const imgBox = card.querySelector('.product-img-box');
+        const titleEl = card.querySelector('.product-title');
+        [imgBox, titleEl].forEach(el => {
+          if (el) {
+            el.style.cursor = 'pointer';
+            el.title = 'Ver Ficha de Producto';
+            el.addEventListener('click', () => {
+              window.location.href = `producto-detalle.html?id=${targetId}`;
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

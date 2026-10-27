@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista de Deseos - Nutricenter Perú</title>
+  <link rel="icon" href="../assets/images/cropped-Recurso-3-32x32.png" sizes="32x32">
+
+  <!-- Google Fonts (Outfit & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <!-- Core Scripts -->
+  <script src="../assets/js/jquery.min.js"></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/cart.js" defer></script>
+  <script src="../assets/js/loader.js" defer></script>
+</head>
+
+<body>
+
+  <!-- Dynamic Header Placeholder -->
+  <div id="site-header-placeholder"></div>
+
+  <!-- MAIN WISHLIST INTERFACE -->
+  <main class="wishlist-page">
+    <div class="wishlist-container">
+      
+      <!-- Page Title -->
+      <h1 class="wishlist-title">Lista de deseos</h1>
+
+      <!-- Empty State Notice -->
+      <p class="wishlist-empty-msg" id="wishlistEmptyMsg">
+        No se han añadido productos a la lista de deseos
+      </p>
+
+      <!-- Dynamic Saved Items Container (if user saved items) -->
+      <div id="savedWishlistContainer" style="display: none; margin-bottom: 3.5rem;">
+        <h2 class="wishlist-recommended-title" style="text-align: left; margin-bottom: 1.5rem;">
+          Tus productos guardados
+        </h2>
+        <div class="wishlist-products-grid" id="savedWishlistGrid"></div>
+      </div>
+
+      <!-- Recommended Section -->
+      <section class="wishlist-recommended-section">
+        <h2 class="wishlist-recommended-title">
+          Algunos productos que podrian interesarte
+        </h2>
+
+        <div class="wishlist-products-grid">
+          
+          <!-- Card 1: BIO PROSS -->
+          <div class="wishlist-card" data-name="BIO PROSS" data-price="45.00" data-presentation="100 cápsulas">
+            <div class="wishlist-card-img-wrap">
+              <img src="../assets/images/BOTELLA-BIOPROSS-1-300x300.webp" alt="BIO PROSS" class="wishlist-card-img">
+            </div>
+
+            <div class="wishlist-card-info">
+              <div class="wishlist-card-header">
+                <h3 class="wishlist-card-title">BIO PROSS</h3>
+                <span class="wishlist-card-rating" title="Valoración"><i class="bi bi-star"></i></span>
+              </div>
+              <div class="wishlist-card-subtitle">(100 cápsulas)</div>
+              <div class="wishlist-card-prices">
+                <span class="wishlist-price-old">S/ 50.00</span>
+                <span class="wishlist-price-current">S/ 45.00</span>
+              </div>
+            </div>
+
+            <div class="wishlist-card-actions">
+              <button type="button" class="wishlist-btn-add" onclick="addWishlistItemToCart('BIO PROSS', '100 CÁPSULAS', 45.00, 'assets/images/BOTELLA-BIOPROSS-1-300x300.webp')">
+                Añadir al carrito
+              </button>
+              <button type="button" class="wishlist-btn-heart" onclick="toggleWishlist(this)" title="Guardar en favoritos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: SAW PALMETTO -->
+          <div class="wishlist-card" data-name="SAW PALMETTO" data-price="50.00" data-presentation="100 cápsulas">
+            <div class="wishlist-card-img-wrap">
+              <img src="../assets/images/BOTELLA-SAW-PALMETTO-1-300x300.webp" alt="SAW PALMETTO" class="wishlist-card-img">
+            </div>
+
+            <div class="wishlist-card-info">
+              <div class="wishlist-card-header">
+                <h3 class="wishlist-card-title">SAW PALMETTO</h3>
+                <span class="wishlist-card-rating" title="Valoración"><i class="bi bi-star"></i></span>
+              </div>
+              <div class="wishlist-card-subtitle">(100 cápsulas)</div>
+              <div class="wishlist-card-prices">
+                <span class="wishlist-price-old">S/ 55.00</span>
+                <span class="wishlist-price-current">S/ 50.00</span>
+              </div>
+            </div>
+
+            <div class="wishlist-card-actions">
+              <button type="button" class="wishlist-btn-add" onclick="addWishlistItemToCart('SAW PALMETTO', '100 CÁPSULAS', 50.00, 'assets/images/BOTELLA-SAW-PALMETTO-1-300x300.webp')">
+                Añadir al carrito
+              </button>
+              <button type="button" class="wishlist-btn-heart" onclick="toggleWishlist(this)" title="Guardar en favoritos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: XTREMO HOT ROJO 1000 MG -->
+          <div class="wishlist-card" data-name="XTREMO HOT ROJO 1000 MG" data-price="50.00" data-presentation="30 tabletas">
+            <div class="wishlist-card-img-wrap">
+              <img src="../assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp" alt="XTREMO HOT ROJO 1000 MG" class="wishlist-card-img">
+            </div>
+
+            <div class="wishlist-card-info">
+              <div class="wishlist-card-header">
+                <h3 class="wishlist-card-title">XTREMO HOT ROJO 1000 MG</h3>
+                <span class="wishlist-card-rating" title="Valoración"><i class="bi bi-star"></i></span>
+              </div>
+              <div class="wishlist-card-subtitle">(30 tabletas)</div>
+              <div class="wishlist-card-prices">
+                <span class="wishlist-price-old">S/ 55.00</span>
+                <span class="wishlist-price-current">S/ 50.00</span>
+              </div>
+            </div>
+
+            <div class="wishlist-card-actions">
+              <button type="button" class="wishlist-btn-add" onclick="addWishlistItemToCart('XTREMO HOT ROJO 1000 MG', '30 TABLETAS', 50.00, 'assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp')">
+                Añadir al carrito
+              </button>
+              <button type="button" class="wishlist-btn-heart" onclick="toggleWishlist(this)" title="Guardar en favoritos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 4: XTREMO HOT AZUL 1000 MG -->
+          <div class="wishlist-card" data-name="XTREMO HOT AZUL 1000 MG" data-price="60.00" data-presentation="30 tabletas">
+            <div class="wishlist-card-img-wrap">
+              <img src="../assets/images/BOTELLA-XTREMO-HOT-AZUL-1-300x300.webp" alt="XTREMO HOT AZUL 1000 MG" class="wishlist-card-img">
+            </div>
+
+            <div class="wishlist-card-info">
+              <div class="wishlist-card-header">
+                <h3 class="wishlist-card-title">XTREMO HOT AZUL 1000 MG</h3>
+                <span class="wishlist-card-rating" title="Valoración"><i class="bi bi-star"></i></span>
+              </div>
+              <div class="wishlist-card-subtitle">(30 tabletas)</div>
+              <div class="wishlist-card-prices">
+                <span class="wishlist-price-old">S/ 65.00</span>
+                <span class="wishlist-price-current">S/ 60.00</span>
+              </div>
+            </div>
+
+            <div class="wishlist-card-actions">
+              <button type="button" class="wishlist-btn-add" onclick="addWishlistItemToCart('XTREMO HOT AZUL 1000 MG', '30 TABLETAS', 60.00, 'assets/images/BOTELLA-XTREMO-HOT-AZUL-1-300x300.webp')">
+                Añadir al carrito
+              </button>
+              <button type="button" class="wishlist-btn-heart" onclick="toggleWishlist(this)" title="Guardar en favoritos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Dynamic Footer Placeholder -->
+  <div id="site-footer-placeholder"></div>
+
+  <script>
+    function addWishlistItemToCart(name, subtitle, price, image) {
+      if (window.CartDrawer) {
+        window.CartDrawer.addItem({
+          id: 'wish-' + name.replace(/\s+/g, '-').toLowerCase(),
+          name: name,
+          subtitle: subtitle,
+          price: price,
+          qty: 1,
+          image: image
+        });
+      }
+    }
+
+    function renderWishlistPage() {
+      const wishlist = JSON.parse(localStorage.getItem('nutricenter_wishlist') || '[]');
+      const emptyMsg = document.getElementById('wishlistEmptyMsg');
+      const savedContainer = document.getElementById('savedWishlistContainer');
+      const savedGrid = document.getElementById('savedWishlistGrid');
+
+      if (!emptyMsg || !savedContainer || !savedGrid) return;
+
+      if (wishlist.length === 0) {
+        emptyMsg.style.display = 'block';
+        savedContainer.style.display = 'none';
+      } else {
+        emptyMsg.style.display = 'none';
+        savedContainer.style.display = 'block';
+        savedGrid.innerHTML = '';
+
+        wishlist.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.className = 'wishlist-card';
+          card.innerHTML = `
+            <div class="wishlist-card-img-wrap">
+              <img src="${item.image || '../assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp'}" alt="${item.name}" class="wishlist-card-img">
+            </div>
+            <div class="wishlist-card-info">
+              <div class="wishlist-card-header">
+                <h3 class="wishlist-card-title">${item.name}</h3>
+                <span class="wishlist-card-rating"><i class="bi bi-star"></i></span>
+              </div>
+              <div class="wishlist-card-subtitle">${item.subtitle || ''}</div>
+              <div class="wishlist-card-prices">
+                <span class="wishlist-price-current">S/ ${parseFloat(item.price || 50).toFixed(2)}</span>
+              </div>
+            </div>
+            <div class="wishlist-card-actions">
+              <button type="button" class="wishlist-btn-add" onclick="addWishlistItemToCart('${item.name}', '${item.subtitle || ''}', ${parseFloat(item.price || 50)}, '${item.image || ''}')">
+                Añadir al carrito
+              </button>
+              <button type="button" class="wishlist-btn-heart active" onclick="removeWishlistItem(${index})" title="Quitar de favoritos">
+                <i class="bi bi-heart-fill"></i>
+              </button>
+            </div>
+          `;
+          savedGrid.appendChild(card);
+        });
+      }
+    }
+
+    function removeWishlistItem(index) {
+      let wishlist = JSON.parse(localStorage.getItem('nutricenter_wishlist') || '[]');
+      if (index >= 0 && index < wishlist.length) {
+        const removed = wishlist.splice(index, 1);
+        localStorage.setItem('nutricenter_wishlist', JSON.stringify(wishlist));
+        showToast(`Removido: ${removed[0].name}`, 'info');
+        renderWishlistPage();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWishlistPage();
+    });
+  </script>
+</body>
+
+</html>

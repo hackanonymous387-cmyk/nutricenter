@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto de Venta (POS) - Nutricenter Perú</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <script src="../assets/js/nutri-db.js"></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+
+  <style>
+    /* Thermal Receipt Simulation (80mm) */
+    .ticket-container {
+      background: #ffffff;
+      color: #000000;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+    .ticket-divider {
+      border-top: 1px dashed #000000;
+      margin: 0.65rem 0;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #thermal-ticket-section, #thermal-ticket-section * {
+        visibility: visible !important;
+      }
+      #thermal-ticket-section {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 80mm !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="pos-page">
+  <div class="app-layout">
+    
+    <!-- Sidebar Administrativo Nutricenter -->
+    <aside class="app-sidebar">
+      <div class="sidebar-logo">
+        <a href="../index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+          <img src="../assets/images/Recurso-6.png" alt="Nutricenter Logo" style="max-height: 38px; object-fit: contain;">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-heading">Módulos Administrativos</div>
+        
+        <a href="dashboard.html" class="sidebar-link">
+          <i class="bi bi-speedometer2 text-danger"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="gestion-productos.html" class="sidebar-link">
+          <i class="bi bi-box-seam-fill text-danger"></i>
+          <span>Gestión Productos</span>
+        </a>
+
+        <a href="ventas.html" class="sidebar-link active">
+          <i class="bi bi-cart-check-fill text-danger"></i>
+          <span>Ventas / POS</span>
+        </a>
+
+        <a href="usuarios.html" class="sidebar-link">
+          <i class="bi bi-people-fill text-danger"></i>
+          <span>Usuarios</span>
+        </a>
+
+        <a href="reportes.html" class="sidebar-link">
+          <i class="bi bi-graph-up-arrow text-danger"></i>
+          <span>Reportes</span>
+        </a>
+
+        <div class="sidebar-heading" style="margin-top: 1rem;">Tienda Pública</div>
+        
+        <a href="../index.html" class="sidebar-link" target="_blank">
+          <i class="bi bi-shop text-warning"></i>
+          <span>Ver Tienda Online <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; padding-bottom: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #1c2233; border: 1.5px solid var(--brand-red); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.85rem;">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <div style="min-width: 0; flex: 1;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Administrador</div>
+            <div style="font-size: 0.72rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
+              <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> En línea
+            </div>
+          </div>
+        </div>
+        <button onclick="if(typeof Auth !== 'undefined' && Auth.logout){Auth.logout();}else{window.location.href='login.html';}" class="btn btn-outline btn-sm" style="width: 100%; border-color: rgba(239, 68, 68, 0.4); color: #ef4444; justify-content: center;">
+          <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      
+      <!-- Top POS Header -->
+      <header class="app-header">
+        <div style="display: flex; align-items: center; gap: 1.25rem;">
+          <div>
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="bi bi-cart-check-fill text-danger"></i> Punto de Venta (POS)
+            </h2>
+            <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
+              Caja Mostrador &middot; Emisión Rápida de Comprobantes
+            </div>
+          </div>
+
+          <span id="pos-caja-badge" class="badge badge-success" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;">
+            <i class="bi bi-circle-fill me-1" style="font-size: 0.45rem;"></i> Caja Abierta (#1)
+          </span>
+
+          <!-- Live Digital Clock -->
+          <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 0.3rem 0.75rem; border-radius: 8px; font-size: 0.82rem; font-family: monospace; color: #cbd5e1; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="bi bi-clock text-warning"></i> <span id="pos-live-clock">12:00:00</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.65rem; align-items: center;">
+          <button id="btn-arqueo-caja" onclick="abrirModalArqueo()" class="btn btn-secondary btn-sm" title="Realizar arqueo de efectivo y corte de turno">
+            <i class="bi bi-safe2-fill me-1 text-warning"></i> Arqueo & Cierre
+          </button>
+          <button id="btn-abrir-caja-header" onclick="abrirModalApertura()" class="btn btn-primary btn-sm" style="display: none;">
+            <i class="bi bi-unlock-fill me-1"></i> Abrir Turno
+          </button>
+        </div>
+      </header>
+
+      <main class="app-content">
+        
+        <div class="pos-view">
+          
+          <!-- LEFT COLUMN: Product Catalog & Search/Scan -->
+          <div class="pos-catalog-wrapper">
+            
+            <!-- Command Scanner & Search Bar -->
+            <div class="pos-search-scanner">
+              <i class="bi bi-upc-scan text-danger" style="font-size: 1.3rem;"></i>
+              <input type="text" id="barcode-input" placeholder="Escanear código de barras o escribir nombre/SKU y presionar Enter..." autofocus onkeypress="handleBarcodeInput(event)" onkeyup="handleSearchInput(event)">
+              <button class="btn btn-secondary btn-sm" onclick="buscarPorCodigoManual()" style="flex-shrink: 0;">
+                <i class="bi bi-search me-1"></i> Buscar (F2)
+              </button>
+            </div>
+
+            <!-- Categories Horizontal Filter Chips -->
+            <div class="pos-categories-nav">
+              <button class="pos-cat-chip active" onclick="filtrarCategoria('TODOS', this)">
+                <i class="bi bi-grid-fill"></i> Todos
+              </button>
+              <button class="pos-cat-chip" onclick="filtrarCategoria('Proteinas', this)">
+                <i class="bi bi-lightning-charge-fill"></i> Proteínas
+              </button>
+              <button class="pos-cat-chip" onclick="filtrarCategoria('Creatinas', this)">
+                <i class="bi bi-fire"></i> Creatinas
+              </button>
+              <button class="pos-cat-chip" onclick="filtrarCategoria('PreEntrenos', this)">
+                <i class="bi bi-speedometer2"></i> Pre-Entrenos
+              </button>
+              <button class="pos-cat-chip" onclick="filtrarCategoria('Capsulas', this)">
+                <i class="bi bi-capsule"></i> Cápsulas & Salud
+              </button>
+              <button class="pos-cat-chip" onclick="filtrarCategoria('Aceites', this)">
+                <i class="bi bi-droplet-fill"></i> Aceites Naturales
+              </button>
+            </div>
+
+            <!-- Products Grid with Instant Add -->
+            <div class="pos-catalog-grid" id="pos-products-grid">
+              <!-- Dynamically populated -->
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: Receipt, Cart, CRM & Checkout -->
+          <div class="pos-checkout-card">
+            
+            <!-- Receipt Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;">
+              <div>
+                <h3 style="margin: 0; font-size: 0.92rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 0.35rem;">
+                  <i class="bi bi-receipt-cutoff text-danger"></i> Comprobante
+                </h3>
+                <span id="pos-cart-count" style="font-size: 0.68rem; color: #94a3b8;">0 artículos seleccionados</span>
+              </div>
+              <button onclick="clearCart()" class="btn btn-outline btn-sm" style="color: #ef4444; border-color: rgba(239,68,68,0.3); padding: 0.15rem 0.45rem; font-size: 0.7rem;">
+                <i class="bi bi-trash me-1"></i> Vaciar
+              </button>
+            </div>
+
+            <!-- CRM Customer & Document Type Row -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; margin-bottom: 0.3rem; flex-shrink: 0;">
+              <div>
+                <label class="form-label" style="font-size: 0.68rem; margin-bottom: 1px;"><i class="bi bi-file-earmark-text me-1 text-danger"></i> Comprobante</label>
+                <select id="pos-tipo-comprobante" class="form-control" style="font-size: 0.75rem; padding: 0.25rem 0.45rem; height: 30px;" onchange="handleComprobanteChange()">
+                  <option value="Boleta">Boleta Electrónica</option>
+                  <option value="Factura">Factura Electrónica</option>
+                  <option value="Nota de Venta">Nota de Venta (Ticket)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="form-label" style="font-size: 0.68rem; margin-bottom: 1px;"><i class="bi bi-card-heading me-1 text-danger"></i> DNI / RUC</label>
+                <div style="display: flex; gap: 0.2rem;">
+                  <input type="text" id="pos-cliente-doc" class="form-control" style="font-size: 0.75rem; padding: 0.25rem 0.45rem; height: 30px;" placeholder="00000000" onkeyup="handleCustomerDocKeyup(event)">
+                  <button class="btn btn-secondary btn-sm" onclick="buscarClientePorDoc()" title="Buscar en padrón CRM" style="padding: 0.25rem 0.45rem; height: 30px;"><i class="bi bi-search"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 0.3rem; flex-shrink: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1px;">
+                <label class="form-label" style="font-size: 0.68rem; margin-bottom: 0;"><i class="bi bi-person me-1 text-danger"></i> Cliente / Razón Social</label>
+                <button type="button" onclick="setPublicoGeneral()" style="background: none; border: none; color: #38bdf8; font-size: 0.68rem; cursor: pointer; text-decoration: underline;">Clientes Varios</button>
+              </div>
+              <input type="text" id="pos-cliente-nombre" class="form-control" style="font-size: 0.75rem; padding: 0.25rem 0.45rem; height: 30px;" value="PÚBLICO GENERAL">
+            </div>
+
+            <!-- Cart Items List (Height Restricted) -->
+            <div class="pos-cart-list" id="pos-cart-list-container">
+              <div id="empty-cart-view" style="text-align: center; color: #64748b; padding: 0.35rem 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 38px;">
+                <i class="bi bi-basket2" style="font-size: 1rem; opacity: 0.5;"></i>
+                <span style="font-size: 0.72rem; font-weight: 600;">Comprobante Vacío (Selecciona productos)</span>
+              </div>
+              <div id="cart-items-wrapper"></div>
+            </div>
+
+            <!-- Totals Breakdown -->
+            <div class="pos-totals-box" style="flex-shrink: 0;">
+              <div class="pos-total-row">
+                <span>Subtotal (Op. Gravada):</span>
+                <span id="pos-subtotal" style="font-family: monospace; font-weight: 600;">S/ 0.00</span>
+              </div>
+              <div class="pos-total-row">
+                <span>I.G.V. (18%):</span>
+                <span id="pos-igv" style="font-family: monospace; font-weight: 600;">S/ 0.00</span>
+              </div>
+              <div class="pos-grand-total">
+                <span class="label">TOTAL A COBRAR:</span>
+                <span class="amount" id="pos-total">S/ 0.00</span>
+              </div>
+            </div>
+
+            <!-- Payment Method Tabs -->
+            <div class="pos-method-tabs" style="flex-shrink: 0;">
+              <button type="button" class="pos-method-btn active" onclick="seleccionarMetodo('Efectivo', this)">
+                <i class="bi bi-cash-stack text-success"></i> Efectivo
+              </button>
+              <button type="button" class="pos-method-btn" onclick="seleccionarMetodo('Yape', this)">
+                <i class="bi bi-qr-code text-warning"></i> Yape / Plin
+              </button>
+              <button type="button" class="pos-method-btn" onclick="seleccionarMetodo('Tarjeta', this)">
+                <i class="bi bi-credit-card-2-front text-info"></i> Tarjeta
+              </button>
+            </div>
+
+            <!-- Cash Input & Quick Chips -->
+            <div id="box-efectivo-panel" style="flex-shrink: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem;">
+                <label class="form-label" style="font-size: 0.7rem; margin-bottom: 0;">Monto Recibido:</label>
+                <span style="font-size: 0.65rem; color: #64748b;">Atajos rápidos:</span>
+              </div>
+
+              <div class="pos-cash-chips">
+                <button type="button" class="pos-chip-btn" onclick="quickCashExact()">Exacto</button>
+                <button type="button" class="pos-chip-btn" onclick="quickCash(20)">S/ 20</button>
+                <button type="button" class="pos-chip-btn" onclick="quickCash(50)">S/ 50</button>
+                <button type="button" class="pos-chip-btn" onclick="quickCash(100)">S/ 100</button>
+                <button type="button" class="pos-chip-btn" onclick="quickCash(200)">S/ 200</button>
+              </div>
+
+              <div style="position: relative; margin-bottom: 0.3rem;">
+                <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-weight: 800; color: #10b981; font-size: 0.9rem;">S/</span>
+                <input type="number" id="pos-monto-recibido" class="form-control" style="padding: 0.25rem 0.5rem 0.25rem 1.85rem; font-size: 0.9rem; font-weight: 800; color: #10b981; height: 32px;" placeholder="0.00" step="0.5" oninput="calcularVuelto()">
+              </div>
+
+              <!-- Change Card -->
+              <div class="pos-change-card" id="pos-change-card">
+                <span class="label"><i class="bi bi-arrow-return-right me-1"></i> VUELTO:</span>
+                <span class="value" id="pos-vuelto">S/ 0.00</span>
+              </div>
+            </div>
+
+            <!-- Big Checkout Trigger Button -->
+            <button onclick="processSale()" class="pos-btn-checkout" id="btn-cobrar">
+              <i class="bi bi-printer-fill"></i> COBRAR & EMITIR TICKET (F10)
+            </button>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- MODAL: TICKET TÉRMICO DE VENTA (80mm) -->
+  <div id="modal-ticket" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; overflow-y: auto; padding: 1.5rem;">
+    <div style="background: #ffffff; border: 1.5px solid #000000; border-radius: 12px; width: 100%; max-width: 440px; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.25); color: #000000;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;" class="no-print">
+        <h4 style="margin: 0; color: #000000; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="bi bi-printer-fill text-danger"></i> Comprobante Electrónico (80mm)
+        </h4>
+        <button onclick="cerrarModalTicket()" class="btn btn-outline btn-sm"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <!-- Printable Thermal Body -->
+      <div id="thermal-ticket-section" class="ticket-container">
+        <div style="text-align: center;">
+          <div style="font-size: 1.15rem; font-weight: 900; letter-spacing: -0.01em;">🌿 NUTRICENTER HYO S.A.C.</div>
+          <div style="font-size: 0.78rem; font-weight: 700;">RUC: 20601234567</div>
+          <div style="font-size: 0.72rem;">Jr. Ayacucho 231, Huancayo - Junín</div>
+          <div style="font-size: 0.72rem;">Tel: (064) 234-567 &middot; WhatsApp: 936 396 907</div>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div>
+          <div><b id="ticket-tipo-comp">BOLETA DE VENTA ELECTRÓNICA</b></div>
+          <div>Nro: <b id="ticket-numero">B001-0001092</b></div>
+          <div>Fecha: <span id="ticket-fecha">16/10/2026 15:30</span></div>
+          <div>Cajero: <span id="ticket-cajero">Vendedor Tienda 1</span></div>
+          <div>Cliente: <span id="ticket-cliente">PÚBLICO GENERAL</span></div>
+          <div>Doc: <span id="ticket-doc">00000000</span></div>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <table style="width: 100%; font-size: 0.78rem; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #000;">
+              <th style="text-align: left; padding-bottom: 3px;">Cant/Descripción</th>
+              <th style="text-align: right; padding-bottom: 3px;">Total</th>
+            </tr>
+          </thead>
+          <tbody id="ticket-items-body">
+            <!-- Items del ticket -->
+          </tbody>
+        </table>
+
+        <div class="ticket-divider"></div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem;">
+          <span>OP. GRAVADA:</span>
+          <span id="ticket-subtotal">S/ 0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem;">
+          <span>I.G.V. (18%):</span>
+          <span id="ticket-igv">S/ 0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: 900; font-size: 1.05rem; margin-top: 0.35rem; border-top: 1px solid #000; padding-top: 0.35rem;">
+          <span>IMPORTE TOTAL:</span>
+          <span id="ticket-total">S/ 0.00</span>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div style="font-size: 0.75rem;">
+          <div>Método de Pago: <span id="ticket-metodo">Efectivo</span></div>
+          <div>Importe Recibido: <span id="ticket-recibido">S/ 0.00</span></div>
+          <div>Vuelto al Cliente: <span id="ticket-vuelto">S/ 0.00</span></div>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div style="text-align: center; font-size: 0.72rem; margin-top: 0.5rem;">
+          <div>¡Gracias por tu compra en Nutricenter!</div>
+          <div>Productos naturales y nutrición para cambiar tu vida.</div>
+          <div style="margin-top: 0.4rem; font-family: monospace; font-size: 0.65rem;">HASH: 8f9b23e810a427c3</div>
+          <div style="margin-top: 0.4rem; letter-spacing: 1px; font-weight: 700;">*** SISTEMA POS NUTRICENTER ***</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;" class="no-print">
+        <button onclick="imprimirTicket()" class="btn btn-primary" style="flex: 1;">
+          <i class="bi bi-printer-fill me-1"></i> Imprimir (80mm)
+        </button>
+        <button onclick="cerrarModalTicket()" class="btn btn-secondary" style="flex: 1;">
+          <i class="bi bi-check2-circle me-1"></i> Nueva Venta
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: APERTURA DE TURNO DE CAJA -->
+  <div id="modal-apertura-caja" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 9998; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #ffffff; border: 1.5px solid #000000; border-radius: 12px; width: 100%; max-width: 400px; padding: 1.75rem; color: #000000; box-shadow: 0 20px 50px rgba(0,0,0,0.25);">
+      <h3 style="margin-top: 0; color: #000000; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="bi bi-unlock-fill text-success"></i> Apertura de Turno
+      </h3>
+      <p style="color: #475569; font-size: 0.85rem;">Ingresa el monto de efectivo base con el que se inicia la caja física hoy:</p>
+      
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label class="form-label">Monto Base Inicial (S/)</label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-weight: 800; color: #15803d;">S/</span>
+          <input type="number" id="apertura-monto" class="form-control" style="padding-left: 2.2rem; font-size: 1.15rem; font-weight: 800; color: #15803d;" value="100.00" step="10">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.65rem;">
+        <button onclick="confirmarAperturaCaja()" class="btn btn-success" style="flex: 1;"><i class="bi bi-check-lg me-1"></i> Abrir Turno</button>
+        <button onclick="cerrarModalApertura()" class="btn btn-outline">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ARQUEO Y CIERRE DE CAJA -->
+  <div id="modal-arqueo-caja" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 9998; justify-content: center; align-items: center; padding: 1.5rem;">
+    <div style="background: #ffffff; border: 1.5px solid #000000; border-radius: 12px; width: 100%; max-width: 460px; padding: 1.75rem; color: #000000; box-shadow: 0 20px 50px rgba(0,0,0,0.25);">
+      <h3 style="margin-top: 0; color: #000000; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="bi bi-safe2-fill text-warning"></i> Arqueo & Corte de Caja
+      </h3>
+      
+      <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1.5px solid #000000; margin-bottom: 1.25rem; font-size: 0.85rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span style="color: #475569;">Fondo de Apertura (Base):</span>
+          <span id="arqueo-base" style="font-weight: 800; color: #000000;">S/ 100.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span style="color: #475569;">Ventas Efectivo:</span>
+          <span id="arqueo-efectivo" style="font-weight: 800; color: #000000;">S/ 0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span style="color: #475569;">Ventas Yape / Plin:</span>
+          <span id="arqueo-yape" style="font-weight: 800; color: #b45309;">S/ 0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span style="color: #475569;">Ventas Tarjeta:</span>
+          <span id="arqueo-tarjeta" style="font-weight: 800; color: #0369a1;">S/ 0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: 900; color: #15803d; border-top: 1.5px dashed #000000; padding-top: 0.5rem; margin-top: 0.5rem; font-size: 0.95rem;">
+          <span>Efectivo Físico Esperado:</span>
+          <span id="arqueo-esperado">S/ 100.00</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 0.85rem;">
+        <label class="form-label">Efectivo Real Contado en Gaveta (S/)</label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-weight: 800; color: #000000;">S/</span>
+          <input type="number" id="arqueo-real" class="form-control" style="padding-left: 2.2rem; font-size: 1.15rem; font-weight: 800; color: #000000;" placeholder="0.00" oninput="calcularDiferenciaArqueo()">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; background: #161b2d; padding: 0.6rem 0.85rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem;">
+        <span>Diferencia de Cuadre:</span>
+        <span id="arqueo-diferencia" style="font-weight: 800; color: #cbd5e1;">S/ 0.00</span>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label class="form-label">Observaciones de Turno</label>
+        <textarea id="arqueo-obs" class="form-control" style="height: 60px; font-size: 0.82rem;" placeholder="Cierre normal de turno, dinero en gaveta verificado..."></textarea>
+      </div>
+
+      <div style="display: flex; gap: 0.65rem;">
+        <button onclick="confirmarCierreCaja()" class="btn btn-warning" style="flex: 1;"><i class="bi bi-lock-fill me-1"></i> Cerrar Caja Ahora</button>
+        <button onclick="cerrarModalArqueo()" class="btn btn-outline">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // ESTADO DEL PUNTO DE VENTA (POS)
+    // ==========================================
+    let productosCatalogo = [];
+    let cart = [];
+    let categoriaActiva = 'TODOS';
+    let metodoPagoActivo = 'Efectivo';
+    let cajaActiva = null;
+    let clienteSeleccionado = {
+      id: null,
+      nombre: 'PÚBLICO GENERAL',
+      documento: '00000000',
+      tipo: 'DNI'
+    };
+
+    // Catálogo con imágenes 100% reales de Nutricenter Perú
+    const catalogoOficialNutricenter = [
+      { id: 1, sku: 'PROT-001', codigo_barras: '77501001', nombre: 'Glukoz Whey Protein Pote 500g', categoria: 'Proteinas', precio: 85.00, stock: 45, stock_minimo: 8, imagen: 'GLUKOZ-300x300.png', desc: '100% Proteína Concentrada' },
+      { id: 2, sku: 'CREA-002', codigo_barras: '77501002', nombre: 'Bio Pross Creatina Monohidratada 100 Cápsulas', categoria: 'Creatinas', precio: 65.00, stock: 32, stock_minimo: 6, imagen: 'BIO-300x300.png', desc: 'Fuerza y recuperación celular' },
+      { id: 3, sku: 'PRE-003', codigo_barras: '77501003', nombre: 'Hot Plus Pre-Workout Fórmula Concentrada', categoria: 'PreEntrenos', precio: 95.00, stock: 20, stock_minimo: 5, imagen: 'BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp', desc: 'Energía extrema y bombeo' },
+      { id: 4, sku: 'COL-004', codigo_barras: '77501004', nombre: 'Curcumix Colágeno Sport Hidrolizado', categoria: 'Capsulas', precio: 75.00, stock: 28, stock_minimo: 5, imagen: 'CURCUMIX-268x300.png', desc: 'Articulaciones y tendones' },
+      { id: 5, sku: 'QUEM-005', codigo_barras: '77501005', nombre: 'Dry Xtreme Hot Termogénico Quemador', categoria: 'PreEntrenos', precio: 89.00, stock: 15, stock_minimo: 5, imagen: 'BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp', desc: 'Definición muscular acelerada' },
+      { id: 6, sku: 'SALUD-006', codigo_barras: '77501006', nombre: 'Saw Palmetto Salud Prostática & Vitalidad', categoria: 'Capsulas', precio: 69.00, stock: 24, stock_minimo: 5, imagen: 'BOTELLA-SAW-PALMETTO-1-300x300.webp', desc: 'Extracto estandarizado 100%' },
+      { id: 7, sku: 'ACE-007', codigo_barras: '77501007', nombre: 'Aceite de Coco Virgen Prensado en Frío', categoria: 'Aceites', precio: 45.00, stock: 38, stock_minimo: 6, imagen: 'ACEITE-COCO-292x300.png', desc: 'Energía cetogénica y cocina fit' },
+      { id: 8, sku: 'PRE-008', codigo_barras: '77501008', nombre: 'Hot Plus Blue Edition Pre-Workout', categoria: 'PreEntrenos', precio: 95.00, stock: 18, stock_minimo: 5, imagen: 'BOTELLA-HOT-PLUZ-AZUL-1-300x300.webp', desc: 'Resistencia de larga duración' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Reloj digital en vivo
+      setInterval(() => {
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0];
+        const clockEl = document.getElementById('pos-live-clock');
+        if (clockEl) clockEl.textContent = timeStr;
+      }, 1000);
+
+      // 2. Verificar sesión
+      if (typeof Auth !== 'undefined' && Auth.requireAuth) {
+        Auth.requireAuth();
+      }
+
+      // 3. Renderizado inmediato del catálogo oficial Nutricenter
+      productosCatalogo = catalogoOficialNutricenter;
+      renderizarCatalogo(productosCatalogo);
+
+      // 4. Sincronización en segundo plano con la base de datos
+      verificarEstadoCaja();
+      cargarProductosCatalogo();
+
+      // 5. Atajos de teclado rápidos
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'F10') {
+          e.preventDefault();
+          processSale();
+        } else if (e.key === 'F2') {
+          e.preventDefault();
+          const input = document.getElementById('barcode-input');
+          if (input) input.focus();
+        } else if (e.key === 'Escape') {
+          cerrarModalTicket();
+          cerrarModalApertura();
+          cerrarModalArqueo();
+        }
+      });
+    });
+
+    // ==========================================
+    // CARGA DE CATÁLOGO & FILTRADO SINCRONIZADO
+    // ==========================================
+    async function cargarProductosCatalogo() {
+      try {
+        let prods = [];
+        if (typeof NutriDB !== 'undefined') {
+          prods = await NutriDB.getProductos();
+        } else {
+          const res = await fetch('../backend/routes/api.php?action=productos');
+          const data = await res.json();
+          prods = (data.status === 'success' && Array.isArray(data.data)) ? data.data : [];
+        }
+
+        if (prods && prods.length > 0) {
+          productosCatalogo = prods.map((p, idx) => {
+            const fallback = catalogoOficialNutricenter[idx % catalogoOficialNutricenter.length];
+            return {
+              id: p.id,
+              sku: p.sku || fallback.sku,
+              codigo_barras: p.codigo_barras || fallback.codigo_barras,
+              nombre: p.nombre || fallback.nombre,
+              categoria: p.categoria || fallback.categoria,
+              precio: parseFloat(p.precio) || fallback.precio,
+              stock: p.stock !== undefined ? parseInt(p.stock) : fallback.stock,
+              stock_minimo: p.stock_minimo || fallback.stock_minimo,
+              imagen: p.imagen && p.imagen !== 'default_product.png' ? p.imagen : fallback.imagen,
+              desc: fallback.desc
+            };
+          });
+        } else {
+          productosCatalogo = catalogoOficialNutricenter;
+        }
+      } catch (e) {
+        console.warn('Operando en catálogo local enriquecido Nutricenter');
+        productosCatalogo = catalogoOficialNutricenter;
+      }
+      renderizarCatalogo(productosCatalogo);
+    }
+
+    function renderizarCatalogo(productos) {
+      const grid = document.getElementById('pos-products-grid');
+      grid.innerHTML = '';
+
+      let list = productos;
+      if (categoriaActiva !== 'TODOS') {
+        list = list.filter(p => p.categoria.toLowerCase().includes(categoriaActiva.toLowerCase()));
+      }
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 3rem 1rem;">
+          <i class="bi bi-search" style="font-size: 2rem; opacity: 0.4; display: block; margin-bottom: 0.5rem;"></i>
+          No se encontraron productos coincidentes
+        </div>`;
+        return;
+      }
+
+      list.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'pos-card';
+        card.onclick = () => addToCart(prod);
+
+        const isLowStock = prod.stock <= (prod.stock_minimo || 5);
+        const imgSrc = `../assets/images/${prod.imagen || 'GLUKOZ-300x300.png'}`;
+
+        card.innerHTML = `
+          <div>
+            <div class="pos-card-sku">SKU: ${prod.sku}</div>
+            <div class="pos-card-img-wrap">
+              <span class="pos-card-badge ${isLowStock ? 'low-stock' : ''}">
+                <i class="bi ${isLowStock ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill'}"></i> ${prod.stock} disp.
+              </span>
+              <img src="${imgSrc}" alt="${prod.nombre}" onerror="this.src='../assets/images/GLUKOZ-300x300.png'">
+            </div>
+            <div class="pos-card-title">${prod.nombre}</div>
+            <div class="pos-card-cat">${prod.categoria} &middot; ${prod.desc || 'Oficial'}</div>
+          </div>
+          <div class="pos-card-bottom">
+            <div class="pos-card-price">S/ ${parseFloat(prod.precio).toFixed(2)}</div>
+            <div class="pos-card-add-btn" title="Agregar al comprobante">
+              <i class="bi bi-plus-lg"></i>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filtrarCategoria(cat, btn) {
+      categoriaActiva = cat;
+      document.querySelectorAll('.pos-cat-chip').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderizarCatalogo(productosCatalogo);
+    }
+
+    function handleSearchInput(e) {
+      const term = e.target.value.toLowerCase().trim();
+      if (!term) {
+        renderizarCatalogo(productosCatalogo);
+        return;
+      }
+      const filtered = productosCatalogo.filter(p => 
+        p.nombre.toLowerCase().includes(term) ||
+        p.sku.toLowerCase().includes(term) ||
+        (p.codigo_barras && p.codigo_barras.includes(term))
+      );
+      renderizarCatalogo(filtered);
+    }
+
+    function handleBarcodeInput(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        buscarPorCodigoManual();
+      }
+    }
+
+    async function buscarPorCodigoManual() {
+      const input = document.getElementById('barcode-input');
+      const codigo = input.value.trim();
+      if (!codigo) return;
+
+      let prod = productosCatalogo.find(p => 
+        p.codigo_barras === codigo || 
+        p.sku.toLowerCase() === codigo.toLowerCase() ||
+        p.nombre.toLowerCase().includes(codigo.toLowerCase())
+      );
+
+      if (prod) {
+        addToCart(prod);
+        input.value = '';
+        showToast(`Agregado: ${prod.nombre}`, 'success');
+      } else {
+        showToast(`No se encontró producto con código: ${codigo}`, 'danger');
+      }
+    }
+
+    // ==========================================
+    // CARRITO Y OPERACIONES DE VENTA
+    // ==========================================
+    function addToCart(producto) {
+      const existing = cart.find(item => item.id === producto.id);
+      if (existing) {
+        existing.cantidad += 1;
+      } else {
+        cart.push({
+          id: producto.id,
+          sku: producto.sku,
+          nombre: producto.nombre,
+          precio: parseFloat(producto.precio),
+          imagen: producto.imagen,
+          cantidad: 1
+        });
+      }
+      renderCart();
+    }
+
+    function updateItemQuantity(index, delta) {
+      if (cart[index]) {
+        cart[index].cantidad += delta;
+        if (cart[index].cantidad <= 0) {
+          cart.splice(index, 1);
+        }
+        renderCart();
+      }
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCart();
+    }
+
+    function renderCart() {
+      const emptyView = document.getElementById('empty-cart-view');
+      const wrapper = document.getElementById('cart-items-wrapper');
+      const countEl = document.getElementById('pos-cart-count');
+
+      const totalItems = cart.reduce((acc, it) => acc + it.cantidad, 0);
+      countEl.textContent = `${totalItems} artículo${totalItems === 1 ? '' : 's'} en comprobante`;
+
+      if (cart.length === 0) {
+        emptyView.style.display = 'block';
+        wrapper.innerHTML = '';
+        document.getElementById('pos-subtotal').textContent = 'S/ 0.00';
+        document.getElementById('pos-igv').textContent = 'S/ 0.00';
+        document.getElementById('pos-total').textContent = 'S/ 0.00';
+        document.getElementById('pos-vuelto').textContent = 'S/ 0.00';
+        return;
+      }
+
+      emptyView.style.display = 'none';
+      wrapper.innerHTML = '';
+
+      let subtotalTotal = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.precio * item.cantidad;
+        subtotalTotal += itemTotal;
+
+        const row = document.createElement('div');
+        row.className = 'pos-cart-item';
+        row.innerHTML = `
+          <div class="pos-item-thumb">
+            <img src="../assets/images/${item.imagen || 'GLUKOZ-300x300.png'}" alt="${item.nombre}">
+          </div>
+          <div class="pos-item-details">
+            <div class="pos-item-name" title="${item.nombre}">${item.nombre}</div>
+            <div class="pos-item-price">S/ ${item.precio.toFixed(2)} c/u</div>
+          </div>
+          <div class="pos-qty-stepper">
+            <button class="pos-stepper-btn" onclick="updateItemQuantity(${index}, -1)"><i class="bi bi-dash"></i></button>
+            <span class="pos-stepper-val">${item.cantidad}</span>
+            <button class="pos-stepper-btn" onclick="updateItemQuantity(${index}, 1)"><i class="bi bi-plus"></i></button>
+          </div>
+          <div class="pos-item-total">S/ ${itemTotal.toFixed(2)}</div>
+          <button class="pos-item-del" onclick="removeFromCart(${index})" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
+        `;
+        wrapper.appendChild(row);
+      });
+
+      // Cálculos según régimen tributario peruano (IGV 18% incluido)
+      const baseGravada = subtotalTotal / 1.18;
+      const igv = subtotalTotal - baseGravada;
+
+      document.getElementById('pos-subtotal').textContent = `S/ ${baseGravada.toFixed(2)}`;
+      document.getElementById('pos-igv').textContent = `S/ ${igv.toFixed(2)}`;
+      document.getElementById('pos-total').textContent = `S/ ${subtotalTotal.toFixed(2)}`;
+
+      calcularVuelto();
+    }
+
+    // ==========================================
+    // GESTIÓN DE PAGOS Y VUELTO
+    // ==========================================
+    function seleccionarMetodo(metodo, btn) {
+      metodoPagoActivo = metodo;
+      document.querySelectorAll('.pos-method-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const boxEfectivo = document.getElementById('box-efectivo-panel');
+      if (metodo === 'Efectivo') {
+        boxEfectivo.style.display = 'block';
+        calcularVuelto();
+      } else {
+        boxEfectivo.style.display = 'none';
+      }
+    }
+
+    function quickCashExact() {
+      const total = getCartTotal();
+      document.getElementById('pos-monto-recibido').value = total.toFixed(2);
+      calcularVuelto();
+    }
+
+    function quickCash(amount) {
+      document.getElementById('pos-monto-recibido').value = amount.toFixed(2);
+      calcularVuelto();
+    }
+
+    function getCartTotal() {
+      return cart.reduce((acc, it) => acc + (it.precio * it.cantidad), 0);
+    }
+
+    function calcularVuelto() {
+      if (metodoPagoActivo !== 'Efectivo') return;
+
+      const total = getCartTotal();
+      const recibido = parseFloat(document.getElementById('pos-monto-recibido').value) || 0;
+      const vuelto = Math.max(0, recibido - total);
+
+      const vueltoEl = document.getElementById('pos-vuelto');
+      vueltoEl.textContent = `S/ ${vuelto.toFixed(2)}`;
+
+      const card = document.getElementById('pos-change-card');
+      if (recibido >= total && total > 0) {
+        card.style.background = 'rgba(16, 185, 129, 0.16)';
+        card.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      } else {
+        card.style.background = 'rgba(255, 255, 255, 0.04)';
+        card.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+      }
+    }
+
+    // ==========================================
+    // CRM Y CLIENTES
+    // ==========================================
+    function setPublicoGeneral() {
+      clienteSeleccionado = { id: null, nombre: 'PÚBLICO GENERAL', documento: '00000000', tipo: 'DNI' };
+      document.getElementById('pos-cliente-nombre').value = 'PÚBLICO GENERAL';
+      document.getElementById('pos-cliente-doc').value = '00000000';
+    }
+
+    async function buscarClientePorDoc() {
+      const doc = document.getElementById('pos-cliente-doc').value.trim();
+      if (!doc || doc.length < 8) {
+        showToast('Ingrese un DNI (8 dígitos) o RUC (11 dígitos) válido', 'warning');
+        return;
+      }
+
+      try {
+        const res = await fetch(`../backend/routes/api.php?action=cliente_buscar&documento=${encodeURIComponent(doc)}`);
+        const data = await res.json();
+        if (data.status === 'success' && data.data) {
+          const c = data.data;
+          clienteSeleccionado = c;
+          document.getElementById('pos-cliente-nombre').value = c.nombre;
+          showToast(`Cliente encontrado: ${c.nombre}`, 'success');
+          return;
+        }
+      } catch (e) {
+        console.warn('CRM API offline');
+      }
+
+      // Mock CRM fallback
+      if (doc === '72345678') {
+        clienteSeleccionado = { id: 1, nombre: 'Juan Carlos Pérez Mendoza', documento: doc, tipo: 'DNI' };
+        document.getElementById('pos-cliente-nombre').value = clienteSeleccionado.nombre;
+        showToast('Cliente encontrado: Juan Carlos Pérez', 'success');
+      } else if (doc === '20601234567') {
+        clienteSeleccionado = { id: 2, nombre: 'Gimnasio Sparta Fitness SAC', documento: doc, tipo: 'RUC' };
+        document.getElementById('pos-cliente-nombre').value = clienteSeleccionado.nombre;
+        showToast('Cliente RUC: Sparta Fitness SAC', 'success');
+      } else {
+        showToast('Documento no registrado. Se asignará nuevo registro.', 'info');
+      }
+    }
+
+    function handleCustomerDocKeyup(event) {
+      if (event.key === 'Enter') {
+        buscarClientePorDoc();
+      }
+    }
+
+    function handleComprobanteChange() {
+      const tipo = document.getElementById('pos-tipo-comprobante').value;
+      const docInput = document.getElementById('pos-cliente-doc');
+      if (tipo === 'Factura') {
+        docInput.placeholder = 'RUC 11 dígitos';
+      } else {
+        docInput.placeholder = 'DNI 8 dígitos';
+      }
+    }
+
+    // ==========================================
+    // PROCESAMIENTO DE VENTA & TICKET TÉRMICO
+    // ==========================================
+    async function processSale() {
+      if (cart.length === 0) {
+        showToast('Debe agregar al menos un producto al comprobante', 'warning');
+        return;
+      }
+
+      const total = getCartTotal();
+      const recibido = metodoPagoActivo === 'Efectivo' 
+        ? (parseFloat(document.getElementById('pos-monto-recibido').value) || 0) 
+        : total;
+
+      if (metodoPagoActivo === 'Efectivo' && recibido < total) {
+        showToast(`Monto insuficiente. Falta S/ ${(total - recibido).toFixed(2)}`, 'danger');
+        return;
+      }
+
+      const vuelto = Math.max(0, recibido - total);
+      const tipoComp = document.getElementById('pos-tipo-comprobante').value;
+      const clienteNombre = document.getElementById('pos-cliente-nombre').value.trim() || 'PÚBLICO GENERAL';
+      const clienteDoc = document.getElementById('pos-cliente-doc').value.trim() || '00000000';
+
+      const salePayload = {
+        caja_id: cajaActiva ? cajaActiva.id : 1,
+        cliente_id: clienteSeleccionado.id || 1,
+        cliente_nombre: clienteNombre,
+        cliente_documento: clienteDoc,
+        tipo_comprobante: tipoComp,
+        metodo_pago: metodoPagoActivo,
+        monto_recibido: recibido,
+        vuelto: vuelto,
+        total: total,
+        items: cart.map(i => ({
+          producto_id: i.id,
+          cantidad: i.cantidad,
+          precio_unitario: i.precio,
+          subtotal: i.precio * i.cantidad
+        }))
+      };
+
+      try {
+        let codigoVenta = null;
+        if (typeof NutriDB !== 'undefined' && NutriDB.registrarVenta) {
+          const res = await NutriDB.registrarVenta(salePayload);
+          if (res && res.data && res.data.codigo_venta) {
+            codigoVenta = res.data.codigo_venta;
+          }
+        } else {
+          const res = await fetch('../backend/routes/api.php?action=ventas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(salePayload)
+          });
+          const data = await res.json();
+          if (data && data.data && data.data.codigo_venta) {
+            codigoVenta = data.data.codigo_venta;
+          }
+        }
+
+        if (!codigoVenta) {
+          codigoVenta = `B001-000${Math.floor(1000 + Math.random() * 9000)}`;
+        }
+
+        // Refresh product stock in POS grid
+        await cargarProductosCatalogo();
+
+        lanzarTicketTermico(codigoVenta, tipoComp, clienteNombre, clienteDoc, total, recibido, vuelto);
+        showToast(`¡Venta #${codigoVenta} procesada correctamente!`, 'success');
+      } catch (e) {
+        console.warn('Procesando venta en modo de contingencia', e);
+        const codigoVenta = `B001-000${Math.floor(1000 + Math.random() * 9000)}`;
+        lanzarTicketTermico(codigoVenta, tipoComp, clienteNombre, clienteDoc, total, recibido, vuelto);
+        showToast('¡Venta registrada con éxito!', 'success');
+      }
+    }
+
+    function lanzarTicketTermico(codigo, tipoComp, cliente, doc, total, recibido, vuelto) {
+      document.getElementById('ticket-tipo-comp').textContent = `${tipoComp.toUpperCase()} ELECTRÓNICA`;
+      document.getElementById('ticket-numero').textContent = codigo;
+      
+      const now = new Date();
+      document.getElementById('ticket-fecha').textContent = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+      document.getElementById('ticket-cliente').textContent = cliente;
+      document.getElementById('ticket-doc').textContent = doc;
+
+      const tbody = document.getElementById('ticket-items-body');
+      tbody.innerHTML = '';
+
+      cart.forEach(item => {
+        const itemTotal = item.precio * item.cantidad;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="padding: 2px 0;">${item.cantidad}x ${item.nombre}</td>
+          <td style="text-align: right; padding: 2px 0;">S/ ${itemTotal.toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const base = total / 1.18;
+      const igv = total - base;
+
+      document.getElementById('ticket-subtotal').textContent = `S/ ${base.toFixed(2)}`;
+      document.getElementById('ticket-igv').textContent = `S/ ${igv.toFixed(2)}`;
+      document.getElementById('ticket-total').textContent = `S/ ${total.toFixed(2)}`;
+      document.getElementById('ticket-metodo').textContent = metodoPagoActivo;
+      document.getElementById('ticket-recibido').textContent = `S/ ${recibido.toFixed(2)}`;
+      document.getElementById('ticket-vuelto').textContent = `S/ ${vuelto.toFixed(2)}`;
+
+      document.getElementById('modal-ticket').style.display = 'flex';
+    }
+
+    function imprimirTicket() {
+      window.print();
+    }
+
+    function cerrarModalTicket() {
+      document.getElementById('modal-ticket').style.display = 'none';
+      clearCart();
+      document.getElementById('pos-monto-recibido').value = '';
+      document.getElementById('barcode-input').focus();
+    }
+
+    // ==========================================
+    // CONTROL DE CAJA REGISTRADORA
+    // ==========================================
+    async function verificarEstadoCaja() {
+      try {
+        const res = await fetch('../backend/routes/api.php?action=caja_estado');
+        const data = await res.json();
+
+        const badge = document.getElementById('pos-caja-badge');
+        const btnArqueo = document.getElementById('btn-arqueo-caja');
+        const btnAbrir = document.getElementById('btn-abrir-caja-header');
+
+        if (data.status === 'success' && data.caja_abierta) {
+          cajaActiva = data.caja;
+          cajaActiva.resumen = data.resumen;
+          badge.className = 'badge badge-success';
+          badge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 0.45rem;"></i> Caja Abierta (#${cajaActiva.id})`;
+          btnArqueo.style.display = 'inline-flex';
+          btnAbrir.style.display = 'none';
+        } else {
+          cajaActiva = null;
+          badge.className = 'badge badge-danger';
+          badge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 0.45rem;"></i> Caja Cerrada`;
+          btnArqueo.style.display = 'none';
+          btnAbrir.style.display = 'inline-flex';
+        }
+      } catch (e) {
+        cajaActiva = { id: 1, monto_apertura: 100.00 };
+      }
+    }
+
+    function abrirModalApertura() {
+      document.getElementById('modal-apertura-caja').style.display = 'flex';
+      document.getElementById('apertura-monto').focus();
+    }
+
+    function cerrarModalApertura() {
+      document.getElementById('modal-apertura-caja').style.display = 'none';
+    }
+
+    async function confirmarAperturaCaja() {
+      const monto = parseFloat(document.getElementById('apertura-monto').value) || 0;
+      try {
+        const res = await fetch('../backend/routes/api.php?action=caja_abrir', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usuario_id: 1, monto_apertura: monto })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          showToast('¡Caja abierta exitosamente!', 'success');
+          cerrarModalApertura();
+          await verificarEstadoCaja();
+        } else {
+          showToast(data.message || 'Error al abrir caja', 'danger');
+        }
+      } catch (e) {
+        showToast('Caja abierta en modo local', 'success');
+        cajaActiva = { id: 1, monto_apertura: monto };
+        cerrarModalApertura();
+        verificarEstadoCaja();
+      }
+    }
+
+    function abrirModalArqueo() {
+      const base = cajaActiva ? parseFloat(cajaActiva.monto_apertura || 100) : 100;
+      const ventasEfectivo = cajaActiva && cajaActiva.resumen ? parseFloat(cajaActiva.resumen.total_efectivo || 0) : 0;
+      const ventasYape = cajaActiva && cajaActiva.resumen ? parseFloat(cajaActiva.resumen.total_yape || 0) : 0;
+      const ventasTarjeta = cajaActiva && cajaActiva.resumen ? parseFloat(cajaActiva.resumen.total_tarjeta || 0) : 0;
+      const esperado = base + ventasEfectivo;
+
+      document.getElementById('arqueo-base').textContent = `S/ ${base.toFixed(2)}`;
+      document.getElementById('arqueo-efectivo').textContent = `S/ ${ventasEfectivo.toFixed(2)}`;
+      document.getElementById('arqueo-yape').textContent = `S/ ${ventasYape.toFixed(2)}`;
+      document.getElementById('arqueo-tarjeta').textContent = `S/ ${ventasTarjeta.toFixed(2)}`;
+      document.getElementById('arqueo-esperado').textContent = `S/ ${esperado.toFixed(2)}`;
+      document.getElementById('arqueo-real').value = esperado.toFixed(2);
+      calcularDiferenciaArqueo();
+
+      document.getElementById('modal-arqueo-caja').style.display = 'flex';
+    }
+
+    function cerrarModalArqueo() {
+      document.getElementById('modal-arqueo-caja').style.display = 'none';
+    }
+
+    function calcularDiferenciaArqueo() {
+      const esperadoText = document.getElementById('arqueo-esperado').textContent.replace('S/ ', '');
+      const esperado = parseFloat(esperadoText) || 0;
+      const real = parseFloat(document.getElementById('arqueo-real').value) || 0;
+      const dif = real - esperado;
+
+      const difElem = document.getElementById('arqueo-diferencia');
+      if (dif === 0) {
+        difElem.style.color = '#10b981';
+        difElem.textContent = 'S/ 0.00 (Cuadre Exacto)';
+      } else if (dif > 0) {
+        difElem.style.color = '#38bdf8';
+        difElem.textContent = `+S/ ${dif.toFixed(2)} (Sobrante)`;
+      } else {
+        difElem.style.color = '#ef4444';
+        difElem.textContent = `-S/ ${Math.abs(dif).toFixed(2)} (Faltante)`;
+      }
+    }
+
+    async function confirmarCierreCaja() {
+      const real = parseFloat(document.getElementById('arqueo-real').value) || 0;
+      const obs = document.getElementById('arqueo-obs').value;
+      const cajaId = cajaActiva ? cajaActiva.id : 1;
+
+      try {
+        const res = await fetch('../backend/routes/api.php?action=caja_cerrar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ caja_id: cajaId, monto_cierre: real, observaciones: obs })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          showToast('¡Caja cerrada correctamente!', 'success');
+          cerrarModalArqueo();
+          await verificarEstadoCaja();
+        } else {
+          showToast(data.message || 'Error al cerrar caja', 'danger');
+        }
+      } catch (e) {
+        showToast('Caja cerrada en modo local', 'success');
+        cajaActiva = null;
+        cerrarModalArqueo();
+        verificarEstadoCaja();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nutricenter Hyo S.A.C. - Nutrición que te cambia la vida</title>
+  <link rel="icon" href="assets/images/cropped-Recurso-3-32x32.png" sizes="32x32">
+
+  <!-- Google Fonts (Outfit & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+
+  <!-- Core Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/nutri-db.js"></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/auth.js" defer></script>
+  <script src="assets/js/validation.js" defer></script>
+  <script src="assets/js/cart.js" defer></script>
+  <script src="assets/js/loader.js" defer></script>
+</head>
+
+<body>
+  <!-- Header Placeholder -->
+  <div id="site-header-placeholder"></div>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- HERO CAROUSEL SECTION WITH AUTOMATIC SLIDER -->
+    <section class="hero-section hero-carousel-section" id="heroCarousel">
+      <div class="carousel-track-container">
+        <div class="carousel-track">
+
+          <!-- SLIDE 1: ATHLETE & PRODUCT LINE (OFFICIAL BRANDING) -->
+          <div class="hero-slide active" style="background-image: url('assets/images/fondos_hd.png');">
+            <div class="hero-container">
+              <div class="hero-text">
+                <h1 class="hero-title">
+                  Nutrición<br>
+                  <span class="subtitle">que te cambia</span>
+                  <span>la vida</span>
+                </h1>
+                <p class="hero-subtitle">
+                  Productos naturales certificados y con asesoría personalizada para transformar tu bienestar.
+                </p>
+                <div class="hero-buttons">
+                  <a href="pages/productos.html" class="btn-pill-red">
+                    <i class="bi bi-shop-window"></i> Ver productos
+                  </a>
+                  <a href="https://wa.me/51936396907" target="_blank" class="btn-pill-outline">
+                    <i class="bi bi-chat-dots-fill"></i> Contacto
+                  </a>
+                </div>
+              </div>
+
+              <div class="hero-image-wrapper">
+                <img src="assets/images/carril.png" alt="Nutricenter Atleta y Productos HD">
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 2: HIGH PERFORMANCE SUPPLEMENTS -->
+          <div class="hero-slide" style="background-image: url('assets/images/fondos_hd.png');">
+            <div class="hero-container">
+              <div class="hero-text">
+                <h1 class="hero-title">
+                  Alto Rendimiento<br>
+                  <span class="subtitle">para tu rutina</span>
+                  <span>diaria</span>
+                </h1>
+                <p class="hero-subtitle">
+                  Fórmulas concentradas y suplementos deportivos desarrollados para potenciar tu energía y salud.
+                </p>
+                <div class="hero-buttons">
+                  <a href="pages/capsulas.html" class="btn-pill-red">
+                    <i class="bi bi-fire"></i> Ver Cápsulas & Polvos
+                  </a>
+                  <a href="https://wa.me/51936396907" target="_blank" class="btn-pill-outline">
+                    <i class="bi bi-whatsapp"></i> Asesoría Nutricional
+                  </a>
+                </div>
+              </div>
+
+              <div class="hero-image-wrapper">
+                <img src="assets/images/carril.png" alt="Nutricenter Suplementos Deportivo">
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 3: NATIONWIDE SHIPPING & STOREFRONT -->
+          <div class="hero-slide" style="background-image: url('assets/images/fondos_hd.png');">
+            <div class="hero-container">
+              <div class="hero-text">
+                <h1 class="hero-title">
+                  Envíos Seguros<br>
+                  <span class="subtitle">a todo el</span>
+                  <span>Perú</span>
+                </h1>
+                <p class="hero-subtitle">
+                  Compra con total confianza de forma rápida y directa. Garantía oficial Nutricenter Hyo S.A.C.
+                </p>
+                <div class="hero-buttons">
+                  <a href="pages/productos.html" class="btn-pill-red">
+                    <i class="bi bi-bag-check-fill"></i> Comprar Ahora
+                  </a>
+                  <a href="https://wa.me/51936396907" target="_blank" class="btn-pill-outline">
+                    <i class="bi bi-headset"></i> Atención Inmediata
+                  </a>
+                </div>
+              </div>
+
+              <div class="hero-image-wrapper">
+                <img src="assets/images/carril.png" alt="Tienda Nutricenter Perú">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CAROUSEL CONTROLS & INDICATORS -->
+      <button class="carousel-btn carousel-prev" aria-label="Anterior" onclick="moveSlide(-1)">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button class="carousel-btn carousel-next" aria-label="Siguiente" onclick="moveSlide(1)">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+
+      <div class="carousel-indicators">
+        <span class="indicator active" onclick="goToSlide(0)"></span>
+        <span class="indicator" onclick="goToSlide(1)"></span>
+        <span class="indicator" onclick="goToSlide(2)"></span>
+      </div>
+    </section>
+
+    <!-- NUESTRAS LÍNEAS (CATEGORÍAS DE SUPLEMENTOS DEPORTIVOS) - CARRUSEL DESLIZABLE -->
+    <section class="lines-section">
+      <div class="lines-container">
+        <div class="lines-header">
+          <div class="section-tag"><i class="bi bi-record-circle-fill"></i> Nuestras líneas de Suplementos</div>
+          <div class="lines-nav-controls">
+            <button class="lines-nav-btn prev" id="linesPrevBtn" aria-label="Anterior" title="Desplazar a la izquierda">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="lines-nav-btn next" id="linesNextBtn" aria-label="Siguiente" title="Desplazar a la derecha">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="lines-slider-wrapper">
+          <button class="lines-track-arrow prev" id="linesSidePrev" aria-label="Anterior" title="Anterior">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <div class="lines-track" id="linesTrack">
+            <a href="pages/productos.html?cat=Proteinas" class="line-card">
+              <img src="assets/images/proteinas.webp" alt="Proteínas">
+              <h3>Proteínas</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=Creatinas" class="line-card">
+              <img src="assets/images/creatina.png" alt="Creatinas">
+              <h3>Creatinas</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=GanadorDePeso" class="line-card">
+              <img src="assets/images/ganador de peso.png" alt="Ganador de peso">
+              <h3>Ganador de peso</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=ControlDePeso" class="line-card">
+              <img src="assets/images/control de peso.webp" alt="Control de Peso">
+              <h3>Control de Peso</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=Aminoacidos" class="line-card">
+              <img src="assets/images/aminoacidos4.png" alt="Aminoácidos">
+              <h3>Aminoácidos</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=EnergiaYRendimiento" class="line-card">
+              <img src="assets/images/energia y redimiento.webp" alt="Energía y Rendimiento">
+              <h3>Energía y Rendimiento</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=VitaminasYBienestar" class="line-card">
+              <img src="assets/images/vitaminas & bienestar.png" alt="Vitaminas & Bienestar">
+              <h3>Vitaminas & Bienestar</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=SnacksSaludables" class="line-card">
+              <img src="assets/images/snack saludables.png" alt="Snacks Saludables">
+              <h3>Snacks Saludables</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=AccesoriosYMerch" class="line-card">
+              <img src="assets/images/accesorios.png" alt="Accesorios y Merch">
+              <h3>Accesorios y Merch</h3>
+            </a>
+
+            <a href="pages/productos.html?cat=BebidasProteicas" class="line-card">
+              <img src="assets/images/bedidas proteicas.webp" alt="Bebidas Proteicas">
+              <h3>Bebidas Proteicas</h3>
+            </a>
+          </div>
+
+          <button class="lines-track-arrow next" id="linesSideNext" aria-label="Siguiente" title="Siguiente">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTOS MÁS VENDIDOS WITH SIDE FLOATING FITNESS GEAR DECORATIONS -->
+    <section class="products-section">
+      <img src="assets/images/mancuerna_hd.png" alt="Mancuerna Deco Izquierda" class="deco-left">
+      <img src="assets/images/mancuerna_hd.png" alt="Mancuerna Deco Derecha" class="deco-right">
+
+      <div class="products-container">
+        <div class="section-tag"><i class="bi bi-record-circle-fill"></i> Productos más vendidos</div>
+
+        <div class="products-grid" id="featuredProductsGrid">
+          <!-- Product 1 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/GLUKOZ-300x300.png" alt="GLUKOZ WHEY PROTEIN">
+            </div>
+            <div class="product-title">GLUKOZ WHEY PROTEIN</div>
+            <div class="product-desc">Pote 500g - 100% Proteína Concentrada</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 110.00</span>
+              <span class="price-current">S/ 85.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/BIO-300x300.png" alt="BIO PROSS CREATINA">
+            </div>
+            <div class="product-title">BIO PROSS CREATINA</div>
+            <div class="product-desc">100 Cápsulas - Creatina Monohidratada Pura</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 85.00</span>
+              <span class="price-current">S/ 65.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp" alt="HOT PLUS PRE-WORKOUT">
+            </div>
+            <div class="product-title">HOT PLUS PRE-WORKOUT</div>
+            <div class="product-desc">60 Cápsulas - Óxido Nítrico & Energía</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 90.00</span>
+              <span class="price-current">S/ 70.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/BOTELLA-BIOPROSS-1-300x300.webp" alt="DRY XTREME FAT BURNER">
+            </div>
+            <div class="product-title">DRY XTREME FAT BURNER</div>
+            <div class="product-desc">60 Cápsulas - Quemador Térmico & L-Carnitina</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 95.00</span>
+              <span class="price-current">S/ 75.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 5 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/BOTELLA-XTREMO-HOT-AZUL-1-300x300.webp" alt="XTREME BCAA 2:1:1">
+            </div>
+            <div class="product-title">XTREME BCAA 2:1:1</div>
+            <div class="product-desc">100 Cápsulas - Aminoácidos de Recuperación</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 80.00</span>
+              <span class="price-current">S/ 60.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 6 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/CURCUMIX-268x300.png" alt="COLÁGENO SPORT CURCUMIX">
+            </div>
+            <div class="product-title">COLÁGENO SPORT CURCUMIX</div>
+            <div class="product-desc">Pote 500g - Salud Articular & Muscular</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 115.00</span>
+              <span class="price-current">S/ 90.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 7 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/BOTELLA-SAW-PALMETTO-1-300x300.webp" alt="MULTIVITAMÍNICO SPORT">
+            </div>
+            <div class="product-title">MULTIVITAMÍNICO SPORT</div>
+            <div class="product-desc">Frasco 100 Cápsulas - Vitaminas & Minerales</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 85.00</span>
+              <span class="price-current">S/ 65.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product 8 -->
+          <div class="product-card">
+            <div class="product-img-box">
+              <img src="assets/images/ACEITE-COCO-292x300.png" alt="MACA NEGRA SPORT EXTRA">
+            </div>
+            <div class="product-title">MACA NEGRA SPORT EXTRA</div>
+            <div class="product-desc">Frasco 500ml - Vigorizante & Resistencia</div>
+            <div class="product-prices">
+              <span class="price-old">S/ 60.00</span>
+              <span class="price-current">S/ 48.00</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart">
+                Añadir al carrito
+              </button>
+              <button onclick="toggleWishlist(this)" class="btn-wishlist" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARCAS OFICIALES Y CERTIFICADAS (GESTIONADAS DESDE DASHBOARD) -->
+    <section class="brands-section" id="marcasSection">
+      <div class="brands-container">
+        <div class="section-tag"><i class="bi bi-record-circle-fill"></i> Marcas Oficiales y Distribución Autorizada</div>
+        <div class="brands-slider-wrap">
+          <div class="brands-track" id="brandsTrack">
+            <!-- Set 1 -->
+            <a href="pages/productos.html?marca=BSN" class="brand-pill-card" title="BSN"><img src="assets/images/marca 1.webp" alt="BSN"></a>
+            <a href="pages/productos.html?marca=NUTRICOST" class="brand-pill-card" title="NUTRICOST"><img src="assets/images/marca 2.webp" alt="NUTRICOST"></a>
+            <a href="pages/productos.html?marca=ISOPURE" class="brand-pill-card" title="ISOPURE"><img src="assets/images/marca 3.webp" alt="ISOPURE"></a>
+            <a href="pages/productos.html?marca=QUEST%20NUTRITION" class="brand-pill-card" title="QUEST NUTRITION"><img src="assets/images/marca 4.webp" alt="QUEST NUTRITION"></a>
+            <a href="pages/productos.html?marca=HONEY%20STINGER" class="brand-pill-card" title="HONEY STINGER"><img src="assets/images/marca 5.webp" alt="HONEY STINGER"></a>
+            <a href="pages/productos.html?marca=ULTIMATE%20NUTRITION" class="brand-pill-card" title="ULTIMATE NUTRITION"><img src="assets/images/marca 6.webp" alt="ULTIMATE NUTRITION"></a>
+            <a href="pages/productos.html?marca=OPTIMUM%20NUTRITION" class="brand-pill-card" title="OPTIMUM NUTRITION"><img src="assets/images/marca 7.webp" alt="OPTIMUM NUTRITION"></a>
+            <a href="pages/productos.html?marca=SCITEC%20NUTRITION" class="brand-pill-card" title="SCITEC NUTRITION"><img src="assets/images/marca 8.webp" alt="SCITEC NUTRITION"></a>
+            <a href="pages/productos.html?marca=DYMATIZE" class="brand-pill-card" title="DYMATIZE"><img src="assets/images/marca 9.webp" alt="DYMATIZE"></a>
+            <a href="pages/productos.html?marca=NUTREX%20RESEARCH" class="brand-pill-card" title="NUTREX RESEARCH"><img src="assets/images/marca 10.webp" alt="NUTREX RESEARCH"></a>
+            <a href="pages/productos.html?marca=MUSCLEMEDS" class="brand-pill-card" title="MUSCLEMEDS"><img src="assets/images/marca 11.webp" alt="MUSCLEMEDS"></a>
+            <a href="pages/productos.html?marca=SYNTRAX" class="brand-pill-card" title="SYNTRAX"><img src="assets/images/marca 12.webp" alt="SYNTRAX"></a>
+            <a href="pages/productos.html?marca=WINDMILL" class="brand-pill-card" title="WINDMILL"><img src="assets/images/marca 13.webp" alt="WINDMILL"></a>
+
+            <!-- Set 2 (Duplicado para loop infinito fluido) -->
+            <a href="pages/productos.html?marca=BSN" class="brand-pill-card" title="BSN"><img src="assets/images/marca 1.webp" alt="BSN"></a>
+            <a href="pages/productos.html?marca=NUTRICOST" class="brand-pill-card" title="NUTRICOST"><img src="assets/images/marca 2.webp" alt="NUTRICOST"></a>
+            <a href="pages/productos.html?marca=ISOPURE" class="brand-pill-card" title="ISOPURE"><img src="assets/images/marca 3.webp" alt="ISOPURE"></a>
+            <a href="pages/productos.html?marca=QUEST%20NUTRITION" class="brand-pill-card" title="QUEST NUTRITION"><img src="assets/images/marca 4.webp" alt="QUEST NUTRITION"></a>
+            <a href="pages/productos.html?marca=HONEY%20STINGER" class="brand-pill-card" title="HONEY STINGER"><img src="assets/images/marca 5.webp" alt="HONEY STINGER"></a>
+            <a href="pages/productos.html?marca=ULTIMATE%20NUTRITION" class="brand-pill-card" title="ULTIMATE NUTRITION"><img src="assets/images/marca 6.webp" alt="ULTIMATE NUTRITION"></a>
+            <a href="pages/productos.html?marca=OPTIMUM%20NUTRITION" class="brand-pill-card" title="OPTIMUM NUTRITION"><img src="assets/images/marca 7.webp" alt="OPTIMUM NUTRITION"></a>
+            <a href="pages/productos.html?marca=SCITEC%20NUTRITION" class="brand-pill-card" title="SCITEC NUTRITION"><img src="assets/images/marca 8.webp" alt="SCITEC NUTRITION"></a>
+            <a href="pages/productos.html?marca=DYMATIZE" class="brand-pill-card" title="DYMATIZE"><img src="assets/images/marca 9.webp" alt="DYMATIZE"></a>
+            <a href="pages/productos.html?marca=NUTREX%20RESEARCH" class="brand-pill-card" title="NUTREX RESEARCH"><img src="assets/images/marca 10.webp" alt="NUTREX RESEARCH"></a>
+            <a href="pages/productos.html?marca=MUSCLEMEDS" class="brand-pill-card" title="MUSCLEMEDS"><img src="assets/images/marca 11.webp" alt="MUSCLEMEDS"></a>
+            <a href="pages/productos.html?marca=SYNTRAX" class="brand-pill-card" title="SYNTRAX"><img src="assets/images/marca 12.webp" alt="SYNTRAX"></a>
+            <a href="pages/productos.html?marca=WINDMILL" class="brand-pill-card" title="WINDMILL"><img src="assets/images/marca 13.webp" alt="WINDMILL"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSULTAS BANNER -->
+    <section class="consultas-banner">
+      <div class="consultas-container">
+        <div>
+          <h2 class="consultas-title"><i class="bi bi-question-circle me-2"></i> ¿Consultas?</h2>
+          <p class="consultas-subtitle">Estamos aquí para asesorarte</p>
+        </div>
+        <a href="https://wa.me/51936396907" target="_blank" class="btn-black-pill">
+          <i class="bi bi-whatsapp me-2"></i> Contáctanos
+        </a>
+      </div>
+    </section>
+
+    <!-- NOSOTROS SECTION (MATCHING OFFICIAL DESIGN REFERENCE) -->
+    <section class="nosotros-page-section" id="nosotros">
+      <div class="nosotros-page-container">
+
+        <div class="nosotros-block-row">
+          <div class="nosotros-block-text">
+            <div class="nosotros-section-tag">
+              <span class="nosotros-ring-icon"></span> Nosotros
+            </div>
+            <h2 class="nosotros-company-title">NUTRICENTER HYO S.A.C.</h2>
+            <span class="nosotros-company-sub">Tu salud importa</span>
+
+            <p class="nosotros-company-desc">
+              En Nutricenter Perú S.A.C elaboramos y distribuimos productos naturales de alta calidad, cuidando cada
+              etapa del proceso para garantizar seguridad, pureza y resultados reales.
+            </p>
+
+            <p class="nosotros-company-desc">
+              Nuestro compromiso es acompañarte en un presente saludable y un futuro lleno de bienestar, para ti y tu
+              familia.
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: flex-end;">
+            <div class="nosotros-dark-store-card" style="width: 100%; border: 2px solid #e60000; box-shadow: 0 10px 30px rgba(230,0,0,0.18);">
+              <img src="assets/images/nosotros_tienda_render.jpg" alt="Tienda Principal Nutricenter Hyo S.A.C.">
+            </div>
+            <div style="width: 100%; display: flex; justify-content: flex-end; overflow: hidden; height: 110px;">
+              <img src="assets/images/carril.png" alt="Línea de Suplementos Deportivos Nutricenter" style="max-height: 280px; object-fit: cover; object-position: 50% 88%; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.2));">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MAPS & UBICACIÓN SECTION -->
+    <section class="maps-section" id="ubicacion">
+      <div class="maps-container">
+        <!-- Text & Store Information Card -->
+        <div class="maps-info-card">
+          <div class="section-tag"><i class="bi bi-geo-alt-fill me-1"></i> Ubicación</div>
+          <h2 class="maps-title">Visítanos en Nuestra Tienda</h2>
+          <p class="maps-subtitle">
+            Estamos ubicados en la mejor zona comercial de Huancayo. ¡Ven y descubre nuestros suplementos deportivos y
+            productos naturales con asesoría personalizada!
+          </p>
+
+          <div class="maps-details-list">
+            <div class="maps-detail-item">
+              <div class="maps-icon-store-img" title="Local de Nutricenter">
+                <img src="assets/images/IMAGEN-NOSOTROS.png" alt="Local Nutricenter Hyo">
+                <span class="pin-badge-mini"><i class="bi bi-geo-alt-fill"></i></span>
+              </div>
+              <div>
+                <strong>Dirección Principal:</strong>
+                <p>Jr. Ayacucho 231, Huancayo 12001, Junín - Perú</p>
+              </div>
+            </div>
+
+            <div class="maps-detail-item">
+              <div class="maps-icon-circle"><i class="bi bi-clock-fill"></i></div>
+              <div>
+                <strong>Horario de Atención:</strong>
+                <p>Lunes a Viernes: 8:00 am - 5:00 pm<br>Sábados: 8:00 am - 1:00 pm</p>
+              </div>
+            </div>
+
+            <div class="maps-detail-item">
+              <div class="maps-icon-circle"><i class="bi bi-telephone-fill"></i></div>
+              <div>
+                <strong>Teléfono / WhatsApp:</strong>
+                <p>+51 958 336 129 | 01 751 4905</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="https://maps.app.goo.gl/SpRWpjj75pPnWvx77" target="_blank" class="btn-pill-red btn-maps-link">
+            <i class="bi bi-map-fill me-1"></i> Abrir en Google Maps
+          </a>
+        </div>
+
+        <!-- Google Maps Iframe Container -->
+        <div class="maps-iframe-wrapper">
+          <iframe
+            src="https://maps.google.com/maps?q=-12.0652281,-75.2095963+(NUTRICENTER+-+Jr.+Ayacucho+231)&hl=es&z=17&output=embed"
+            width="100%" height="440" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Nutricenter Hyo en Google Maps">
+          </iframe>
+
+          <!-- Floating Pin Badge with Store Local Photo -->
+          <a href="https://maps.app.goo.gl/SpRWpjj75pPnWvx77" target="_blank" class="map-store-pin-overlay"
+            title="Ver tienda en Google Maps">
+            <div class="store-pin-card">
+              <div class="store-pin-img-box">
+                <img src="assets/images/IMAGEN-NOSOTROS.png" alt="Local Nutricenter Hyo">
+              </div>
+              <div class="store-pin-info">
+                <span class="store-pin-badge"><i class="bi bi-geo-alt-fill me-1"></i> Nuestra Tienda</span>
+                <strong class="store-pin-title">Nutricenter Hyo</strong>
+                <span class="store-pin-addr">Jr. Ayacucho 231, Huancayo</span>
+              </div>
+            </div>
+            <div class="store-pin-pointer"></div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Placeholder -->
+  <div id="site-footer-placeholder"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.products-section .product-card').forEach((card, idx) => {
+        const titleEl = card.querySelector('.product-title');
+        const imgBox = card.querySelector('.product-img-box');
+        const name = (titleEl ? titleEl.textContent : '').toLowerCase();
+        
+        let targetId = 2; // Default to Creatina
+        if (name.includes('glukoz') || name.includes('protein')) targetId = 1;
+        else if (name.includes('creatina')) targetId = 2;
+        else if (name.includes('hot plus') || name.includes('workout')) targetId = 3;
+        else if (name.includes('curcumix') || name.includes('colageno')) targetId = 4;
+        else if (name.includes('dry xtreme') || name.includes('fat burner')) targetId = 5;
+
+        [titleEl, imgBox].forEach(el => {
+          if (el) {
+            el.style.cursor = 'pointer';
+            el.title = 'Ver Ficha de Producto';
+            el.addEventListener('click', () => {
+              window.location.href = `pages/producto-detalle.html?id=${targetId}`;
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

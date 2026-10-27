@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nosotros - Misión, Visión & Historia | Nutricenter Hyo</title>
+  <link rel="icon" href="../assets/images/cropped-Recurso-3-32x32.png" sizes="32x32">
+
+  <!-- Google Fonts (Outfit & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <!-- Core Scripts -->
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/loader.js" defer></script>
+</head>
+
+<body>
+
+  <!-- Dynamic Header Placeholder -->
+  <div id="site-header-placeholder"></div>
+
+  <!-- NOSOTROS MAIN SECTION -->
+  <main class="nosotros-page-section">
+    <div class="nosotros-page-container">
+
+      <!-- BLOCK 1: MISIÓN -->
+      <div class="nosotros-block-row">
+        <div class="nosotros-block-text">
+          <div class="nosotros-section-tag">
+            <span class="nosotros-ring-icon"></span> Nosotros
+          </div>
+          <h2 class="nosotros-block-title">MISIÓN</h2>
+          <p class="nosotros-block-desc">
+            Ayudar a sus clientes a vivir mejor y cumplir sus objetivos nutricionales. Esto lo logran ofreciendo suplementos naturales y deportivos de la más alta calidad con una asesoría personalizada y un servicio al cliente ético y profesional.
+          </p>
+        </div>
+
+        <div class="nosotros-red-frame-card">
+          <img src="../assets/images/nosotros_mision.jpg" alt="Misión Nutricenter - Asesoría Nutricional">
+        </div>
+      </div>
+
+      <!-- BLOCK 2: VISIÓN -->
+      <div class="nosotros-block-row reverse-mobile">
+        <div class="nosotros-red-frame-card">
+          <img src="../assets/images/nosotros_vision.jpg" alt="Visión Nutricenter - Equipo & Comunidad Fitness">
+        </div>
+
+        <div class="nosotros-block-text">
+          <h2 class="nosotros-block-title">VISIÓN</h2>
+          <p class="nosotros-block-desc">
+            Consolidarse como el aliado principal de la comunidad fitness y de bienestar físico en toda la región Junín, garantizando la mayor variedad de marcas nacionales e importadas 100% originales al mejor precio garantizado del mercado.
+          </p>
+        </div>
+      </div>
+
+      <!-- BLOCK 3: NUTRICENTER HYO S.A.C. -->
+      <div class="nosotros-block-row">
+        <div class="nosotros-block-text">
+          <h2 class="nosotros-company-title">NUTRICENTER HYO S.A.C.</h2>
+          <span class="nosotros-company-sub">Tu salud importa</span>
+
+          <p class="nosotros-company-desc">
+            En Nutricenter Perú S.A.C elaboramos y distribuimos productos naturales de alta calidad, cuidando cada etapa del proceso para garantizar seguridad, pureza y resultados reales.
+          </p>
+
+          <p class="nosotros-company-desc">
+            Nuestro compromiso es acompañarte en un presente saludable y un futuro lleno de bienestar, para ti y tu familia.
+          </p>
+        </div>
+
+        <div class="nosotros-dark-store-card">
+          <img src="../assets/images/nosotros_tienda_render.jpg" alt="Tienda Principal Nutricenter Hyo S.A.C.">
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Dynamic Footer Placeholder -->
+  <div id="site-footer-placeholder"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Highlight "Nosotros" in subnav after header loads
+      const checkSubnav = setInterval(() => {
+        const links = document.querySelectorAll('.nav-links a');
+        let found = false;
+        links.forEach(link => {
+          if (link.textContent.trim().toLowerCase().includes('nosotros')) {
+            link.classList.add('active');
+            link.style.color = '#e60000';
+            link.style.borderBottom = '2px solid #e60000';
+            link.style.paddingBottom = '4px';
+            found = true;
+          }
+        });
+        if (found) clearInterval(checkSubnav);
+      }, 100);
+      setTimeout(() => clearInterval(checkSubnav), 3000);
+    });
+  </script>
+</body>
+
+</html>

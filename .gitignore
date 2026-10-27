@@ -1,0 +1,31 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment & Secret Files
+.env
+.env.local
+config/secrets.php
+
+# PHP & Node Dependencies
+/vendor/
+/node_modules/
+
+# Log & Temporary files
+*.log
+scratch/
+tmp/
+
+# Compressed archives & backups
+*.rar
+*.zip
+*.7z
+*.tar.gz
+*.bak

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-head-title">Creatina 600g - Optimum Nutrition | Nutricenter Perú</title>
+  <link rel="icon" href="../assets/images/cropped-Recurso-3-32x32.png" sizes="32x32">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Core Nutricenter Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/style.css?v=4">
+  <link rel="stylesheet" href="../assets/css/cart-drawer.css">
+  <link rel="stylesheet" href="../assets/css/producto-detalle.css?v=4">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <!-- Core Scripts -->
+  <script src="../assets/js/jquery.min.js"></script>
+  <script src="../assets/js/nutri-db.js"></script>
+  <script src="../assets/js/cart.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <!-- Reusable Header Component -->
+  <div id="site-header-placeholder"></div>
+
+  <!-- Fallback Header for file:/// protocol -->
+  <header id="fallback-header" style="display: none; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.85rem 1.5rem;">
+    <div style="max-width: 1360px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+      <a href="../index.html" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="../assets/images/Recurso-6.png" alt="Nutricenter" style="height: 38px;">
+      </a>
+      <div style="display: flex; gap: 1.5rem; align-items: center;">
+        <a href="productos.html" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.9rem;">PRODUCTOS</a>
+        <a href="carrito.html" style="color: #e62035; text-decoration: none; font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+          <i class="bi bi-cart3"></i> CARRITO (<span id="fallback-cart-count">0</span>)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN DETAIL WRAPPER -->
+  <main class="detail-page-wrapper">
+
+    <!-- BREADCRUMBS -->
+    <nav class="detail-breadcrumbs" aria-label="Ruta de navegación">
+      <a href="../index.html"><i class="bi bi-house-door-fill"></i> Inicio</a>
+      <span class="separator"><i class="bi bi-chevron-right"></i></span>
+      <a href="productos.html" id="breadcrumb-category">Creatinas</a>
+      <span class="separator"><i class="bi bi-chevron-right"></i></span>
+      <span class="current" id="breadcrumb-product-name">CREATINA 600G - OPTIMUM NUTRITION</span>
+    </nav>
+
+    <!-- PRODUCT HERO GRID (Gallery Left / Purchasing Right) -->
+    <div class="product-hero-grid">
+
+      <!-- LEFT COLUMN: INTERACTIVE GALLERY & SPECS -->
+      <div class="detail-gallery-box">
+        
+        <!-- Main Image Display -->
+        <div class="main-image-display" id="main-image-container">
+          <div class="badge-brand-watermark" id="gallery-watermark">
+            <i class="bi bi-shield-check text-danger"></i> <span id="gallery-brand-text">OPTIMUM NUTRITION</span>
+          </div>
+          <img src="../assets/images/creatina.png" alt="Producto Principal" id="main-product-img">
+          <div class="badge-zoom-hint" title="Vista ampliada">
+            <i class="bi bi-arrows-fullscreen"></i>
+          </div>
+        </div>
+
+        <!-- Thumbnail Carousel Strip -->
+        <div class="thumb-carousel-wrapper">
+          <button class="btn-thumb-nav" id="btn-thumb-prev" onclick="scrollThumbnails(-1)" aria-label="Imagen anterior">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          
+          <div class="thumb-scroll-track" id="thumbnail-track">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <button class="btn-thumb-nav" id="btn-thumb-next" onclick="scrollThumbnails(1)" aria-label="Siguiente imagen">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- 4 KEY METRIC FEATURE CARDS -->
+        <div class="purity-metrics-row" id="metrics-container">
+          <div class="metric-card-spec">
+            <div class="spec-val" style="color: #ff3344;">5g</div>
+            <div class="spec-label">CREATINA</div>
+          </div>
+          <div class="metric-card-spec">
+            <div class="spec-val" style="color: #10b981;">0g</div>
+            <div class="spec-label">AZÚCAR</div>
+          </div>
+          <div class="metric-card-spec">
+            <div class="spec-val" style="color: #f59e0b;">100%</div>
+            <div class="spec-label">PURA</div>
+          </div>
+          <div class="metric-card-spec">
+            <div class="spec-val" style="color: #e62035;">Libre</div>
+            <div class="spec-label">DE METALES</div>
+          </div>
+        </div>
+
+        <!-- 4-STEP HORIZONTAL QUICK USAGE STRIP -->
+        <div class="usage-steps-strip" id="usage-container">
+          
+          <div class="usage-step-col">
+            <div class="usage-step-icon">
+              <i class="bi bi-cup-straw"></i>
+            </div>
+            <div class="usage-step-text">
+              <div class="step-title">¿Cómo se toma?</div>
+              <div class="step-desc" id="step-como">Mezcle 1 cucharadita colmada con agua o zumo en batidora.</div>
+            </div>
+          </div>
+
+          <div class="usage-step-col">
+            <div class="usage-step-icon">
+              <i class="bi bi-spoon"></i>
+            </div>
+            <div class="usage-step-text">
+              <div class="step-title">Tamaño por toma</div>
+              <div class="step-desc" id="step-tamano">1 cucharadita (5g) en 250ml de agua.</div>
+            </div>
+          </div>
+
+          <div class="usage-step-col">
+            <div class="usage-step-icon">
+              <i class="bi bi-arrow-repeat"></i>
+            </div>
+            <div class="usage-step-text">
+              <div class="step-title">¿Cuántas veces?</div>
+              <div class="step-desc" id="step-cuantas">Consumir 1 vez al día todos los días.</div>
+            </div>
+          </div>
+
+          <div class="usage-step-col">
+            <div class="usage-step-icon">
+              <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="usage-step-text">
+              <div class="step-title">¿Cuándo se toma?</div>
+              <div class="step-desc" id="step-cuando">Consumir antes o después del entrenamiento.</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: PURCHASING BUY BOX -->
+      <div class="product-buy-box">
+        
+        <div class="buy-box-header">
+          <div class="brand-title-tag" id="product-brand-tag">OPTIMUM NUTRITION</div>
+          <div class="sku-badge" id="product-sku-badge">SKU: ON-CRT-600</div>
+        </div>
+
+        <h1 class="product-detail-title" id="product-title-display">CREATINA 600G - OPTIMUM NUTRITION</h1>
+
+        <p class="product-summary-desc" id="product-summary-text">
+          Creatina monohidratada micronizada para incrementar fuerza, potencia, explosividad y rendimiento físico en entrenamientos de alta intensidad.
+          <a class="ver-mas" onclick="scrollToTabs()">Ver más</a>
+        </p>
+
+        <!-- Guarantee Seals Row & Servings Badge -->
+        <div class="guarantee-seals-row">
+          <div class="seals-badges-list">
+            <div class="seal-icon-pill" title="Libre de Gluten"><i class="bi bi-slash-circle"></i></div>
+            <div class="seal-icon-pill" title="100% Pura"><i class="bi bi-award-fill"></i></div>
+            <div class="seal-icon-pill" title="Testeado en Laboratorio"><i class="bi bi-shield-check"></i></div>
+            <div class="seal-icon-pill" title="Sin Aditivos Nocivos"><i class="bi bi-check2-circle"></i></div>
+          </div>
+          <div class="servings-highlight-badge" id="servings-badge">
+            <i class="bi bi-lightning-charge-fill"></i> <span id="servings-badge-text">120 Servicios</span>
+          </div>
+        </div>
+
+        <!-- PRICING MAIN BLOCK -->
+        <div class="pricing-main-block">
+          <div class="price-current-tag">
+            <span class="curr">S/</span> <span id="price-val-display">159.00</span>
+          </div>
+          <div class="price-old-tag" id="price-old-display">S/ 200.00</div>
+          <div class="badge-discount-pill" id="discount-badge-display">20% OFF</div>
+        </div>
+
+        <!-- Urgency Stock Notice -->
+        <div class="stock-urgency-notice" id="stock-urgency-box">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span id="stock-urgency-text">¡Solo quedan 4 unidades disponibles!</span>
+        </div>
+
+        <!-- POWERPAY FINANCING BOX -->
+        <div class="powerpay-financing-box">
+          <div class="powerpay-text">
+            Desde <strong>S/ <span id="powerpay-calc">16.67</span> al mes</strong> o en 3 cuotas sin intereses con todas las tarjetas de crédito.
+            <a href="checkout.html">Más información</a>
+          </div>
+          <div class="powerpay-badge-logo">Powerpay</div>
+        </div>
+
+        <!-- FREE SHIPPING EXPRESS BANNER -->
+        <div class="free-shipping-banner">
+          <i class="bi bi-truck text-warning" style="font-size: 1.15rem;"></i>
+          <span>ENVÍO GRATIS DESDE S/200 A TODO EL PERÚ | Aplican TyC</span>
+        </div>
+
+        <!-- PRESENTATIONS / VARIANT SELECTOR -->
+        <div class="variant-selector-wrapper">
+          <label class="variant-label"><i class="bi bi-grid-3x3-gap-fill text-danger me-1"></i> Presentaciones:</label>
+          <div class="variant-options-group" id="presentations-group">
+            <!-- Dynamically populated -->
+            <button type="button" class="variant-pill-btn" onclick="selectVariant(this, '300 g', 89)">300 g</button>
+            <button type="button" class="variant-pill-btn active" onclick="selectVariant(this, '600 g', 159)">600 g</button>
+            <button type="button" class="variant-pill-btn" onclick="selectVariant(this, '1200 g', 279)">1200 g</button>
+          </div>
+        </div>
+
+        <!-- QUANTITY STEPPER & BUY BUTTON -->
+        <div class="purchase-action-row">
+          <div class="qty-stepper-box">
+            <button type="button" class="qty-stepper-btn" onclick="changeQty(-1)" aria-label="Disminuir">-</button>
+            <input type="text" id="product-qty-input" class="qty-stepper-input" value="1" readonly>
+            <button type="button" class="qty-stepper-btn" onclick="changeQty(1)" aria-label="Aumentar">+</button>
+          </div>
+
+          <button type="button" class="btn-buy-now-cta" id="btn-comprar-ahora" onclick="handleBuyNowClick()">
+            <i class="bi bi-cart-fill"></i> COMPRAR AHORA
+          </button>
+        </div>
+
+        <!-- PAYMENT TRUST BAR -->
+        <div class="payment-trust-bar">
+          <div class="trust-icons-strip">
+            <img src="../assets/images/visa.svg" alt="Visa" onerror="this.style.display='none'">
+            <img src="../assets/images/mastercard.svg" alt="Mastercard" onerror="this.style.display='none'">
+            <img src="../assets/images/diners.svg" alt="Diners" onerror="this.style.display='none'">
+            <span style="background: #6a1b9a; color: white; font-weight: 800; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px;">YAPE</span>
+            <span style="background: #00bcd4; color: white; font-weight: 800; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px;">PLIN</span>
+          </div>
+          <div class="safe-ssl-text">
+            <i class="bi bi-lock-fill text-success"></i> Pago Seguro SSL 256-Bit
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BELOW THE FOLD: TECHNICAL TABS -->
+    <section class="detail-tabs-section" id="tabs-section">
+      
+      <!-- Tab Headers -->
+      <div class="detail-tabs-nav">
+        <button class="tab-nav-btn active" onclick="switchDetailTab(event, 'tab-descripcion')">
+          <i class="bi bi-file-text me-1"></i> Descripción
+        </button>
+        <button class="tab-nav-btn" onclick="switchDetailTab(event, 'tab-nutricional')">
+          <i class="bi bi-table me-1"></i> Tabla Nutricional
+        </button>
+        <button class="tab-nav-btn" onclick="switchDetailTab(event, 'tab-advertencias')">
+          <i class="bi bi-exclamation-triangle-fill me-1"></i> Advertencias y Precauciones
+        </button>
+      </div>
+
+      <!-- TAB 1: DESCRIPCIÓN CON INFOGRAFÍA DE ATLETA -->
+      <div class="tab-pane-content active" id="tab-descripcion">
+        <div class="tab-description-layout">
+          
+          <div class="desc-text-col">
+            <h3 id="tab-desc-title">Creatina Micronizada - Máxima Potencia y Rendimiento</h3>
+            <p id="tab-desc-p1">
+              Suplemento en polvo con 100% creatina monohidratada micronizada de grado farmacéutico, diseñada para apoyar el aumento de fuerza pura, acelerar la síntesis de ATP, elevar la potencia y optimizar el rendimiento durante entrenamientos de alta intensidad.
+            </p>
+
+            <h4>¿Por qué elegir nuestra fórmula?</h4>
+            <ul id="tab-desc-bullets">
+              <li>5 g de creatina monohidratada pura y testeada por porción.</li>
+              <li>Partículas micronizadas que garantizan una disolución instantánea y absorción celular superior.</li>
+              <li>Apoya el incremento de volumen celular y desarrollo de masa muscular magra.</li>
+              <li>Retrasa la fatiga muscular acumulada en series pesadas y sprints.</li>
+              <li>Libre de saborizantes artificiales, azúcares añadidos y metales pesados.</li>
+            </ul>
+
+            <h4>¿Para quién es ideal?</h4>
+            <p>
+              Ideal para deportistas, culturistas, atletas de crossfit y cualquier persona activa que busque llevar su fuerza y explosividad al siguiente nivel físico.
+            </p>
+
+            <h4>¿Cómo usarlo para mejores resultados?</h4>
+            <p>
+              Mezclar 1 scoop (5 g) en 200-250 ml de agua, jugo o batido proteico. Se recomienda consumir 30 minutos antes o inmediatamente después del entrenamiento junto a una adecuada hidratación diaria (mínimo 2.5 litros de agua al día).
+            </p>
+          </div>
+
+          <!-- ATHLETE WORKOUT INFOGRAPHIC BANNER -->
+          <div class="desc-athlete-infographic">
+            <img src="../assets/images/nosotros_mision.jpg" alt="Atleta Nutricenter Rendimiento" id="tab-athlete-img" onerror="this.src='../assets/images/carril.png'">
+            
+            <div class="athlete-overlay-badges">
+              
+              <div class="athlete-pillar-badge">
+                <div class="pillar-title">
+                  <i class="bi bi-lightning-charge-fill text-warning"></i> PRE-ENTRENO
+                </div>
+                <div class="pillar-desc">
+                  Dispara los depósitos de fosfocreatina para máxima explosividad.
+                </div>
+              </div>
+
+              <div class="athlete-pillar-badge">
+                <div class="pillar-title">
+                  <i class="bi bi-shield-fill-check text-info"></i> SUPLEMENTACIÓN
+                </div>
+                <div class="pillar-desc">
+                  Mantiene niveles intracelulares estables todos los días.
+                </div>
+              </div>
+
+              <div class="athlete-pillar-badge">
+                <div class="pillar-title">
+                  <i class="bi bi-heart-pulse-fill text-danger"></i> POST-ENTRENO
+                </div>
+                <div class="pillar-desc">
+                  Acelera la recuperación y regeneración de fibras musculares.
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: TABLA NUTRICIONAL -->
+      <div class="tab-pane-content" id="tab-nutricional">
+        <div class="nutrition-table-wrapper">
+          <table class="nutrition-table">
+            <thead>
+              <tr>
+                <th>Componente / Información Nutricional</th>
+                <th style="text-align: right;">Cantidad por Porción (5g)</th>
+              </tr>
+            </thead>
+            <tbody id="nutrition-table-rows">
+              <tr>
+                <td>Tamaño por Porción</td>
+                <td style="text-align: right;">1 cucharadita (5 g)</td>
+              </tr>
+              <tr>
+                <td>Porciones por Envase</td>
+                <td style="text-align: right;">120 porciones aprox.</td>
+              </tr>
+              <tr>
+                <td>Calorías</td>
+                <td style="text-align: right;">0 kcal</td>
+              </tr>
+              <tr>
+                <td>Creatina Monohidratada Micronizada Pura</td>
+                <td style="text-align: right;">5.0 g (5000 mg)</td>
+              </tr>
+              <tr>
+                <td>Grasas Totales</td>
+                <td style="text-align: right;">0 g</td>
+              </tr>
+              <tr>
+                <td>Carbohidratos Totales</td>
+                <td style="text-align: right;">0 g</td>
+              </tr>
+              <tr>
+                <td>Azúcares Añadidos</td>
+                <td style="text-align: right;">0 g</td>
+              </tr>
+              <tr>
+                <td>Sodio</td>
+                <td style="text-align: right;">0 mg</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: ADVERTENCIAS Y PRECAUCIONES -->
+      <div class="tab-pane-content" id="tab-advertencias">
+        <div class="warnings-card-box">
+          <h4 style="color: #f59e0b; font-weight: 800; margin-bottom: 0.75rem;">
+            <i class="bi bi-shield-exclamation me-2"></i> Advertencias, Precauciones y Almacenamiento
+          </h4>
+          <p id="tab-warnings-text" style="margin-bottom: 0.75rem;">
+            Este producto es un suplemento dietético, no es un medicamento y no suple una alimentación equilibrada. No consumir en estado de gestación, periodo de lactancia ni por menores de 18 años sin previa indicación de un profesional de la salud.
+          </p>
+          <ul style="padding-left: 1.25rem; margin-bottom: 0;">
+            <li>Manténgase fuera del alcance de los niños en todo momento.</li>
+            <li>No exceder la dosis diaria expresamente recomendada.</li>
+            <li>Conservar en su envase original bien cerrado, en un ambiente fresco, seco y protegido de la luz solar directa (temperatura entre 15°C y 30°C).</li>
+            <li>Suspenda su uso y consulte a su médico si experimenta cualquier efecto adverso.</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SIMILAR PRODUCTS SECTION ("Productos similares") -->
+    <section class="similar-products-section">
+      <div class="similar-header-row">
+        <h2 class="similar-title">Productos similares</h2>
+        <a href="productos.html" class="similar-view-all">
+          Ver todos <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="similar-cards-grid" id="similar-cards-container">
+        <!-- Dynamically populated from NutriDB -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Reusable Footer Component -->
+  <div id="footer-placeholder"></div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px;"></div>
+
+  <!-- SCRIPT LOGIC FOR PRODUCT DETAIL -->
+  <script>
+    let currentProduct = null;
+    let selectedPresentation = '';
+    let selectedPrice = 0;
+    let selectedQuantity = 1;
+    let currentGalleryIndex = 0;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Resolve product ID from URL query parameters (?id=X)
+      const urlParams = new URLSearchParams(window.location.search);
+      const prodId = urlParams.get('id') || '2'; // Default to product #2 (Creatina) matching reference
+
+      // 2. Fetch product details from NutriDB
+      await cargarDetalleProducto(prodId);
+
+      // 3. Fallback header check for file:/// environments
+      setTimeout(() => {
+        const ph = document.getElementById('site-header-placeholder');
+        if (!ph || ph.children.length === 0) {
+          const fallback = document.getElementById('fallback-header');
+          if (fallback) fallback.style.display = 'block';
+        }
+      }, 500);
+
+      // Update fallback cart count
+      if (typeof CartDrawer !== 'undefined') {
+        const items = CartDrawer.getItems();
+        const total = items.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 0), 0);
+        const fbCount = document.getElementById('fallback-cart-count');
+        if (fbCount) fbCount.textContent = total;
+      }
+    });
+
+    async function cargarDetalleProducto(id) {
+      if (typeof NutriDB !== 'undefined') {
+        currentProduct = await NutriDB.getProductoById(id);
+      }
+
+      // If still not found, search in all default products
+      if (!currentProduct && typeof NutriDB !== 'undefined') {
+        const prods = await NutriDB.getProductos();
+        currentProduct = prods[0];
+      }
+
+      if (!currentProduct) {
+        console.error('No se pudo encontrar el producto con id:', id);
+        return;
+      }
+
+      renderizarDetalle(currentProduct);
+      await cargarProductosSimilares(currentProduct.id, currentProduct.categoria);
+    }
+
+    function renderizarDetalle(p) {
+      // Title and Meta
+      document.title = `${p.nombre} | Nutricenter Perú`;
+      document.getElementById('page-head-title').textContent = `${p.nombre} | Nutricenter Perú`;
+
+      // Breadcrumbs
+      const catCrumb = document.getElementById('breadcrumb-category');
+      catCrumb.textContent = p.categoria || 'Suplementos';
+      catCrumb.href = `productos.html?cat=${encodeURIComponent(p.categoria || '')}`;
+      document.getElementById('breadcrumb-product-name').textContent = p.nombre;
+
+      // Brand & SKU
+      document.getElementById('gallery-brand-text').textContent = p.marca || 'NUTRICENTER';
+      document.getElementById('product-brand-tag').textContent = p.marca || 'NUTRICENTER';
+      document.getElementById('product-sku-badge').textContent = `SKU: ${p.sku}`;
+
+      // Titles & Summaries
+      document.getElementById('product-title-display').textContent = p.nombre;
+      document.getElementById('product-summary-text').innerHTML = `${p.resumen} <a class="ver-mas" onclick="scrollToTabs()">Ver más</a>`;
+      document.getElementById('servings-badge-text').textContent = p.servicios || '120 Servicios';
+
+      // Prices
+      selectedPrice = parseFloat(p.precio);
+      document.getElementById('price-val-display').textContent = selectedPrice.toFixed(2);
+      
+      const oldPrice = p.precio_antiguo ? parseFloat(p.precio_antiguo) : (selectedPrice * 1.25);
+      document.getElementById('price-old-display').textContent = `S/ ${oldPrice.toFixed(2)}`;
+      document.getElementById('discount-badge-display').textContent = p.descuento || '20% OFF';
+
+      // Powerpay 3-installment calculation
+      const installment = (selectedPrice / 3).toFixed(2);
+      document.getElementById('powerpay-calc').textContent = installment;
+
+      // Stock Urgency
+      const urgencyText = document.getElementById('stock-urgency-text');
+      if (p.stock <= 5) {
+        urgencyText.textContent = `¡Solo quedan ${p.stock} unidades disponibles!`;
+      } else {
+        urgencyText.textContent = `¡Stock disponible! (${p.stock} unidades en almacén central)`;
+      }
+
+    function getCleanImgUrl(img) {
+      if (!img) return '../assets/images/creatina.png';
+      if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://') || img.startsWith('blob:')) {
+        return img;
+      }
+      if (img.startsWith('../')) return img;
+      if (img.startsWith('assets/')) return `../${img}`;
+      return `../assets/images/${img}`;
+    }
+
+      // Main image & Gallery thumbnails
+      const mainImg = document.getElementById('main-product-img');
+      const baseImg = getCleanImgUrl(p.imagen);
+      mainImg.src = baseImg;
+      mainImg.alt = p.nombre;
+
+      const track = document.getElementById('thumbnail-track');
+      track.innerHTML = '';
+
+      const gallery = (p.galeria && p.galeria.length) ? p.galeria : [p.imagen || 'creatina.png', 'BIO-300x300.png', 'nosotros_mision.jpg', 'carril.png'];
+      gallery.forEach((imgFile, idx) => {
+        const item = document.createElement('div');
+        item.className = `thumb-item ${idx === 0 ? 'active' : ''}`;
+        item.onclick = () => selectThumbnail(idx, imgFile);
+        item.innerHTML = `<img src="${getCleanImgUrl(imgFile)}" alt="Vista ${idx + 1}" onerror="this.src='../assets/images/creatina.png'">`;
+        track.appendChild(item);
+      });
+
+      // Purity / Spec Metric cards
+      const metricsContainer = document.getElementById('metrics-container');
+      if (p.metricas && p.metricas.length) {
+        metricsContainer.innerHTML = p.metricas.map((m, i) => {
+          const colors = ['#ff3344', '#10b981', '#f59e0b', '#ffffff'];
+          return `
+            <div class="metric-card-spec">
+              <div class="spec-val" style="color: ${colors[i % colors.length]};">${escapeHTML(m.valor)}</div>
+              <div class="spec-label">${escapeHTML(m.etiqueta)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Usage steps
+      if (p.uso) {
+        if (p.uso.como_se_toma) document.getElementById('step-como').textContent = p.uso.como_se_toma;
+        if (p.uso.tamano_toma) document.getElementById('step-tamano').textContent = p.uso.tamano_toma;
+        if (p.uso.cuantas_veces) document.getElementById('step-cuantas').textContent = p.uso.cuantas_veces;
+        if (p.uso.cuando_se_toma) document.getElementById('step-cuando').textContent = p.uso.cuando_se_toma;
+      }
+
+      // Presentations Buttons
+      const presGroup = document.getElementById('presentations-group');
+      if (p.presentaciones && p.presentaciones.length) {
+        selectedPresentation = p.presentaciones[0];
+        presGroup.innerHTML = p.presentaciones.map((pres, idx) => {
+          // Calculate proportional price adjustment
+          let factor = 1;
+          if (pres.includes('300')) factor = 0.65;
+          else if (pres.includes('600')) factor = 1.0;
+          else if (pres.includes('1200') || pres.includes('1 Kg')) factor = 1.85;
+          else if (pres.includes('2 Kg')) factor = 3.2;
+
+          const calculatedPrice = (parseFloat(p.precio) * factor).toFixed(2);
+
+          return `
+            <button type="button" class="variant-pill-btn ${idx === 0 ? 'active' : ''}" 
+              onclick="selectVariant(this, '${escapeHTML(pres)}', ${calculatedPrice})">
+              ${escapeHTML(pres)}
+            </button>
+          `;
+        }).join('');
+      }
+
+      // Tabs: Descripción
+      document.getElementById('tab-desc-title').textContent = `${p.nombre} - Formulación Premium`;
+      document.getElementById('tab-desc-p1').textContent = p.resumen;
+
+      // Tabs: Tabla Nutricional
+      const nutRows = document.getElementById('nutrition-table-rows');
+      if (p.nutricion && p.nutricion.length) {
+        nutRows.innerHTML = p.nutricion.map(n => `
+          <tr>
+            <td>${escapeHTML(n.parametro)}</td>
+            <td style="text-align: right;">${escapeHTML(n.cantidad)}</td>
+          </tr>
+        `).join('');
+      }
+
+      // Tabs: Advertencias
+      if (p.advertencias) {
+        document.getElementById('tab-warnings-text').textContent = p.advertencias;
+      }
+    }
+
+    function selectThumbnail(index, imgFile) {
+      currentGalleryIndex = index;
+      const mainImg = document.getElementById('main-product-img');
+      mainImg.style.opacity = '0.3';
+      setTimeout(() => {
+        mainImg.src = getCleanImgUrl(imgFile);
+        mainImg.style.opacity = '1';
+      }, 150);
+
+      const thumbs = document.querySelectorAll('.thumb-item');
+      thumbs.forEach((t, i) => {
+        if (i === index) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+    }
+
+    function scrollThumbnails(direction) {
+      const track = document.getElementById('thumbnail-track');
+      track.scrollBy({ left: direction * 150, behavior: 'smooth' });
+    }
+
+    function selectVariant(btn, presName, price) {
+      selectedPresentation = presName;
+      selectedPrice = parseFloat(price);
+      
+      document.getElementById('price-val-display').textContent = selectedPrice.toFixed(2);
+      document.getElementById('powerpay-calc').textContent = (selectedPrice / 3).toFixed(2);
+
+      const oldPrice = selectedPrice * 1.25;
+      document.getElementById('price-old-display').textContent = `S/ ${oldPrice.toFixed(2)}`;
+
+      const btns = document.querySelectorAll('.variant-pill-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function changeQty(delta) {
+      const input = document.getElementById('product-qty-input');
+      let val = parseInt(input.value, 10) || 1;
+      val += delta;
+      if (val < 1) val = 1;
+      if (currentProduct && currentProduct.stock && val > currentProduct.stock) {
+        val = currentProduct.stock;
+        showToast(`Stock máximo disponible alcanzado (${val} unidades)`, 'warning');
+      }
+      input.value = val;
+      selectedQuantity = val;
+    }
+
+    function handleBuyNowClick() {
+      if (!currentProduct) return;
+
+      const qty = parseInt(document.getElementById('product-qty-input').value, 10) || 1;
+      const itemToAdd = {
+        id: currentProduct.id,
+        name: currentProduct.nombre + (selectedPresentation ? ` (${selectedPresentation})` : ''),
+        subtitle: currentProduct.marca || 'NUTRICENTER',
+        price: selectedPrice,
+        qty: qty,
+        image: currentProduct.imagen ? `../assets/images/${currentProduct.imagen}` : '../assets/images/creatina.png'
+      };
+
+      if (typeof CartDrawer !== 'undefined' && CartDrawer.addItem) {
+        CartDrawer.addItem(itemToAdd);
+        CartDrawer.open();
+        showToast(`¡${qty}x ${currentProduct.nombre} añadido al carrito con éxito!`, 'success');
+      } else {
+        // Fallback directly to checkout
+        showToast(`Añadido al carrito: ${qty} unidad(es)`, 'success');
+        setTimeout(() => {
+          window.location.href = 'carrito.html';
+        }, 800);
+      }
+    }
+
+    function switchDetailTab(event, tabId) {
+      const navBtns = document.querySelectorAll('.tab-nav-btn');
+      navBtns.forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      const panes = document.querySelectorAll('.tab-pane-content');
+      panes.forEach(pane => pane.classList.remove('active'));
+
+      const targetPane = document.getElementById(tabId);
+      if (targetPane) {
+        targetPane.classList.add('active');
+      }
+    }
+
+    function scrollToTabs() {
+      const tabs = document.getElementById('tabs-section');
+      if (tabs) {
+        tabs.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    async function cargarProductosSimilares(currentId, categoria) {
+      const container = document.getElementById('similar-cards-container');
+      if (!container) return;
+
+      let prods = [];
+      if (typeof NutriDB !== 'undefined') {
+        prods = await NutriDB.getProductos();
+      }
+
+      // Filter out current product
+      let filtered = prods.filter(p => p.id !== currentId);
+      if (filtered.length === 0) {
+        filtered = prods;
+      }
+
+      // Pick top 5 products
+      const topSimilar = filtered.slice(0, 5);
+
+      container.innerHTML = topSimilar.map(p => {
+        const imgSrc = p.imagen ? `../assets/images/${p.imagen}` : '../assets/images/creatina.png';
+        const price = parseFloat(p.precio).toFixed(2);
+        const oldP = p.precio_antiguo ? parseFloat(p.precio_antiguo).toFixed(2) : (parseFloat(p.precio) * 1.25).toFixed(2);
+        const pres = p.presentaciones && p.presentaciones.length ? p.presentaciones[0].nombre : (p.servicios || 'Nutricenter Oficial');
+
+        return `
+          <div class="product-card" style="cursor: pointer;" onclick="if (!event.target.closest('button')) window.location.href='producto-detalle.html?id=${p.id}'">
+            <div class="product-img-box">
+              <img src="${imgSrc}" alt="${escapeHTML(p.nombre)}" onerror="this.src='../assets/images/creatina.png'">
+            </div>
+            <div class="product-title">${escapeHTML(p.nombre)}</div>
+            <div class="product-desc">${escapeHTML(pres)}</div>
+            <div class="product-prices">
+              <span class="price-old">S/ ${oldP}</span>
+              <span class="price-current">S/ ${price}</span>
+            </div>
+            <div class="product-card-actions">
+              <button class="btn-add-cart" onclick="event.stopPropagation(); addSimilarToCart(${p.id}, '${escapeJS(p.nombre)}', ${p.precio}, '${imgSrc}')">
+                Añadir al carrito
+              </button>
+              <button class="btn-wishlist" onclick="event.stopPropagation(); toggleWishlist(this)" title="Añadir a lista de deseos">
+                <i class="bi bi-heart"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addSimilarToCart(id, name, price, img) {
+      if (typeof CartDrawer !== 'undefined' && CartDrawer.addItem) {
+        CartDrawer.addItem({
+          id: id,
+          name: name,
+          subtitle: 'NUTRICENTER',
+          price: parseFloat(price),
+          qty: 1,
+          image: img
+        });
+        CartDrawer.open();
+        showToast(`¡${name} añadido al carrito!`, 'success');
+      } else {
+        showToast(`Añadido: ${name}`, 'success');
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.style.background = type === 'success' ? '#10b981' : (type === 'warning' ? '#f59e0b' : '#1e293b');
+      toast.style.color = '#ffffff';
+      toast.style.padding = '0.85rem 1.25rem';
+      toast.style.borderRadius = '10px';
+      toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.5)';
+      toast.style.fontSize = '0.9rem';
+      toast.style.fontWeight = '700';
+      toast.style.display = 'flex';
+      toast.style.alignItems = 'center';
+      toast.style.gap = '0.65rem';
+      toast.style.animation = 'fadeIn 0.25s ease';
+      toast.style.border = '1px solid rgba(255,255,255,0.2)';
+
+      const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-info-circle-fill';
+      toast.innerHTML = `<i class="bi ${icon}" style="font-size: 1.2rem;"></i> <span>${escapeHTML(message)}</span>`;
+
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeJS(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>

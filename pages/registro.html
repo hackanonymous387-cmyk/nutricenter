@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Usuario - Nutricenter Perú</title>
+  
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Global & Auth Styles -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <script src="../assets/js/nutri-db.js"></script>
+  <script src="../assets/js/validation.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <!-- Back to Store Link -->
+    <a href="../index.html" class="auth-back-link">
+      <i class="bi bi-arrow-left"></i> Volver a la Tienda
+    </a>
+
+    <!-- Main Register Card -->
+    <div class="auth-card" style="width: 480px;">
+      <div class="auth-header">
+        <a href="../index.html" class="auth-logo-link">
+          <img src="../assets/images/Recurso-6.png" alt="Nutricenter Logo" class="auth-logo-img">
+        </a>
+        <div style="margin-top: 0.75rem;">
+          <span class="auth-badge">
+            <i class="bi bi-person-plus-fill"></i> Crear Nueva Cuenta de Cliente
+          </span>
+        </div>
+      </div>
+
+      <!-- Notice for Checkout / Purchase Redirect -->
+      <div id="checkoutRedirectNotice" style="display:none; margin-bottom: 1.25rem; background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.85rem; color: #e60000; font-weight: 700; text-align: center;">
+        <i class="bi bi-bag-plus-fill" style="margin-right: 0.35rem;"></i> Crea tu cuenta de cliente para completar tu compra
+      </div>
+
+      <form id="registerForm" onsubmit="handleRegisterSubmit(event)" novalidate>
+        <!-- Full Name -->
+        <div class="auth-form-group">
+          <label class="auth-label" for="regNombre">
+            <i class="bi bi-person-fill"></i> Nombre Completo
+          </label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-person auth-input-icon"></i>
+            <input 
+              type="text" 
+              id="regNombre" 
+              class="auth-input" 
+              placeholder="Ej. Carlos Mendoza" 
+              required
+              autocomplete="name"
+            >
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="auth-form-group">
+          <label class="auth-label" for="regEmail">
+            <i class="bi bi-envelope-fill"></i> Correo Electrónico
+          </label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-envelope auth-input-icon"></i>
+            <input 
+              type="email" 
+              id="regEmail" 
+              class="auth-input" 
+              placeholder="ejemplo@correo.com" 
+              required
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="auth-form-group">
+          <label class="auth-label" for="regTelefono">
+            <i class="bi bi-telephone-fill"></i> Teléfono / WhatsApp
+          </label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-whatsapp auth-input-icon"></i>
+            <input 
+              type="tel" 
+              id="regTelefono" 
+              class="auth-input" 
+              placeholder="+51 987 654 321"
+              autocomplete="tel"
+            >
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="auth-form-group">
+          <label class="auth-label" for="regPassword">
+            <i class="bi bi-shield-lock-fill"></i> Contraseña
+          </label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-key-fill auth-input-icon"></i>
+            <input 
+              type="password" 
+              id="regPassword" 
+              class="auth-input" 
+              placeholder="Mínimo 6 caracteres" 
+              required
+              autocomplete="new-password"
+            >
+            <button type="button" class="auth-toggle-pass-btn" onclick="toggleRegPasswordVisibility()" title="Mostrar/ocultar contraseña" aria-label="Mostrar contraseña">
+              <i class="bi bi-eye" id="toggleRegPassIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="auth-submit-btn" id="regBtn" style="margin-top: 0.5rem;">
+          <i class="bi bi-check2-circle"></i> Registrar Cuenta
+        </button>
+      </form>
+
+      <!-- Bottom Login Link -->
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.875rem;">
+        <span style="color: #94a3b8;">¿Ya tienes una cuenta registrada?</span>
+        <a href="login.html" class="auth-register-link" style="margin-left: 0.35rem;">
+          Inicia sesión aquí
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect');
+      if (redirect) {
+        sessionStorage.setItem('nutri_auth_redirect', redirect);
+        const notice = document.getElementById('checkoutRedirectNotice');
+        if (notice) notice.style.display = 'block';
+        const loginLink = document.querySelector('.auth-register-link');
+        if (loginLink) loginLink.href = `login.html?redirect=${encodeURIComponent(redirect)}`;
+      }
+    });
+
+    function toggleRegPasswordVisibility() {
+      const passInput = document.getElementById('regPassword');
+      const icon = document.getElementById('toggleRegPassIcon');
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        passInput.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    }
+
+    function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('regNombre').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const telefono = document.getElementById('regTelefono').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      const vNombre = Validation.validateField(document.getElementById('regNombre'), Validation.isNotEmpty(nombre), 'Ingrese su nombre completo');
+      const vEmail = Validation.validateField(document.getElementById('regEmail'), Validation.isValidEmail(email), 'Correo electrónico inválido');
+      const vPass = Validation.validateField(document.getElementById('regPassword'), Validation.isValidPassword(password), 'Mínimo 6 caracteres');
+
+      if (vNombre && vEmail && vPass) {
+        const btn = document.getElementById('regBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bi bi-arrow-repeat fa-spin"></i> Registrando...';
+
+        Auth.register(nombre, email, password, telefono).finally(() => {
+          setTimeout(() => {
+            if (btn) {
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-check2-circle"></i> Registrar Cuenta';
+            }
+          }, 1200);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

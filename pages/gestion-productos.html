@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario & Catálogo - Nutricenter Perú</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons & FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <script src="../assets/js/nutri-db.js"></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Administrativo Nutricenter -->
+    <aside class="app-sidebar">
+      <div class="sidebar-logo">
+        <a href="../index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+          <img src="../assets/images/Recurso-6.png" alt="Nutricenter Logo" style="max-height: 38px; object-fit: contain;">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-heading">Módulos Administrativos</div>
+        
+        <a href="dashboard.html" class="sidebar-link">
+          <i class="bi bi-speedometer2 text-danger"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="gestion-productos.html" class="sidebar-link active">
+          <i class="bi bi-box-seam-fill text-danger"></i>
+          <span>Gestión Productos</span>
+        </a>
+
+        <a href="ventas.html" class="sidebar-link">
+          <i class="bi bi-cart-check-fill text-danger"></i>
+          <span>Ventas / POS</span>
+        </a>
+
+        <a href="usuarios.html" class="sidebar-link">
+          <i class="bi bi-people-fill text-danger"></i>
+          <span>Usuarios</span>
+        </a>
+
+        <a href="reportes.html" class="sidebar-link">
+          <i class="bi bi-graph-up-arrow text-danger"></i>
+          <span>Reportes</span>
+        </a>
+
+        <div class="sidebar-heading" style="margin-top: 1rem;">Tienda Pública</div>
+        
+        <a href="../index.html" class="sidebar-link" target="_blank">
+          <i class="bi bi-shop text-warning"></i>
+          <span>Ver Tienda Online <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; margin-left: 4px;"></i></span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; padding-bottom: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #1c2233; border: 1.5px solid var(--brand-red); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.85rem;">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <div style="min-width: 0; flex: 1;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Administrador</div>
+            <div style="font-size: 0.72rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
+              <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> En línea
+            </div>
+          </div>
+        </div>
+        <button onclick="if(typeof Auth !== 'undefined' && Auth.logout){Auth.logout();}else{window.location.href='login.html';}" class="btn btn-outline btn-sm" style="width: 100%; border-color: rgba(239, 68, 68, 0.4); color: #ef4444; justify-content: center;">
+          <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <!-- Header Superior -->
+      <header class="app-header">
+        <div>
+          <h2><i class="bi bi-box-seam-fill text-danger me-2"></i> Inventario & Gestión de Productos</h2>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button onclick="cargarProductos()" class="btn btn-secondary btn-sm" title="Recargar catálogo">
+            <i class="bi bi-arrow-clockwise me-1"></i> Actualizar
+          </button>
+          <button onclick="openCreateModal()" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-circle-fill me-1"></i> Nuevo Producto
+          </button>
+        </div>
+      </header>
+
+      <main class="app-content">
+        <!-- Tarjetas de Métricas de Inventario -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+          
+          <div class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; border-top: 3.5px solid #000000;">
+            <div style="width: 50px; height: 50px; border-radius: 12px; background: #f1f5f9; border: 1.5px solid #cbd5e1; display: flex; align-items: center; justify-content: center; color: #0f172a; font-size: 1.5rem;">
+              <i class="bi bi-boxes"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: #475569; font-weight: 700;">Total de Productos</div>
+              <div id="metric-total-prod" style="font-size: 1.5rem; font-weight: 900; color: #000000;">5</div>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; border-top: 3.5px solid #16a34a;">
+            <div style="width: 50px; height: 50px; border-radius: 12px; background: #dcfce7; border: 1.5px solid #86efac; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 1.5rem;">
+              <i class="bi bi-cash-stack"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: #475569; font-weight: 700;">Valor de Inventario</div>
+              <div id="metric-valor-inv" style="font-size: 1.5rem; font-weight: 900; color: #000000;">S/ 8,420.00</div>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; border-top: 3.5px solid #f59e0b;">
+            <div style="width: 50px; height: 50px; border-radius: 12px; background: #fef3c7; border: 1.5px solid #fde68a; display: flex; align-items: center; justify-content: center; color: #b45309; font-size: 1.5rem;">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: #475569; font-weight: 700;">Stock Bajo (Alertas)</div>
+              <div id="metric-bajo-stock" style="font-size: 1.5rem; font-weight: 900; color: #b45309;">1</div>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; border-top: 3.5px solid #e60000;">
+            <div style="width: 50px; height: 50px; border-radius: 12px; background: #fee2e2; border: 1.5px solid #fca5a5; display: flex; align-items: center; justify-content: center; color: #e60000; font-size: 1.5rem;">
+              <i class="bi bi-tags-fill"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: #475569; font-weight: 700;">Categorías Activas</div>
+              <div style="font-size: 1.5rem; font-weight: 900; color: #000000;">5</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Barra de Búsqueda y Filtros -->
+        <div class="card" style="margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div style="position: relative; flex: 1; min-width: 250px;">
+              <input type="text" id="prod-search" class="form-control" style="padding-left: 2.25rem;" placeholder="Buscar por nombre, SKU o código de barras..." onkeyup="filtrarTabla()">
+              <i class="bi bi-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: #64748b;"></i>
+            </div>
+            
+            <div style="width: 220px;">
+              <select id="prod-category-filter" class="form-control" onchange="filtrarTabla()">
+                <option value="">Todas las Categorías</option>
+                <option value="Aceites">Aceites Naturales</option>
+                <option value="Cápsulas">Cápsulas & Pastillas</option>
+                <option value="Potes">Potes & Proteínas</option>
+                <option value="Sobres">Sobres & Polvos</option>
+                <option value="Otros">Otros Suplementos</option>
+              </select>
+            </div>
+
+            <button onclick="filtrarTabla()" class="btn btn-secondary">
+              <i class="bi bi-funnel me-1"></i> Filtrar
+            </button>
+          </div>
+        </div>
+
+        <div class="card" style="border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; background: #111420; overflow: hidden;">
+          <div class="table-responsive" style="border: none; border-radius: 0; width: 100%; overflow-x: auto;">
+            <table class="table" style="margin: 0; width: 100%; table-layout: fixed;">
+              <thead>
+                <tr>
+                  <th style="width: 33%; padding-left: 1.25rem;">Producto & Identificador</th>
+                  <th style="width: 15%;">Categoría</th>
+                  <th style="width: 13%;">Precio Venta</th>
+                  <th style="width: 11%;">Costo</th>
+                  <th style="width: 16%;">Inventario</th>
+                  <th style="width: 12%; text-align: right; padding-right: 1.25rem;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #64748b; padding: 2.5rem;">
+                    <i class="bi bi-arrow-repeat spin me-2"></i> Cargando catálogo de productos...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR PRODUCTO -->
+  <div id="product-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 1rem;">
+    <div class="card" style="width: 580px; max-width: 95%; background: #0f121b; border: 1px solid #232c40; box-shadow: 0 15px 40px rgba(0,0,0,0.7);">
+      <div class="card-header" style="border-bottom: 1px solid #1c2436;">
+        <h3 id="modal-title"><i class="bi bi-box-seam-fill text-danger me-2"></i> Registrar Nuevo Producto</h3>
+        <button onclick="closeProductModal()" style="background: none; border: none; font-size: 1.25rem; color: #94a3b8; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <form id="create-prod-form" onsubmit="handleSaveProduct(event)" style="padding: 1.25rem;">
+        <div class="form-group">
+          <label class="form-label">Nombre del Producto *</label>
+          <input type="text" id="p-nombre" class="form-control" required placeholder="Ej. Aceite de Copaiba 30ml 100% Puro">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Código SKU *</label>
+            <input type="text" id="p-sku" class="form-control" required placeholder="PRD-006">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-upc-scan me-1 text-danger"></i> Código de Barras</label>
+            <input type="text" id="p-barras" class="form-control" placeholder="77501006">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Categoría *</label>
+            <select id="p-categoria" class="form-control" required>
+              <option value="1">Proteínas</option>
+              <option value="2">Creatinas</option>
+              <option value="3">Pre-Entrenos</option>
+              <option value="4">Colágeno & Salud</option>
+              <option value="5">Quemadores</option>
+              <option value="6">Multivitamínicos</option>
+              <option value="7">Aceites Naturales</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Precio de Venta (S/) *</label>
+            <input type="number" step="0.5" id="p-precio" class="form-control" required placeholder="45.00" style="color: #10b981; font-weight: bold;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Costo Compra (S/)</label>
+            <input type="number" step="0.5" id="p-costo" class="form-control" placeholder="25.00">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Stock Inicial *</label>
+            <input type="number" id="p-stock" class="form-control" required placeholder="20">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-exclamation-triangle text-warning me-1"></i> Stock Mínimo</label>
+            <input type="number" id="p-stock-min" class="form-control" value="5" placeholder="5">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-tag-fill text-danger me-1"></i> Marca del Suplemento</label>
+            <input type="text" id="p-marca" class="form-control" placeholder="OPTIMUM NUTRITION, NUTRICENTER LABS">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-lightning-charge text-warning me-1"></i> Porciones / Servicios</label>
+            <input type="text" id="p-servicios" class="form-control" placeholder="120 Servicios">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-image text-info me-1"></i> Imagen Principal</label>
+            <select id="p-imagen" class="form-control">
+              <option value="creatina.png">Creatina Optimum / Nutricenter</option>
+              <option value="GLUKOZ-300x300.png">Glukoz Whey Protein</option>
+              <option value="BIO-300x300.png">Bio Pross Creatina</option>
+              <option value="BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp">Hot Plus Pre-Workout</option>
+              <option value="CURCUMIX-268x300.png">Colágeno Curcumix</option>
+              <option value="BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp">Dry Xtreme Quemador</option>
+              <option value="BOTELLA-SAW-PALMETTO-1-300x300.webp">Saw Palmetto Multivit</option>
+              <option value="ACEITE-COCO-292x300.png">Aceite de Coco Extra Virgen</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-layers text-danger me-1"></i> Presentaciones (Variantes)</label>
+            <input type="text" id="p-presentaciones" class="form-control" placeholder="300 g, 600 g, 1200 g">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" style="margin: 0;"><i class="bi bi-images text-success me-1"></i> Galería de Fotos del Producto</label>
+            <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('p-file-galeria').click()" style="padding: 2px 8px; font-size: 0.75rem; background: #e60000; border-color: #e60000; font-weight: 700;">
+              <i class="bi bi-cloud-arrow-up me-1"></i> Subir Fotos (PC)
+            </button>
+            <input type="file" id="p-file-galeria" multiple accept="image/*" style="display: none;" onchange="handleSubirFotosModal(event, 'p-galeria', 'p-galeria-preview')">
+          </div>
+          <input type="text" id="p-galeria" class="form-control" placeholder="creatina.png, BIO-300x300.png, nosotros_mision.jpg" oninput="renderGaleriaPreviewFromInput('p-galeria', 'p-galeria-preview')">
+          
+          <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px;">
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('creatina.png', 'p-galeria', 'p-galeria-preview')">+ Creatina</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('GLUKOZ-300x300.png', 'p-galeria', 'p-galeria-preview')">+ Glukoz</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('BIO-300x300.png', 'p-galeria', 'p-galeria-preview')">+ Bio Pross</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp', 'p-galeria', 'p-galeria-preview')">+ Hot Plus</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('proteinas.webp', 'p-galeria', 'p-galeria-preview')">+ Proteínas</span>
+          </div>
+
+          <div id="p-galeria-preview" style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; min-height: 40px; padding: 4px; background: rgba(0,0,0,0.3); border-radius: 6px;"></div>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <label class="form-label"><i class="bi bi-card-text text-secondary me-1"></i> Resumen / Descripción Ficha Técnica</label>
+          <textarea id="p-resumen" class="form-control" rows="2" placeholder="Breve resumen de beneficios y pureza..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; border-top: 1px solid #1c2436; padding-top: 1rem;">
+          <button type="button" onclick="closeProductModal()" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR PRODUCTO -->
+  <div id="edit-product-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 1rem;">
+    <div class="card" style="width: 580px; max-width: 95%; background: #0f121b; border: 1px solid #232c40; box-shadow: 0 15px 40px rgba(0,0,0,0.7);">
+      <div class="card-header" style="border-bottom: 1px solid #1c2436;">
+        <h3><i class="bi bi-pencil-square text-warning me-2"></i> Editar Producto de Catálogo</h3>
+        <button onclick="closeEditProductModal()" style="background: none; border: none; font-size: 1.25rem; color: #94a3b8; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <form id="edit-prod-form" onsubmit="handleEditProductSubmit(event)" style="padding: 1.25rem;">
+        <input type="hidden" id="ep-id">
+
+        <div class="form-group">
+          <label class="form-label">Nombre del Producto *</label>
+          <input type="text" id="ep-nombre" class="form-control" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Código SKU *</label>
+            <input type="text" id="ep-sku" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-upc-scan me-1 text-danger"></i> Código de Barras</label>
+            <input type="text" id="ep-barras" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Categoría *</label>
+            <select id="ep-categoria" class="form-control" required>
+              <option value="Proteínas">Proteínas</option>
+              <option value="Creatinas">Creatinas</option>
+              <option value="Pre-Entrenos">Pre-Entrenos</option>
+              <option value="Colágeno & Salud">Colágeno & Salud</option>
+              <option value="Quemadores">Quemadores</option>
+              <option value="Multivitamínicos">Multivitamínicos</option>
+              <option value="Aceites Naturales">Aceites Naturales</option>
+              <option value="Otros Suplementos">Otros Suplementos</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Precio de Venta (S/) *</label>
+            <input type="number" step="0.5" id="ep-precio" class="form-control" required style="color: #10b981; font-weight: bold;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Costo Compra (S/)</label>
+            <input type="number" step="0.5" id="ep-costo" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Stock Actual *</label>
+            <input type="number" id="ep-stock" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-exclamation-triangle text-warning me-1"></i> Stock Mínimo</label>
+            <input type="number" id="ep-stock-min" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-tag-fill text-danger me-1"></i> Marca del Suplemento</label>
+            <input type="text" id="ep-marca" class="form-control" placeholder="OPTIMUM NUTRITION, NUTRICENTER LABS">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-lightning-charge text-warning me-1"></i> Porciones / Servicios</label>
+            <input type="text" id="ep-servicios" class="form-control" placeholder="120 Servicios">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-image text-info me-1"></i> Imagen Principal</label>
+            <select id="ep-imagen" class="form-control">
+              <option value="creatina.png">Creatina Optimum / Nutricenter</option>
+              <option value="GLUKOZ-300x300.png">Glukoz Whey Protein</option>
+              <option value="BIO-300x300.png">Bio Pross Creatina</option>
+              <option value="BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp">Hot Plus Pre-Workout</option>
+              <option value="CURCUMIX-268x300.png">Colágeno Curcumix</option>
+              <option value="BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp">Dry Xtreme Quemador</option>
+              <option value="BOTELLA-SAW-PALMETTO-1-300x300.webp">Saw Palmetto Multivit</option>
+              <option value="ACEITE-COCO-292x300.png">Aceite de Coco Extra Virgen</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-layers text-danger me-1"></i> Presentaciones (Variantes)</label>
+            <input type="text" id="ep-presentaciones" class="form-control" placeholder="300 g, 600 g, 1200 g">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" style="margin: 0;"><i class="bi bi-images text-success me-1"></i> Galería de Fotos del Producto</label>
+            <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('ep-file-galeria').click()" style="padding: 2px 8px; font-size: 0.75rem; background: #e60000; border-color: #e60000; font-weight: 700;">
+              <i class="bi bi-cloud-arrow-up me-1"></i> Subir Fotos (PC)
+            </button>
+            <input type="file" id="ep-file-galeria" multiple accept="image/*" style="display: none;" onchange="handleSubirFotosModal(event, 'ep-galeria', 'ep-galeria-preview')">
+          </div>
+          <input type="text" id="ep-galeria" class="form-control" placeholder="creatina.png, BIO-300x300.png, nosotros_mision.jpg" oninput="renderGaleriaPreviewFromInput('ep-galeria', 'ep-galeria-preview')">
+          
+          <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px;">
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('creatina.png', 'ep-galeria', 'ep-galeria-preview')">+ Creatina</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('GLUKOZ-300x300.png', 'ep-galeria', 'ep-galeria-preview')">+ Glukoz</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('BIO-300x300.png', 'ep-galeria', 'ep-galeria-preview')">+ Bio Pross</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('BOTELLA-HOT-PLUZ-ROJO-1-300x300.webp', 'ep-galeria', 'ep-galeria-preview')">+ Hot Plus</span>
+            <span class="quick-chip" style="font-size: 0.72rem; padding: 2px 6px; cursor: pointer; background: #1c2436; border: 1px solid #2e3a52; border-radius: 4px; color: #94a3b8;" onclick="addChipToGaleria('proteinas.webp', 'ep-galeria', 'ep-galeria-preview')">+ Proteínas</span>
+          </div>
+
+          <div id="ep-galeria-preview" style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; min-height: 40px; padding: 4px; background: rgba(0,0,0,0.3); border-radius: 6px;"></div>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <label class="form-label"><i class="bi bi-card-text text-secondary me-1"></i> Resumen / Descripción Ficha Técnica</label>
+          <textarea id="ep-resumen" class="form-control" rows="2" placeholder="Breve resumen de beneficios y pureza..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; border-top: 1px solid #1c2436; padding-top: 1rem;">
+          <button type="button" onclick="closeEditProductModal()" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-primary" style="background: #f59e0b; border-color: #f59e0b; color: #000; font-weight: 700;"><i class="bi bi-save me-1"></i> Actualizar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let productos = [];
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeJS(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (typeof Auth !== 'undefined' && Auth.requireAuth) {
+        Auth.requireAuth();
+      }
+      
+      // Update sidebar user display if logged in
+      if (typeof Auth !== 'undefined') {
+        const u = Auth.getUser();
+        const sideUser = document.querySelector('.sidebar-footer div div div');
+        if (sideUser && u && u.nombre) {
+          sideUser.textContent = u.nombre;
+        }
+      }
+
+      await cargarProductos();
+    });
+
+    async function cargarProductos() {
+      const tbody = document.getElementById('products-table-body');
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2.5rem;"><i class="bi bi-arrow-repeat spin me-2"></i> Cargando catálogo sincronizado con NutriDB...</td></tr>`;
+
+      try {
+        if (typeof NutriDB !== 'undefined') {
+          productos = await NutriDB.getProductos();
+        } else {
+          const res = await fetch('../backend/routes/api.php?action=productos');
+          const data = await res.json();
+          productos = (data && data.status === 'success' && Array.isArray(data.data)) ? data.data : [];
+        }
+      } catch (e) {
+        if (typeof NutriDB !== 'undefined') {
+          productos = await NutriDB.getProductos();
+        } else {
+          productos = [];
+        }
+      }
+
+      renderizarTabla(productos);
+      actualizarMetricas(productos);
+    }
+
+    function renderizarTabla(items) {
+      const tbody = document.getElementById('products-table-body');
+      tbody.innerHTML = '';
+
+      if (!items || items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2.5rem;">No se encontraron productos coincidentes</td></tr>`;
+        return;
+      }
+
+      items.forEach((p) => {
+        const tr = document.createElement('tr');
+        const imgSrc = p.imagen && p.imagen !== 'default_product.png' ? `../assets/images/${p.imagen}` : `../assets/images/GLUKOZ-300x300.png`;
+        const esBajo = parseInt(p.stock) <= parseInt(p.stock_minimo || 5);
+        const costo = p.precio_compra ? `S/ ${parseFloat(p.precio_compra).toFixed(2)}` : 'S/ 0.00';
+
+        tr.innerHTML = `
+          <td style="padding-left: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
+              <img src="${imgSrc}" alt="${escapeHTML(p.nombre)}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: #161c2c; padding: 2px; border: 1px solid rgba(255,255,255,0.06); flex-shrink: 0;" onerror="this.src='../assets/images/GLUKOZ-300x300.png'">
+              <div style="min-width: 0; flex: 1;">
+                <div style="font-weight: 700; color: #ffffff; font-size: 0.88rem; line-height: 1.25; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${escapeHTML(p.nombre)}">${escapeHTML(p.nombre)}</div>
+                <div style="font-size: 0.7rem; color: #94a3b8; display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <span style="color: #ff3344; font-family: monospace; font-weight: 700;">${escapeHTML(p.sku)}</span>
+                  ${p.codigo_barras ? `<span style="opacity: 0.35;">&bull;</span> <span style="font-family: monospace;"><i class="bi bi-upc-scan me-1"></i>${escapeHTML(p.codigo_barras)}</span>` : ''}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="badge badge-secondary" style="font-size: 0.74rem; padding: 0.28rem 0.6rem; background: #182033; border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 100%;">${escapeHTML(p.categoria || 'Suplementos')}</span>
+          </td>
+          <td>
+            <div style="font-weight: 800; color: #10b981; font-size: 0.9rem; white-space: nowrap;">S/ ${parseFloat(p.precio).toFixed(2)}</div>
+          </td>
+          <td style="color: #64748b; font-size: 0.82rem; white-space: nowrap;">${costo}</td>
+          <td>
+            <span class="badge ${p.stock <= 0 ? 'badge-danger' : (esBajo ? 'badge-warning' : 'badge-success')}" style="font-size: 0.74rem; padding: 0.28rem 0.6rem; font-weight: 700; white-space: nowrap;">
+              ${p.stock <= 0 
+                ? '<i class="bi bi-x-circle-fill me-1"></i> 0 und' 
+                : (esBajo 
+                    ? `<i class="bi bi-exclamation-triangle-fill me-1"></i> ${p.stock} und` 
+                    : `<i class="bi bi-check-circle-fill me-1"></i> ${p.stock} und`)}
+            </span>
+          </td>
+          <td style="text-align: right; padding-right: 1.25rem;">
+            <div style="display: flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">
+              <a href="producto-detalle.html?id=${p.id}" target="_blank" class="btn btn-secondary btn-sm" title="Ver Ficha de Producto" style="padding: 0.3rem 0.55rem; font-size: 0.8rem; border-radius: 6px; line-height: 1; text-decoration: none; color: #38bdf8;">
+                <i class="bi bi-eye"></i>
+              </a>
+              <button onclick="abrirModalEditarProducto(${p.id})" class="btn btn-secondary btn-sm" title="Editar Producto" style="padding: 0.3rem 0.55rem; font-size: 0.8rem; border-radius: 6px; line-height: 1;">
+                <i class="bi bi-pencil text-warning"></i>
+              </button>
+              <button onclick="ajustarStockRapido(${p.id}, '${escapeJS(p.nombre)}')" class="btn btn-secondary btn-sm" title="Ajustar Stock" style="padding: 0.3rem 0.55rem; font-size: 0.8rem; border-radius: 6px; line-height: 1;">
+                <i class="bi bi-plus-slash-minus text-info"></i>
+              </button>
+              <button onclick="eliminarProducto(${p.id}, '${escapeJS(p.nombre)}')" class="btn btn-danger btn-sm" title="Eliminar Producto" style="padding: 0.3rem 0.55rem; font-size: 0.8rem; border-radius: 6px; line-height: 1;">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function actualizarMetricas(items) {
+      document.getElementById('metric-total-prod').textContent = items.length;
+      
+      let valorTotal = 0;
+      let bajoStockCount = 0;
+
+      items.forEach(p => {
+        valorTotal += parseFloat(p.precio) * parseInt(p.stock);
+        if (parseInt(p.stock) <= parseInt(p.stock_minimo || 5)) {
+          bajoStockCount++;
+        }
+      });
+
+      document.getElementById('metric-valor-inv').textContent = `S/ ${valorTotal.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('metric-bajo-stock').textContent = bajoStockCount;
+    }
+
+    function filtrarTabla() {
+      const term = document.getElementById('prod-search').value.toLowerCase().trim();
+      const cat = document.getElementById('prod-category-filter').value.toLowerCase();
+
+      const filtered = productos.filter(p => {
+        const matchTerm = p.nombre.toLowerCase().includes(term) || 
+                          p.sku.toLowerCase().includes(term) || 
+                          (p.codigo_barras && p.codigo_barras.includes(term));
+        const matchCat = !cat || (p.categoria && p.categoria.toLowerCase().includes(cat));
+        return matchTerm && matchCat;
+      });
+
+      renderizarTabla(filtered);
+    }
+
+    // ==========================================
+    // CREAR PRODUCTO
+    // ==========================================
+    function openCreateModal() {
+      document.getElementById('create-prod-form').reset();
+      renderGaleriaPreviewFromInput('p-galeria', 'p-galeria-preview');
+      document.getElementById('p-sku').value = 'PRD-' + Math.floor(100 + Math.random() * 900);
+      document.getElementById('product-modal').style.display = 'flex';
+      document.getElementById('p-nombre').focus();
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').style.display = 'none';
+    }
+
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      const catSelect = document.getElementById('p-categoria');
+      const payload = {
+        nombre: document.getElementById('p-nombre').value.trim(),
+        marca: (document.getElementById('p-marca').value || 'NUTRICENTER').trim(),
+        sku: document.getElementById('p-sku').value.trim(),
+        codigo_barras: document.getElementById('p-barras').value.trim() || `775010${Math.floor(10 + Math.random() * 90)}`,
+        categoria: catSelect.options[catSelect.selectedIndex].text,
+        categoria_id: parseInt(catSelect.value),
+        precio: parseFloat(document.getElementById('p-precio').value),
+        precio_compra: parseFloat(document.getElementById('p-costo').value || 0),
+        stock: parseInt(document.getElementById('p-stock').value),
+        stock_minimo: parseInt(document.getElementById('p-stock-min').value || 5),
+        servicios: (document.getElementById('p-servicios').value || '120 Servicios').trim(),
+        presentaciones: document.getElementById('p-presentaciones').value.trim(),
+        galeria: document.getElementById('p-galeria').value.trim(),
+        resumen: document.getElementById('p-resumen').value.trim(),
+        imagen: document.getElementById('p-imagen').value
+      };
+
+      try {
+        if (typeof NutriDB !== 'undefined') {
+          await NutriDB.createProducto(payload);
+        } else {
+          await fetch('../backend/routes/api.php?action=productos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
+        closeProductModal();
+        await cargarProductos();
+        showToast('¡Producto registrado con éxito en la base de datos!', 'success');
+      } catch (err) {
+        showToast('Error al guardar producto', 'danger');
+      }
+    }
+
+    // ==========================================
+    // EDITAR PRODUCTO
+    // ==========================================
+    function abrirModalEditarProducto(id) {
+      const p = productos.find(item => item.id == id);
+      if (!p) {
+        showToast('Producto no encontrado', 'danger');
+        return;
+      }
+
+      document.getElementById('ep-id').value = p.id;
+      document.getElementById('ep-nombre').value = p.nombre;
+      document.getElementById('ep-marca').value = p.marca || 'OPTIMUM NUTRITION';
+      document.getElementById('ep-sku').value = p.sku;
+      document.getElementById('ep-barras').value = p.codigo_barras || '';
+      document.getElementById('ep-categoria').value = p.categoria || 'Proteínas';
+      document.getElementById('ep-precio').value = parseFloat(p.precio).toFixed(2);
+      document.getElementById('ep-costo').value = p.precio_compra ? parseFloat(p.precio_compra).toFixed(2) : '0.00';
+      document.getElementById('ep-stock').value = p.stock;
+      document.getElementById('ep-stock-min').value = p.stock_minimo || 5;
+      document.getElementById('ep-servicios').value = p.servicios || '120 Servicios';
+      document.getElementById('ep-presentaciones').value = Array.isArray(p.presentaciones) ? p.presentaciones.join(', ') : (p.presentaciones || '300 g, 600 g, 1200 g');
+      document.getElementById('ep-galeria').value = Array.isArray(p.galeria) ? p.galeria.join(', ') : (p.galeria || '');
+      renderGaleriaPreviewFromInput('ep-galeria', 'ep-galeria-preview');
+      document.getElementById('ep-resumen').value = p.resumen || '';
+
+      if (p.imagen) {
+        document.getElementById('ep-imagen').value = p.imagen;
+      }
+
+      document.getElementById('edit-product-modal').style.display = 'flex';
+      document.getElementById('ep-nombre').focus();
+    }
+
+    function closeEditProductModal() {
+      document.getElementById('edit-product-modal').style.display = 'none';
+    }
+
+    async function handleEditProductSubmit(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('ep-id').value);
+      const updates = {
+        nombre: document.getElementById('ep-nombre').value.trim(),
+        marca: document.getElementById('ep-marca').value.trim(),
+        sku: document.getElementById('ep-sku').value.trim(),
+        codigo_barras: document.getElementById('ep-barras').value.trim(),
+        categoria: document.getElementById('ep-categoria').value,
+        precio: parseFloat(document.getElementById('ep-precio').value),
+        precio_compra: parseFloat(document.getElementById('ep-costo').value || 0),
+        stock: parseInt(document.getElementById('ep-stock').value),
+        stock_minimo: parseInt(document.getElementById('ep-stock-min').value || 5),
+        servicios: document.getElementById('ep-servicios').value.trim(),
+        presentaciones: document.getElementById('ep-presentaciones').value.trim(),
+        galeria: document.getElementById('ep-galeria').value.trim(),
+        resumen: document.getElementById('ep-resumen').value.trim(),
+        imagen: document.getElementById('ep-imagen').value
+      };
+
+      try {
+        if (typeof NutriDB !== 'undefined') {
+          await NutriDB.updateProducto(id, updates);
+        } else {
+          await fetch('../backend/routes/api.php?action=productos', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, ...updates })
+          });
+        }
+        closeEditProductModal();
+        await cargarProductos();
+        showToast('¡Producto actualizado exitosamente!', 'success');
+      } catch (err) {
+        showToast('Error al actualizar el producto', 'danger');
+      }
+    }
+
+    // ==========================================
+    // AJUSTAR STOCK RÁPIDO
+    // ==========================================
+    async function ajustarStockRapido(id, nombre) {
+      const cant = prompt(`Ajustar stock de "${nombre}":\nIngresa número a sumar (ej: 10) o restar (ej: -5):`);
+      if (cant === null || cant.trim() === '') return;
+
+      const num = parseInt(cant);
+      if (isNaN(num)) {
+        showToast('Cantidad inválida', 'danger');
+        return;
+      }
+
+      try {
+        if (typeof NutriDB !== 'undefined') {
+          const tipo = num >= 0 ? 'suma' : 'resta';
+          await NutriDB.adjustStock(id, Math.abs(num), tipo);
+        }
+        await cargarProductos();
+        showToast(`Stock de "${nombre}" actualizado correctamente`, 'success');
+      } catch (err) {
+        showToast('Error al ajustar stock', 'danger');
+      }
+    }
+
+    // ==========================================
+    // ELIMINAR PRODUCTO
+    // ==========================================
+    async function eliminarProducto(id, nombre) {
+      if (confirm(`¿Estás seguro de eliminar permanentemente el producto "${nombre}"?\nEsta acción retirará el artículo de la tienda y del inventario.`)) {
+        try {
+          if (typeof NutriDB !== 'undefined') {
+            await NutriDB.deleteProducto(id);
+          } else {
+            await fetch(`../backend/routes/api.php?action=producto_eliminar&id=${id}`);
+          }
+          await cargarProductos();
+          showToast(`Producto "${nombre}" eliminado del catálogo`, 'info');
+        } catch (err) {
+          showToast('Error al eliminar producto', 'danger');
+        }
+      }
+    }
+
+    // ==========================================
+    // MULTI-IMAGEN GALLERY HELPERS
+    // ==========================================
+    function resolveImgPathGP(path) {
+      if (!path) return '../assets/images/creatina.png';
+      if (path.startsWith('data:') || path.startsWith('http://') || path.startsWith('https://') || path.startsWith('blob:')) {
+        return path;
+      }
+      if (path.startsWith('../')) return path;
+      if (path.startsWith('assets/')) return `../${path}`;
+      return `../assets/images/${path}`;
+    }
+
+    function renderGaleriaPreviewFromInput(inputId, containerId) {
+      const input = document.getElementById(inputId);
+      const container = document.getElementById(containerId);
+      if (!input || !container) return;
+
+      const raw = input.value.trim();
+      const list = raw ? raw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      if (!list.length) {
+        container.innerHTML = '<small style="color: #64748b; font-size: 0.75rem; padding: 4px;">Sin fotos aún. Sube imágenes o haz clic en los accesos rápidos.</small>';
+        return;
+      }
+
+      container.innerHTML = '';
+      list.forEach((imgFile, idx) => {
+        const thumb = document.createElement('div');
+        thumb.style.cssText = 'position: relative; width: 44px; height: 44px; border-radius: 6px; background: #fff; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 2px;';
+        thumb.innerHTML = `
+          <img src="${resolveImgPathGP(imgFile)}" alt="Thumb ${idx + 1}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.src='../assets/images/creatina.png'">
+          <button type="button" onclick="removeFotoFromInput('${inputId}', '${containerId}', ${idx})" title="Eliminar" style="position: absolute; top: 1px; right: 1px; background: rgba(220, 38, 38, 0.9); border: none; color: #fff; width: 14px; height: 14px; border-radius: 50%; font-size: 9px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
+        `;
+        container.appendChild(thumb);
+      });
+    }
+
+    function addChipToGaleria(imgFile, inputId, containerId) {
+      const input = document.getElementById(inputId);
+      let list = input.value ? input.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+      if (!list.includes(imgFile)) {
+        list.push(imgFile);
+        input.value = list.join(', ');
+        renderGaleriaPreviewFromInput(inputId, containerId);
+      }
+    }
+
+    function removeFotoFromInput(inputId, containerId, idx) {
+      const input = document.getElementById(inputId);
+      let list = input.value ? input.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+      list.splice(idx, 1);
+      input.value = list.join(', ');
+      renderGaleriaPreviewFromInput(inputId, containerId);
+    }
+
+    function handleSubirFotosModal(e, inputId, containerId) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+
+      const input = document.getElementById(inputId);
+      let list = input.value ? input.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      let loaded = 0;
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (loadEvt) => {
+          list.push(loadEvt.target.result);
+          loaded++;
+          if (loaded === files.length) {
+            input.value = list.join(', ');
+            renderGaleriaPreviewFromInput(inputId, containerId);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      e.target.value = '';
+    }
+  </script>
+</body>
+</html>

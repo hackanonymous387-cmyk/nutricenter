@@ -1,0 +1,377 @@
+/* ==========================================================================
+   NUTRICENTER - Modern Dark Mode Authentication Styles
+   High-performance, luxury sports brand aesthetics
+   ========================================================================== */
+
+.auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  background: radial-gradient(circle at 50% 25%, rgba(255, 0, 0, 0.12) 0%, rgba(10, 10, 14, 0.98) 70%, #000000 100%);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #ffffff;
+}
+
+/* Subtle ambient red decorative light cones */
+.auth-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.18) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Back Link */
+.auth-back-link {
+  position: absolute;
+  top: 1.75rem;
+  left: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  z-index: 10;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-back-link:hover {
+  color: #ffffff;
+  background: rgba(255, 0, 0, 0.15);
+  border-color: rgba(255, 0, 0, 0.3);
+  transform: translateX(-3px);
+}
+
+/* Glassmorphism Auth Card */
+.auth-card {
+  position: relative;
+  z-index: 5;
+  width: 440px;
+  max-width: 100%;
+  background: rgba(13, 16, 24, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 0, 0, 0.45);
+  border-radius: 24px;
+  padding: 2.75rem 2.25rem 2.25rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 0, 0, 0.18);
+  box-sizing: border-box;
+  animation: authCardFadeIn 0.45s ease-out;
+}
+
+@keyframes authCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Card Header & Brand Logo */
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-logo-link {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.auth-logo-link:hover {
+  transform: scale(1.04);
+}
+
+.auth-logo-img {
+  max-height: 52px;
+  width: auto;
+  filter: drop-shadow(0 4px 12px rgba(255, 0, 0, 0.25));
+}
+
+.auth-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.25);
+  color: #ff4d4d;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Form Groups & Inputs */
+.auth-form-group {
+  margin-bottom: 1.35rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.auth-label i {
+  color: #ff0000;
+  font-size: 0.95rem;
+}
+
+.auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #64748b;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+  pointer-events: none;
+}
+
+.auth-input {
+  width: 100%;
+  height: 48px;
+  background: #131722;
+  border: 1.5px solid #232938;
+  border-radius: 12px;
+  padding: 0 1rem 0 2.85rem;
+  font-size: 0.925rem;
+  color: #ffffff;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  border-color: #ff0000;
+  background: #171c2a;
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.22);
+}
+
+.auth-input:focus ~ .auth-input-icon,
+.auth-input-wrap:focus-within .auth-input-icon {
+  color: #ff0000;
+}
+
+.auth-input::placeholder {
+  color: #64748b;
+}
+
+.auth-toggle-pass-btn {
+  position: absolute;
+  right: 0.85rem;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.35rem;
+  transition: color 0.2s ease;
+}
+
+.auth-toggle-pass-btn:hover {
+  color: #ff0000;
+}
+
+/* Remember Me & Link Row */
+.auth-options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0 1.65rem;
+  font-size: 0.85rem;
+}
+
+.auth-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.auth-checkbox-label:hover {
+  color: #cbd5e1;
+}
+
+.auth-checkbox-label input[type="checkbox"] {
+  accent-color: #ff0000;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-register-link {
+  color: #ff0000;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.auth-register-link:hover {
+  color: #ff4d4d;
+  text-decoration: underline;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+}
+
+/* Submit Button */
+.auth-submit-btn {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #ff0000 0%, #d60000 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.35);
+  transition: all 0.25s ease;
+}
+
+.auth-submit-btn:hover {
+  background: linear-gradient(135deg, #ff1a1a 0%, #e60000 100%);
+  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.55);
+  transform: translateY(-2px);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Demo Credentials Box */
+.auth-demo-card {
+  margin-top: 1.75rem;
+  padding: 0.95rem 1.15rem;
+  background: rgba(20, 24, 35, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  position: relative;
+}
+
+.auth-demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.auth-demo-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.auth-demo-tag {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.auth-demo-code {
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ff4d4d;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-weight: 700;
+  border: 1px solid rgba(255, 0, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.auth-demo-code:hover {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.auth-autofill-btn {
+  background: none;
+  border: none;
+  color: #ff0000;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 2px;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.auth-autofill-btn:hover {
+  color: #ff4d4d;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 520px) {
+  .auth-card {
+    padding: 2rem 1.5rem 1.75rem;
+  }
+  .auth-back-link {
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.8rem;
+  }
+  .auth-options-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

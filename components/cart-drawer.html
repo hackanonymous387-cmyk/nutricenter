@@ -1,0 +1,21 @@
+<!-- NUTRICENTER - Official Cart Drawer Component (TU CARRITO) -->
+<div id="cartDrawerOverlay" class="cart-drawer-overlay" onclick="CartDrawer.close()"></div>
+
+<aside id="cartDrawer" class="cart-drawer" role="dialog" aria-label="Tu Carrito de Compras">
+  <div class="cart-drawer-header">
+    <h2 class="cart-drawer-title">TU CARRITO</h2>
+    <button type="button" class="cart-drawer-close" onclick="CartDrawer.close()" aria-label="Cerrar Carrito">
+      <span class="cart-drawer-close-symbol">✕</span> Cerrar
+    </button>
+  </div>
+
+  <div class="cart-drawer-body" id="cartDrawerBody">
+    <!-- Populated dynamically by cart.js -->
+  </div>
+
+  <div class="cart-drawer-footer" id="cartDrawerFooter">
+    <button type="button" class="cart-drawer-checkout-btn" onclick="CartDrawer.checkout()">
+      FINALIZAR COMPRA
+    </button>
+  </div>
+</aside>

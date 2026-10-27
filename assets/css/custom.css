@@ -1,0 +1,788 @@
+﻿/**
+ * ==========================================================================
+ * Nutricenter Perú - Custom Theme & Design Styles
+ * Estilos personalizados de la tienda: cabecera, buscador, catálogo, botones,
+ * lista de deseos, carrito y tipografías.
+ * ==========================================================================
+ */
+/* INPUT */
+		.dgwt-wcas-search-input {
+			background-color: #FFFFFF !important;
+			border: 2px solid #EA1C30 !important;
+			border-radius: 20px !important;
+			padding: 16px 70px 16px 24px !important;
+			height: 45px !important;
+			font-family: "Bio Sans", sans-serif !important;
+			font-size: 14px !important;
+			color: #999999 !important;
+			box-shadow: none !important;
+			outline: none !important;
+		}
+
+		/* PLACEHOLDER */
+		.dgwt-wcas-search-input::placeholder {
+			color: #999999 !important;
+			opacity: 1 !important;
+			font-family: "Bio Sans", sans-serif !important;
+		}
+
+		/* FOCUS SIN DOBLE BORDE */
+		.dgwt-wcas-search-input:focus {
+			border: 2px solid #EA1C30 !important;
+			box-shadow: none !important;
+		}
+
+		/* BOTÓN INTEGRADO */
+		.dgwt-wcas-search-submit {
+			position: absolute !important;
+			right: 0 !important;
+			top: 7% !important;
+			height: 85% !important;
+			width: 70px !important;
+			border-radius: 20px 20px 20px 20px !important;
+			background-color: #EA1C30 !important;
+			border: none !important;
+			display: flex !important;
+			align-items: center;
+			justify-content: center;
+			left: auto !important;
+		}
+
+		/* COLOR CORRECTO DE LA LUPA */
+		.dgwt-wcas-ico-magnifier {
+			color: #FFFFFF !important;
+			font-size: 2px !important;
+			z-index: 9999 !important;
+		}
+
+		.dgwt-wcas-search-wrapp .dgwt-wcas-ico-magnifier,
+		.dgwt-wcas-search-wrapp .dgwt-wcas-sf-wrapp .dgwt-wcas-search-submit svg path,
+		.dgwt-wcas-om-bar .dgwt-wcas-om-return svg path {
+			fill: #FFFFFF !important;
+		}
+
+		.dgwt-wcas-open-pirx .dgwt-wcas-style-pirx.dgwt-wcas-style-pirx-compact .dgwt-wcas-sf-wrapp,
+		.dgwt-wcas-open-pirx.dgwt-wcas-overlay-mobile-on .dgwt-wcas-om-bar button.dgwt-wcas-om-return {
+			background: transparent !important;
+			background-color: transparent !important;
+			border: none !important;
+			box-shadow: none !important;
+		}
+
+		a.added_to_cart.wc-forward {
+			display: none !important;
+		}
+
+		.yith-wcwl-add-to-wishlist-button__label {
+			display: none;
+		}
+
+		.yith-wcwl-add-to-wishlist-button:hover::after {
+			content: "Agregar a deseos";
+			position: absolute;
+			right: 35px;
+			top: 50%;
+			transform: translateY(-50%);
+
+			background: #000;
+			color: #fff;
+			font-size: 13px;
+			padding: 6px 10px;
+			border-radius: 6px;
+			white-space: nowrap;
+
+			opacity: 1;
+			pointer-events: none;
+		}
+
+		/* cuando YA está agregado */
+		.yith-wcwl-add-to-wishlist-button--added:hover::after {
+			content: "Ver lista de deseos";
+		}
+
+		.elementor-menu-cart__product-image img {
+			border: 1px solid #FECACA;
+			border-radius: 15px;
+			display: block;
+		}
+
+		.elementor-menu-cart__products {
+			scrollbar-width: none;
+			/* Firefox */
+		}
+
+		.elementor-menu-cart__products::-webkit-scrollbar {
+			display: none;
+			/* Chrome / Edge / Safari */
+		}
+
+		.bapf_head {
+			display: none;
+		}
+
+		.woocommerce-MyAccount-navigation-link--downloads {
+			display: none !important;
+		}
+
+		.woocommerce-Address-title.title h2 {
+			font-size: 22px !important;
+			font-weight: 800 !important;
+			padding-bottom: 10px;
+			margin: 0 !important;
+		}
+
+		.woocommerce-message {
+			display: none;
+		}
+
+		/* ================================
+   CANTIDAD PRODUCTO (ESTILO MINI CART)
+================================ */
+
+		/* CONTENEDOR */
+		div.quantity {
+			display: flex !important;
+			align-items: center !important;
+			gap: 6px !important;
+			margin-top: 5px !important;
+			position: relative !important;
+		}
+
+		/* BOTONES */
+		div.quantity .custom-minus,
+		div.quantity .custom-plus {
+			width: 21px !important;
+			height: 37px !important;
+			border-radius: 14px !important;
+			border: 2px solid #8e8e8e !important;
+			background: transparent !important;
+			font-size: 12px !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			padding: 0 !important;
+			color: #111827 !important;
+			cursor: pointer !important;
+			line-height: 1 !important;
+		}
+
+		/* HOVER (igual estilo que mini cart pero opcional) */
+		div.quantity .custom-minus:hover,
+		div.quantity .custom-plus:hover {
+			background: #EA1C30 !important;
+			color: #fff !important;
+			border-color: #111827 !important;
+		}
+
+		/* INPUT */
+		div.quantity input.qty {
+			font-size: 12px !important;
+			font-weight: 600 !important;
+			min-width: 13px !important;
+			width: 30px !important;
+			height: 37px !important;
+			text-align: center !important;
+			color: #111827 !important;
+			border: none !important;
+			background: transparent !important;
+			outline: none !important;
+			padding: 0 !important;
+		}
+
+		/* QUITAR FLECHAS */
+		div.quantity input.qty::-webkit-outer-spin-button,
+		div.quantity input.qty::-webkit-inner-spin-button {
+			-webkit-appearance: none !important;
+			margin: 0 !important;
+		}
+
+		div.quantity input.qty[type=number] {
+			-moz-appearance: textfield !important;
+		}
+
+		.elementor-widget-woocommerce-product-add-to-cart .quantity {
+			border: none !important;
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+
+		input.input-text.qty.text {
+			border: none !important;
+			background: none !important;
+			box-shadow: none !important;
+		}
+
+		/* línea corta centrada */
+		input.input-text.qty.text {
+			background: linear-gradient(#8e8e8e, #8e8e8e) no-repeat center bottom !important;
+			background-size: 14px 2px !important;
+		}
+
+		.woocommerce-cart-form .qty-mini-cart {
+			display: none !important;
+		}
+
+		.wishlist-title-container {
+			display: none !important;
+		}
+
+		.woocommerce table.shop_table,
+		.woocommerce table.shop_table th,
+		.woocommerce table.shop_table td {
+			border: none !important;
+			background: transparent !important;
+		}
+
+		.shop_table.cart.wishlist_table.wishlist_view.traditional.responsive {
+			font-family: 'Bio Sans', sans-serif !important;
+		}
+
+		.woocommerce a.remove {
+			display: block;
+			font-size: 1.5em;
+			height: 1em;
+			width: 1em;
+			text-align: center;
+			line-height: 1;
+			border-radius: 100%;
+			color: #111827 !important;
+			text-decoration: none;
+			font-weight: 700;
+			border: 0;
+		}
+
+		/* Hover */
+		.woocommerce a.remove:hover {
+			color: #fff !important;
+			background: #EA1C30 !important;
+		}
+
+		.woocommerce .product-name a {
+			font-weight: 700 !important;
+			font-size: 15px !important;
+			color: #111827 !important;
+		}
+
+		.woocommerce .product-name a:hover {
+			color: #ff0000 !important;
+			opacity: 0.8;
+		}
+
+		/* BOTÓN TIPO "COMPRA REALIZADA" */
+
+		a.product_type_simple.add_to_cart_button.ajax_add_to_cart.add_to_cart.alt {
+			display: inline-block;
+			background-color: #ff0404;
+			/* verde como la imagen */
+			color: #ffffff !important;
+
+			font-family: 'Bio Sans', sans-serif !important;
+			font-weight: 600 !important;
+			/* seminegrita */
+			font-size: 14px;
+
+			padding: 12px 28px;
+			border-radius: 999px;
+			/* efecto pill */
+
+			text-align: center;
+			text-decoration: none;
+			border: none;
+
+			transition: all 0.3s ease;
+		}
+
+		/* Hover elegante */
+		a.product_type_simple.add_to_cart_button.ajax_add_to_cart.add_to_cart.alt:hover {
+			background-color: #ff0000;
+			/* verde un poco más oscuro */
+			transform: translateY(-1px);
+		}
+
+		/* SOLO Wishlist */
+		.yith-wcwl-wishlist-page .woocommerce-Price-amount.amount {
+			font-size: 14px !important;
+			color: #111827 !important;
+		}
+
+		.yith-wcwl-wishlist-page table.shop_table thead {
+			display: none !important;
+		}
+
+		.yith-wcwl-wishlist-page .product-quantity {
+			display: none !important;
+		}
+
+		body[class*="wishlist"] table.shop_table thead {
+			display: none !important;
+		}
+
+		table tbody>tr:nth-child(odd)>td,
+		table tbody>tr:nth-child(odd)>th {
+			background-color: transparent;
+		}
+
+		table td,
+		table th {
+			padding: 0 !important;
+		}
+
+		.cfvsw-swatch-inner,
+		.cfvsw-swatch-inner * {
+			font-family: "BioSans", sans-serif !important;
+			font-size: 15px !important;
+		}
+
+
+		@font-face {
+			font-family: "BioSans";
+			src: url("../fonts/Flat-it-Bio-Sans-Bold.woff2") format("woff2");
+			font-style: normal;
+		}
+
+		.single-product .price del .woocommerce-Price-amount.amount bdi {
+			font-family: "BioSans", sans-serif !important;
+			font-size: 25px !important;
+			color: #999999 !important;
+			text-decoration-color: #999999 !important;
+		}
+
+		.single-product .price del {
+			color: #999999 !important;
+			text-decoration: line-through #999999 !important;
+		}
+
+		.single-product .price ins .woocommerce-Price-amount.amount bdi,
+		.single-product .woocommerce-variation-price .woocommerce-Price-amount.amount bdi {
+			font-family: "BioSans", sans-serif !important;
+			font-size: 28px !important;
+			color: #EA1C30 !important;
+		}
+
+		.single-product .price ins {
+			text-decoration: none !important;
+		}
+
+		.single-product .price del,
+		.single-product .price ins,
+		.single-product .woocommerce-variation-price {
+			padding-bottom: 5px !important;
+			display: inline-block;
+		}
+
+		.single-product .woocommerce-variation-price {
+			position: relative;
+			top: -15px;
+		}
+
+		.payment_method_pago_moviles_peru img {
+			display: none !important;
+		}
+
+/* ==========================================================================
+ * TOP BAR MOVING TEXT (TICKER MARQUEE)
+ * ========================================================================== */
+.elementor-element-42e23cf {
+  background-color: #ea1c30 !important;
+  color: #ffffff !important;
+  padding: 8px 0 !important;
+  overflow: hidden !important;
+  line-height: 1.2 !important;
+}
+
+.ditty-ticker-container {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ditty-ticker-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: dittyMarquee 28s linear infinite !important;
+}
+
+.ditty-ticker-track:hover {
+  animation-play-state: paused !important;
+}
+
+.ditty-ticker-item {
+  color: #ffffff !important;
+  font-family: "Bio Sans", sans-serif, system-ui !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+  padding-right: 20px !important;
+  white-space: nowrap !important;
+}
+
+@keyframes dittyMarquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ==========================================================================
+ * FORCE VISIBILITY FOR ANIMATED ELEMENTOR ELEMENTS & IMAGES
+ * ========================================================================== */
+.animated,
+.animated-fast,
+.animated-slow,
+.foto-animada,
+[data-settings*="_animation"],
+.elementor-widget-image {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+/* Fix hero section layout & image alignment */
+.elementor-element-97e44b1 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.elementor-element-6f31530 img {
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ==========================================================================
+ * RED CONSULTATION BANNER (¿Consultas? Estamos aquí para ayudarte)
+ * ========================================================================== */
+.elementor-element-f661fed {
+  background: linear-gradient(135deg, #EA1C30 0%, #C8102E 100%) !important;
+  border-radius: 20px !important;
+  padding: 40px 50px !important;
+  margin: 40px auto !important;
+  box-shadow: 0 10px 30px rgba(234, 28, 48, 0.25) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.elementor-element-f661fed > .e-con-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.elementor-element-ae288ce .elementor-heading-title {
+  color: #ffffff !important;
+  font-family: "Bio Sans", sans-serif !important;
+  font-size: 38px !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+.elementor-element-fc3a137 .elementor-heading-title {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-family: "Bio Sans", sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  margin-top: 6px !important;
+  text-align: left !important;
+}
+
+.elementor-element-7f92f8c {
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+.elementor-element-4954e1a .elementor-button {
+  background-color: #0b132a !important;
+  color: #ffffff !important;
+  border-radius: 30px !important;
+  padding: 14px 36px !important;
+  font-family: "Bio Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.elementor-element-4954e1a .elementor-button:hover {
+  background-color: #ffffff !important;
+  color: #EA1C30 !important;
+  transform: translateY(-2px) scale(1.03) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+@media (max-width: 767px) {
+  .elementor-element-f661fed > .e-con-inner {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 20px !important;
+  }
+  
+  .elementor-element-ae288ce .elementor-heading-title,
+  .elementor-element-fc3a137 .elementor-heading-title {
+    text-align: center !important;
+  }
+  
+  .elementor-element-7f92f8c {
+    justify-content: center !important;
+  }
+}
+
+
+/* ==========================================================================
+ * SUB-HEADER NAVIGATION BAR & GREEN "TE ASESORAMOS" BUTTON
+ * ========================================================================== */
+.elementor-element-c97d778 {
+  background-color: #f4fbf4 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 8px 40px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.elementor-element-c97d778 > .e-con-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu {
+  display: flex !important;
+  align-items: center !important;
+  gap: 30px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu .elementor-item {
+  color: #0f364c !important;
+  font-family: "Bio Sans", sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu .elementor-item:hover {
+  color: #ea1c30 !important;
+}
+
+/* Green "Te asesoramos" pill button */
+.btn-te-asesoramos,
+.elementor-element-e3c8c06 .elementor-button {
+  background-color: #48bb78 !important;
+  color: #ffffff !important;
+  border-radius: 25px !important;
+  padding: 10px 24px !important;
+  font-family: "Bio Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3) !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.btn-te-asesoramos:hover,
+.elementor-element-e3c8c06 .elementor-button:hover {
+  background-color: #38a169 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(72, 187, 120, 0.4) !important;
+}
+
+/* ==========================================================================
+ * FORCE VISIBILITY FOR ALL ANIMATED CONTAINERS & HERO SECTION TEXT
+ * ========================================================================== */
+.animated,
+.animated-fast,
+.animated-slow,
+.foto-animada,
+[data-settings*="animation"],
+[data-settings*="_animation"],
+.elementor-element-aa565af,
+.elementor-element-dafb70e,
+.elementor-element-6f454ea,
+.elementor-element-095880e,
+.elementor-element-92a30a5,
+.elementor-element-dbb4564,
+.elementor-element-a6bde02,
+.elementor-element-1114999 {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Hero Section Formatting */
+.elementor-element-94e4da2 {
+  opacity: 1 !important;
+  visibility: visible !important;
+  background-color: #ea1c30 !important;
+  padding: 50px 40px !important;
+  min-height: 450px !important;
+}
+
+.elementor-element-aa565af {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.elementor-element-dafb70e .elementor-heading-title,
+.elementor-element-6f454ea .elementor-heading-title,
+.elementor-element-095880e .elementor-heading-title {
+  color: #ffffff !important;
+  font-family: "Bio Sans", sans-serif, system-ui !important;
+  font-size: 52px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  margin: 0 !important;
+}
+
+.elementor-element-92a30a5 .elementor-heading-title {
+  color: #ffffff !important;
+  font-family: "Bio Sans", sans-serif, system-ui !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  margin-top: 15px !important;
+  max-width: 500px !important;
+}
+
+.elementor-element-dbb4564 {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 15px !important;
+  margin-top: 25px !important;
+}
+
+.elementor-element-a6bde02 .elementor-button,
+.elementor-element-1114999 .elementor-button {
+  background-color: #ffffff !important;
+  color: #ea1c30 !important;
+  border-radius: 25px !important;
+  padding: 12px 28px !important;
+  font-family: "Bio Sans", sans-serif, system-ui !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.elementor-element-a6bde02 .elementor-button:hover,
+.elementor-element-1114999 .elementor-button:hover {
+  background-color: #0b132a !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ==========================================================================
+ * HEADER NAVIGATION & NAVBAR SECTIONS DISPLAY FIX
+ * ========================================================================== */
+.elementor-location-header,
+.elementor-element-c97d778,
+.elementor-element-0c2225e,
+.elementor-element-30c8361,
+.elementor-nav-menu__container,
+.elementor-nav-menu--main {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.elementor-element-c97d778 {
+  width: 100% !important;
+  background-color: #f7fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 10px 40px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03) !important;
+}
+
+.elementor-element-c97d778 > .e-con-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu--main {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu--main ul.elementor-nav-menu {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 30px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu--main .elementor-item {
+  color: #1a202c !important;
+  font-family: "Bio Sans", sans-serif, system-ui !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  padding: 6px 14px !important;
+  transition: color 0.2s ease !important;
+}
+
+.elementor-element-30c8361 .elementor-nav-menu--main .elementor-item:hover {
+  color: #ea1c30 !important;
+}
+
+@media (max-width: 767px) {
+  .elementor-element-c97d778 > .e-con-inner {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+}
+
+/* ==========================================================================
+ * FIX HEADER VERTICAL STACKING (TICKER -> LOGO/SEARCH -> NAVBAR)
+ * ========================================================================== */
+.elementor-location-header,
+header[data-elementor-type="header"] {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.elementor-element-42e23cf {
+  width: 100% !important;
+  display: flex !important;
+}
+
+.elementor-element-0c2225e {
+  width: 100% !important;
+  display: flex !important;
+  background-color: #0b132a !important;
+}
+
+.elementor-element-c97d778 {
+  width: 100% !important;
+  display: flex !important;
+}

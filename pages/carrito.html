@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Carrito de Compras - Nutricenter Perú</title>
+
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/cart-drawer.css">
+  <link rel="stylesheet" href="../assets/css/cart-page.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/cart.js" defer></script>
+  <script src="../assets/js/loader.js" defer></script>
+</head>
+<body>
+
+  <!-- Dynamic Header Placeholder -->
+  <div id="site-header-placeholder"></div>
+
+  <!-- Main Cart Content -->
+  <main class="cart-page-main">
+    <div class="cart-page-container">
+
+      <!-- Breadcrumbs / Steps Flow -->
+      <nav class="cart-steps-nav">
+        <span class="cart-step-item active">TU CARRITO</span>
+        <span class="cart-step-sep">-</span>
+        <span class="cart-step-item">CHECKOUT</span>
+        <span class="cart-step-sep">-</span>
+        <span class="cart-step-item">ORDEN COMPLETADA</span>
+      </nav>
+
+      <!-- Dynamic Cart Content Wrapper -->
+      <div id="cartPageDynamicContent">
+        <!-- Will be rendered dynamically by renderCartPage() -->
+      </div>
+
+      <!-- Suggested Products Section (Always visible or rendered when empty) -->
+      <section class="cart-suggested-section" id="cartSuggestedSection">
+        <h2 class="cart-suggested-heading">Algunos productos que podrian interesarte</h2>
+
+        <div class="cart-suggested-grid">
+
+          <!-- Card 1: BIO PROSS -->
+          <div class="cart-suggested-card">
+            <div class="cart-suggested-img-wrap">
+              <img src="../assets/images/BOTELLA-BIOPROSS-1-300x300.webp" alt="BIO PROSS" class="cart-suggested-img">
+            </div>
+            <div class="cart-suggested-info">
+              <div class="cart-suggested-header">
+                <h3 class="cart-suggested-title">BIO PROSS</h3>
+                <i class="bi bi-star cart-suggested-star"></i>
+              </div>
+              <div class="cart-suggested-subtitle">(100 cápsulas)</div>
+              <div class="cart-suggested-prices">
+                <span class="cart-price-old">S/ 50.00</span>
+                <span class="cart-price-current">S/ 45.00</span>
+              </div>
+            </div>
+            <button type="button" class="cart-btn-add" onclick="addSuggestedProduct('BIO PROSS', '100 CÁPSULAS', 45.00, 'assets/images/BOTELLA-BIOPROSS-1-300x300.webp')">
+              Añadir al carrito
+            </button>
+          </div>
+
+          <!-- Card 2: SAW PALMETTO -->
+          <div class="cart-suggested-card">
+            <div class="cart-suggested-img-wrap">
+              <img src="../assets/images/BOTELLA-SAW-PALMETTO-1-300x300.webp" alt="SAW PALMETTO" class="cart-suggested-img">
+            </div>
+            <div class="cart-suggested-info">
+              <div class="cart-suggested-header">
+                <h3 class="cart-suggested-title">SAW PALMETTO</h3>
+                <i class="bi bi-star cart-suggested-star"></i>
+              </div>
+              <div class="cart-suggested-subtitle">(100 cápsulas)</div>
+              <div class="cart-suggested-prices">
+                <span class="cart-price-old">S/ 55.00</span>
+                <span class="cart-price-current">S/ 50.00</span>
+              </div>
+            </div>
+            <button type="button" class="cart-btn-add" onclick="addSuggestedProduct('SAW PALMETTO', '100 CÁPSULAS', 50.00, 'assets/images/BOTELLA-SAW-PALMETTO-1-300x300.webp')">
+              Añadir al carrito
+            </button>
+          </div>
+
+          <!-- Card 3: XTREMO HOT ROJO 1000 MG -->
+          <div class="cart-suggested-card">
+            <div class="cart-suggested-img-wrap">
+              <img src="../assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp" alt="XTREMO HOT ROJO 1000 MG" class="cart-suggested-img">
+            </div>
+            <div class="cart-suggested-info">
+              <div class="cart-suggested-header">
+                <h3 class="cart-suggested-title">XTREMO HOT ROJO 1000 MG</h3>
+                <i class="bi bi-star cart-suggested-star"></i>
+              </div>
+              <div class="cart-suggested-subtitle">(30 tabletas)</div>
+              <div class="cart-suggested-prices">
+                <span class="cart-price-old">S/ 55.00</span>
+                <span class="cart-price-current">S/ 50.00</span>
+              </div>
+            </div>
+            <button type="button" class="cart-btn-add" onclick="addSuggestedProduct('XTREMO HOT ROJO 1000 MG', '30 TABLETAS', 50.00, 'assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp')">
+              Añadir al carrito
+            </button>
+          </div>
+
+          <!-- Card 4: XTREMO HOT AZUL 1000 MG -->
+          <div class="cart-suggested-card">
+            <div class="cart-suggested-img-wrap">
+              <img src="../assets/images/BOTELLA-XTREMO-HOT-AZUL-1-300x300.webp" alt="XTREMO HOT AZUL 1000 MG" class="cart-suggested-img">
+            </div>
+            <div class="cart-suggested-info">
+              <div class="cart-suggested-header">
+                <h3 class="cart-suggested-title">XTREMO HOT AZUL 1000 MG</h3>
+                <i class="bi bi-star cart-suggested-star"></i>
+              </div>
+              <div class="cart-suggested-subtitle">(30 tabletas)</div>
+              <div class="cart-suggested-prices">
+                <span class="cart-price-old">S/ 65.00</span>
+                <span class="cart-price-current">S/ 60.00</span>
+              </div>
+            </div>
+            <button type="button" class="cart-btn-add" onclick="addSuggestedProduct('XTREMO HOT AZUL 1000 MG', '30 TABLETAS', 60.00, 'assets/images/BOTELLA-XTREMO-HOT-AZUL-1-300x300.webp')">
+              Añadir al carrito
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Dynamic Footer Placeholder -->
+  <div id="site-footer-placeholder"></div>
+
+  <script>
+    function renderCartPage() {
+      const container = document.getElementById('cartPageDynamicContent');
+      if (!container || !window.CartDrawer) return;
+
+      const items = window.CartDrawer.getItems();
+
+      if (!items || items.length === 0) {
+        // Exact Empty View matching User Specification Screenshot
+        container.innerHTML = `
+          <div class="cart-empty-view">
+            <div class="cart-empty-icon-circle">
+              <i class="bi bi-bag"></i>
+            </div>
+            <h1 class="cart-empty-heading">¡Tu carrito está ahora mismo vacío!</h1>
+            <p class="cart-empty-text">
+              ¿Aún no te has decidido?. Tenemos productos que te encantarán, revisa la página de la tienda para comprobarlo.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      // Filled View with Table and Summary
+      let rowsHtml = '';
+      items.forEach((item, index) => {
+        const itemImg = item.image.startsWith('../') ? item.image : '../' + item.image.replace(/^\/?/, '');
+        const unitPrice = parseFloat(item.price) || 0;
+        const lineTotal = (unitPrice * item.qty).toFixed(2);
+
+        rowsHtml += `
+          <tr>
+            <td>
+              <div class="cart-prod-cell">
+                <img src="${itemImg}" alt="${item.name}" class="cart-prod-thumb" onerror="this.src='../assets/images/BOTELLA-XTREMO-HOT-ROJO-1-300x300.webp'">
+                <div>
+                  <h4 class="cart-prod-name">${item.name}</h4>
+                  <p class="cart-prod-sub">${item.subtitle || ''}</p>
+                </div>
+              </div>
+            </td>
+            <td><strong>S/ ${unitPrice.toFixed(2)}</strong></td>
+            <td>
+              <div class="cart-table-qty-row">
+                <button type="button" class="cart-table-qty-btn" onclick="updatePageQty(${index}, -1)">-</button>
+                <span class="cart-table-qty-val">${item.qty}</span>
+                <button type="button" class="cart-table-qty-btn" onclick="updatePageQty(${index}, 1)">+</button>
+              </div>
+            </td>
+            <td><strong style="color: #ff0000;">S/ ${lineTotal}</strong></td>
+            <td>
+              <button type="button" class="cart-table-remove-btn" onclick="removePageItem(${index})" title="Eliminar">&times;</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      const subtotal = window.CartDrawer.getSubtotal().toFixed(2);
+
+      container.innerHTML = `
+        <div class="cart-filled-view">
+          <div class="cart-table-card">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cart-summary-card">
+            <h3 class="cart-summary-title">Resumen de Compra</h3>
+            <div class="cart-summary-row">
+              <span>Subtotal:</span>
+              <span>S/ ${subtotal}</span>
+            </div>
+            <div class="cart-summary-row">
+              <span>Envío:</span>
+              <span style="color: #16a34a; font-weight: 700;">¡Coordinar por WhatsApp!</span>
+            </div>
+            <div class="cart-summary-row total-row">
+              <span>Total:</span>
+              <span class="cart-summary-total-price">S/ ${subtotal}</span>
+            </div>
+
+            <button type="button" class="cart-checkout-btn" onclick="window.CartDrawer.checkout()">
+              <i class="bi bi-whatsapp"></i> Finalizar Compra
+            </button>
+
+            <button type="button" class="cart-clear-all-btn" onclick="clearFullCart()">
+              Vaciar Todo el Carrito
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function addSuggestedProduct(name, subtitle, price, image) {
+      if (window.CartDrawer) {
+        window.CartDrawer.addItem({
+          id: 'sugg-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          name: name,
+          subtitle: subtitle,
+          price: price,
+          qty: 1,
+          image: image
+        });
+        renderCartPage();
+      }
+    }
+
+    function updatePageQty(index, delta) {
+      if (window.CartDrawer) {
+        window.CartDrawer.updateQty(index, delta);
+        renderCartPage();
+      }
+    }
+
+    function removePageItem(index) {
+      if (window.CartDrawer) {
+        window.CartDrawer.removeItem(index);
+        renderCartPage();
+      }
+    }
+
+    function clearFullCart() {
+      if (window.CartDrawer) {
+        window.CartDrawer.clearCart();
+        renderCartPage();
+      }
+    }
+
+    // Initialize on page ready
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(renderCartPage, 100);
+    });
+
+    // Re-render when cart storage changes
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'nutricenter_cart') {
+        renderCartPage();
+      }
+    });
+  </script>
+</body>
+</html>
